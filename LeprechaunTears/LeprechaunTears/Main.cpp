@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(700, 700);
-	glutCreateWindow("Lab 4: Integrated Animal and Terrain");
+	glutCreateWindow("Hello there, I'm a window!");
 	glutIgnoreKeyRepeat(false);
 
 	glEnable(GL_TEXTURE_2D);

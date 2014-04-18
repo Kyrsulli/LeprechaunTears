@@ -13,4 +13,8 @@ void draw_string( float x, float y, float z, char *txt );
 
 void draw_axis(float len);
 
+class Vector3{
+
+};
+
 //#endif
