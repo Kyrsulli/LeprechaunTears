@@ -35,6 +35,7 @@ void test_tile_setup(){
 
 void test_tile_render(){
 	testTile->renderTile();
+	glutWireSphere(10, 10, 10);
 }
 
 void cb_display() {
@@ -79,7 +80,9 @@ void cb_mousemove(int x, int y) {
 
 void cb_keyboard(unsigned char key, int x, int y){
 	switch(key){
-
+	case 'q':
+		exit(0);
+		break;
 	}
 }
 
@@ -119,8 +122,8 @@ int main(int argc, char* argv[]){
 	glClearColor(0, 0, 0, 0);
 
 	test_tile_setup();
-	cout <<"DEBUG: remove test_tile_render() in function main asap" << endl;
-	cout<< "DEBUG: remove test_tile_render() in funcion cb_display asap" << endl;
+	cout << "DEBUG: remove test_tile_render() in function main asap" << endl;
+	cout << "DEBUG: remove test_tile_render() in funcion cb_display asap" << endl;
 	glutMainLoop();
 
 	return 0;
