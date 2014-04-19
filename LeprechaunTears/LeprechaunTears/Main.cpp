@@ -7,7 +7,35 @@
 #include <vector>
 
 #include "util.h"
+#include "Tile.h"
 
+using namespace std;
+
+Tile* testTile;
+
+void test_tile_setup(){
+	//tile 1 4 
+	//-0.5 0 1
+	//0.5 0 1 
+	//0.5 0 0
+	//-0.5 0 0
+	//0 0 3 0
+	testTile = new Tile(1, nullptr);
+	//normally these next 4 lines would be done in a for loop
+	testTile->addVertex(-0.5, 0, 1);
+	testTile->addVertex(0.5, 0, 1);
+	testTile->addVertex(0.5, 0, 0);
+	testTile->addVertex(-0.5, 0, 0);
+	//also in a for loop, but different from the last one
+	testTile->addNeighbor(0);
+	testTile->addNeighbor(0);
+	testTile->addNeighbor(3);
+	testTile->addNeighbor(0);
+}
+
+void test_tile_render(){
+	testTile->renderTile();
+}
 
 void cb_display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -16,6 +44,10 @@ void cb_display() {
 	//drawTerrain();
 	//drawSnowmen();
 	//drawTexture();
+	gluLookAt(10,10,10,  //location
+			  0,0,0,   //target
+			  0,1,0);  //up
+	test_tile_render();
 	glFlush();
 	glutSwapBuffers(); // for smoother animation
 }
@@ -56,7 +88,7 @@ int main(int argc, char* argv[]){
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(700, 700);
-	glutCreateWindow("Hello there, I'm a window!");
+	glutCreateWindow("Cody and Kyle's Bitchin' Mini Golf game");
 	glutIgnoreKeyRepeat(false);
 
 	glEnable(GL_TEXTURE_2D);
@@ -83,8 +115,12 @@ int main(int argc, char* argv[]){
 	glutIdleFunc(cb_idle);
 	glutKeyboardFunc(cb_keyboard);
 
-	glClearColor(18.0/255.0,148.0/255.0,255.0/255.0,0); // set background to blue
+	//glClearColor(18.0/255.0,148.0/255.0,255.0/255.0,0); // set background to blue
+	glClearColor(0, 0, 0, 0);
 
+	test_tile_setup();
+	cout <<"DEBUG: remove test_tile_render() in function main asap" << endl;
+	cout<< "DEBUG: remove test_tile_render() in funcion cb_display asap" << endl;
 	glutMainLoop();
 
 	return 0;

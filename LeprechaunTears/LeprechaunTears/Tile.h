@@ -1,21 +1,21 @@
+#include <vector>
 #include "util.h"
 #include "Level.h"
-;
+#include "Point.h"
+
 class Tile{
 public:
 	Tile(int, Level*);
 	~Tile();
 
-	void addEdge();
-	void addNeighbor();
+	void addNeighbor(int val);
 	void addVertex(int x, int y, int z);
-	void addVertices(int** v);
+	void renderTile();
 
 private:
 	int id;
-	int* edges;
-	int* neighbors;
-	int** vertices;
+	std::vector<int> neighbors;
+	std::vector<Point*> vertices;
 	Level* level;
 	Vector3* normal;
 
