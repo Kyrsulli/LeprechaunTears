@@ -5,13 +5,20 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-
+#include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
 #include "util.h"
 #include "Tile.h"
 
 using namespace std;
 
 Tile* testTile;
+ifstream levelData;
+std::vector<Tile*> tileList;
+
+std::string line;
 
 void test_tile_setup(){
 	//tile 1 4 
@@ -22,15 +29,79 @@ void test_tile_setup(){
 	//0 0 3 0
 	testTile = new Tile(1, nullptr);
 	//normally these next 4 lines would be done in a for loop
-	testTile->addVertex(-0.5, 0, 1);
-	testTile->addVertex(0.5, 0, 1);
-	testTile->addVertex(0.5, 0, 0);
-	testTile->addVertex(-0.5, 0, 0);
+	testTile->addVertex(-0.5f, 0, 1);
+	testTile->addVertex(0.5f, 0, 1);
+	testTile->addVertex(0.5f, 0, 0);
+	testTile->addVertex(-0.5f, 0, 0);
 	//also in a for loop, but different from the last one
 	testTile->addNeighbor(0);
 	testTile->addNeighbor(0);
 	testTile->addNeighbor(3);
 	testTile->addNeighbor(0);
+}
+
+void get_input(){
+	int linecount = 0;
+	while (std::getline(levelData, line))
+	{
+		//REMOVE ASAP:
+		switch(linecount){
+			case(0):
+				line = "tile 1 4 -.5 0 2 .5 0 2 .5 0 -2 -.5 0 -2 0 0 0 0";
+				break;
+			case(1):
+				line = "tee 1 0 0 1.75";
+				break;
+			case(2):
+				line = "cup 1 0 0 -1.75";
+				break;
+		}
+		std::istringstream iss(line);
+		//cout << line;
+		std::string type;
+		int type_int = 0;
+		if (!(iss >> type)) { break; } // error
+		if(type.compare("tile") == 0) type_int = 0;
+		if(type.compare("cup") == 0) type_int = 1;
+		if(type.compare("tee") == 0) type_int = 2;
+		Tile* newTile;
+		switch(type_int){
+		case(0):
+		int tileIndex;
+		if(!(iss >> tileIndex)) { break; }
+		int edgeCount;
+		if(!(iss >> edgeCount)) { printf("broke out");break; }
+		float tempx;
+		float tempy;
+		float tempz;
+		newTile = new Tile(tileIndex, new Level());
+		for(int i = 0; i < edgeCount; i++){
+			if(!(iss >> tempx)) { break; }
+			if(!(iss >> tempy)) { break; }
+			if(!(iss >> tempz)) { break; }
+			newTile->addVertex(tempx, tempy, tempz);
+		}
+		
+		int tempEdge;
+		for(int i = 0; i < edgeCount; i++){
+			if(!(iss >> tempEdge)) { break; }
+			newTile->addNeighbor(tempEdge);
+
+		}
+		tileList.push_back(newTile);
+		break;
+
+		case(1):
+		break;
+
+		case(2):
+		break;
+	}
+		linecount++;
+
+ // process pair (a,b)
+	}
+	levelData.close();
 }
 
 void test_tile_render(){
@@ -48,7 +119,10 @@ void cb_display() {
 	gluLookAt(10,10,10,  //location
 			  0,0,0,   //target
 			  0,1,0);  //up
-	test_tile_render();
+	//test_tile_render();
+	for(int i = 0; i < tileList.size(); i++){
+		tileList[i]->renderTile();
+	}
 	glFlush();
 	glutSwapBuffers(); // for smoother animation
 }
@@ -88,6 +162,10 @@ void cb_keyboard(unsigned char key, int x, int y){
 
 int main(int argc, char* argv[]){
 	glutInit(&argc, argv);
+
+	levelData.open(argv[0]);
+	get_input();
+	levelData.close();
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(700, 700);

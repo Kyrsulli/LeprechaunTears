@@ -9,7 +9,7 @@ public:
 	~Tile();
 
 	void addNeighbor(int val);
-	void addVertex(int x, int y, int z);
+	void addVertex(float x, float y, float z);
 	void renderTile();
 
 private:

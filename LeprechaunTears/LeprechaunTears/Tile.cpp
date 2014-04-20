@@ -17,7 +17,7 @@ void Tile::addNeighbor(int val){
 	neighbors.push_back(val);
 }
 
-void Tile::addVertex(int x, int y, int z){
+void Tile::addVertex(float x, float y, float z){
 	Point* newpoint = new Point(x, y, z);
 	vertices.push_back(newpoint);
 	//printf("vertex added\n");
@@ -33,6 +33,7 @@ void Tile::renderTile(){
 	for(int i = 0; i < 4; i++){
 		Point* p = vertices[i];
 		glVertex3f(p->x, p->y, p->z);
+		//printf("%f, %f, %f\n", p->x, p->y, p->z);
 	}
 	glEnd();
 }
