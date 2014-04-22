@@ -1,9 +1,12 @@
-﻿Build started 4/22/2014 1:43:27 PM.
+﻿Build started 4/22/2014 4:29:17 PM.
      1>Project "C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\LeprechaunTears\LeprechaunTears.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
-         Main.cpp
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\main.cpp(120): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Tile.cpp
+         Tile.cpp
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\tile.cpp(34): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\tile.cpp(47): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\tile.cpp(57): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\tile.cpp(64): warning C4018: '>=' : signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.lib" /MACHINE:X86 Debug\Cup.obj
          Debug\Level.obj
@@ -17,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.98
+Time Elapsed 00:00:00.60

@@ -18,5 +18,8 @@ private:
 	std::vector<Point*> vertices;
 	Vector3* normal;
 
+	void defineEdges();
+	void drawWalls();
+
 };
 
