@@ -2,11 +2,9 @@
 #include <glut.h>
 #include <cstdlib>
 #include "Tile.h"
-#include "Level.h"
 
-Tile::Tile(int ID, Level* l){
+Tile::Tile(int ID){
 	id = ID;
-	level = l;
 }
 
 Tile::~Tile(){
@@ -30,10 +28,10 @@ void Tile::renderTile(){
 	}
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_TRIANGLE_FAN);
-	for(int i = 0; i < 4; i++){
+	for(int i = 0; i < vertices.size(); i++){
+		
 		Point* p = vertices[i];
 		glVertex3f(p->x, p->y, p->z);
-		//printf("%f, %f, %f\n", p->x, p->y, p->z);
 	}
 	glEnd();
 }

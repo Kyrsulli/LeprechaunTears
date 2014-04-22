@@ -14,11 +14,18 @@
 
 using namespace std;
 
-Tile* testTile;
 ifstream levelData;
+Tile* testTile;
 std::vector<Tile*> tileList;
 
 std::string line;
+
+float camx = 10, 
+	camy = 10, 
+	camz = 10, 
+	targetx = 0, 
+	targety = 0, 
+	targetz = 0;
 
 void test_tile_setup(){
 	//tile 1 4 
@@ -27,7 +34,7 @@ void test_tile_setup(){
 	//0.5 0 0
 	//-0.5 0 0
 	//0 0 3 0
-	testTile = new Tile(1, nullptr);
+	testTile = new Tile(1);
 	//normally these next 4 lines would be done in a for loop
 	testTile->addVertex(-0.5f, 0, 1);
 	testTile->addVertex(0.5f, 0, 1);
@@ -42,22 +49,10 @@ void test_tile_setup(){
 
 void get_input(){
 	int linecount = 0;
-	while (std::getline(levelData, line))
+	while (!levelData.eof())
 	{
-		//REMOVE ASAP:
-		switch(linecount){
-			case(0):
-				line = "tile 1 4 -.5 0 2 .5 0 2 .5 0 -2 -.5 0 -2 0 0 0 0";
-				break;
-			case(1):
-				line = "tee 1 0 0 1.75";
-				break;
-			case(2):
-				line = "cup 1 0 0 -1.75";
-				break;
-		}
+		std::getline(levelData, line);
 		std::istringstream iss(line);
-		//cout << line;
 		std::string type;
 		int type_int = 0;
 		if (!(iss >> type)) { break; } // error
@@ -65,6 +60,7 @@ void get_input(){
 		if(type.compare("cup") == 0) type_int = 1;
 		if(type.compare("tee") == 0) type_int = 2;
 		Tile* newTile;
+
 		switch(type_int){
 		case(0):
 		int tileIndex;
@@ -74,7 +70,7 @@ void get_input(){
 		float tempx;
 		float tempy;
 		float tempz;
-		newTile = new Tile(tileIndex, new Level());
+		newTile = new Tile(tileIndex);
 		for(int i = 0; i < edgeCount; i++){
 			if(!(iss >> tempx)) { break; }
 			if(!(iss >> tempy)) { break; }
@@ -101,7 +97,7 @@ void get_input(){
 
  // process pair (a,b)
 	}
-	levelData.close();
+	//put list of tiles into level
 }
 
 void test_tile_render(){
@@ -116,9 +112,10 @@ void cb_display() {
 	//drawTerrain();
 	//drawSnowmen();
 	//drawTexture();
-	gluLookAt(10,10,10,  //location
-			  0,0,0,   //target
+	gluLookAt(camx, camy,camz,  //location
+			  targetx, targety, targetz,   //target
 			  0,1,0);  //up
+	
 	//test_tile_render();
 	for(int i = 0; i < tileList.size(); i++){
 		tileList[i]->renderTile();
@@ -155,15 +152,48 @@ void cb_mousemove(int x, int y) {
 void cb_keyboard(unsigned char key, int x, int y){
 	switch(key){
 	case 'q':
-		exit(0);
+		camx++;
+		break;
+	case 'Q':
+		camx--;
+		break;
+	case 'w':
+		camy++;
+		break;
+	case 'W':
+		camy--;
+		break;
+	case 'e':
+		camz++;
+		break;
+	case 'E':
+		camz--;
+		break;
+	case 'a':
+		targetx++;
+		break;
+	case 'A':
+		targetx--;
+		break;
+	case 's':
+		targety++;
+		break;
+	case 'S':
+		targety--;
+		break;
+	case 'd':
+		targetz++;
+		break;
+	case 'D':
+		targetz--;
 		break;
 	}
 }
 
 int main(int argc, char* argv[]){
 	glutInit(&argc, argv);
-
-	levelData.open(argv[0]);
+	
+	levelData.open(argv[1]);
 	get_input();
 	levelData.close();
 

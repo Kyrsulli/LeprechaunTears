@@ -76,17 +76,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cup.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="Tee.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cup.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Tee.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LevelData\hole.00.db" />
+    <None Include="..\..\LevelData\hole.01.db" />
+    <None Include="..\..\LevelData\hole.02.db" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
