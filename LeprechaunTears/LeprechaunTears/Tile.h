@@ -14,6 +14,7 @@ public:
 
 private:
 	int id;
+	bool normalCalculated;
 	std::vector<int> neighbors;
 	std::vector<Point*> vertices;
 	Vector3* normal;

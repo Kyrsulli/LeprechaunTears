@@ -8,6 +8,7 @@
 
 Tile::Tile(int ID){
 	id = ID;
+	normalCalculated = false;
 }
 
 Tile::~Tile(){
@@ -28,6 +29,11 @@ void Tile::renderTile(){
 	if(vertices.empty()){ 
 		printf("Vertices in tile ID %d is empty\n", this->id); 
 		exit(1);
+	}
+	if(!normalCalculated){
+		//calculate normal
+		//store normal
+		normalCalculated = true;
 	}
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_TRIANGLE_FAN);

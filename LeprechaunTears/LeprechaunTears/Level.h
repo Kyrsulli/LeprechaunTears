@@ -12,6 +12,8 @@ public:
 	void render();
 	void addCup(Cup*);
 	void addTee(Tee*);
+	float* getCupLocation();
+	float* getTeeLocation();
 private:
 	std::vector<Tile> tiles;
 	int levelNumber;

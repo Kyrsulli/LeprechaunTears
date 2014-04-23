@@ -11,11 +11,13 @@
 #include <sstream>
 #include "util.h"
 #include "Tile.h"
+#include "Level.h"
 
 using namespace std;
 
 ifstream levelData;
 Tile* testTile;
+Level* level;
 std::vector<Tile*> tileList;
 
 std::string line;
@@ -187,6 +189,30 @@ void cb_keyboard(unsigned char key, int x, int y){
 	case 'D':
 		targetz--;
 		break;
+	case '1': ;
+		/*
+		float* camLoc = level->getCupLocation();
+		float* targetLoc = level->getTeeLocation();
+		camx = camLoc[0];
+		camy = camLoc[1] + 10;
+		camz = camLoc[2];
+		targetx = targetLoc[0];
+		targety = targetLoc[1];
+		targetz = targetLoc[2];
+		break;
+		*/
+	case '2': ;
+		/*
+		float* camLoc = level->getTeeLocation();
+		float* targetLoc = level->getCupLocation();
+		camx = camLoc[0];
+		camy = camLoc[1] + 10;
+		camz = camLoc[2];
+		targetx = targetLoc[0];
+		targety = targetLoc[1];
+		targetz = targetLoc[2];
+		break;
+		*/
 	}
 }
 

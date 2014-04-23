@@ -32,3 +32,19 @@ void Level::addCup(Cup* c){
 void Level::addTee(Tee* t){
 	tee = t;
 }
+
+float* Level::getCupLocation(){
+	float* pos = new float[3];
+	pos[0] = hole->x;
+	pos[1] = hole->y;
+	pos[2] = hole->z;
+	return pos;
+}
+
+float* Level::getTeeLocation(){
+	float* pos = new float[3];
+	pos[0] = tee->x;
+	pos[1] = tee->y;
+	pos[2] = tee->z;
+	return pos;
+}
