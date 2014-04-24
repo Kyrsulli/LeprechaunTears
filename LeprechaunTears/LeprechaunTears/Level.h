@@ -12,6 +12,7 @@ public:
 	void render();
 	void addCup(Cup*);
 	void addTee(Tee*);
+	void addTiles(std::vector<Tile*>);
 	float* getCupLocation();
 	float* getTeeLocation();
 private:

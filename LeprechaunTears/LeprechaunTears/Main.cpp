@@ -62,43 +62,63 @@ void get_input(){
 		if(type.compare("cup") == 0) type_int = 1;
 		if(type.compare("tee") == 0) type_int = 2;
 		Tile* newTile;
+		Cup* newCup;
+		Tee* newTee;
+		int tileIndex;
+		int edgeCount;
+		float tempx, tempy, tempz;
 
 		switch(type_int){
-		case(0):
-		int tileIndex;
-		if(!(iss >> tileIndex)) { break; }
-		int edgeCount;
-		if(!(iss >> edgeCount)) { printf("broke out");break; }
-		float tempx;
-		float tempy;
-		float tempz;
-		newTile = new Tile(tileIndex);
-		for(int i = 0; i < edgeCount; i++){
-			if(!(iss >> tempx)) { break; }
-			if(!(iss >> tempy)) { break; }
-			if(!(iss >> tempz)) { break; }
-			newTile->addVertex(tempx, tempy, tempz);
-		}
+
+			case(0):
+			if(!(iss >> tileIndex)) { exit(1); }
+			if(!(iss >> edgeCount)) { exit(1); }
+			newTile = new Tile(tileIndex);
+			for(int i = 0; i < edgeCount; i++){
+				if(!(iss >> tempx)) { exit(1); }
+				if(!(iss >> tempy)) { exit(1); }
+				if(!(iss >> tempz)) { exit(1); }
+				newTile->addVertex(tempx, tempy, tempz);
+			}
 		
-		int tempEdge;
-		for(int i = 0; i < edgeCount; i++){
-			if(!(iss >> tempEdge)) { break; }
-			newTile->addNeighbor(tempEdge);
+			int tempEdge;
+			for(int i = 0; i < edgeCount; i++){
+				if(!(iss >> tempEdge)) { exit(1); }
+				newTile->addNeighbor(tempEdge);
+	
+			}
+			tileList.push_back(newTile);
+			break;
 
+			case(1):
+			if(!(iss >> tileIndex)) { exit(1); }
+			if(!(iss >> tempx)) { exit(1); }
+			if(!(iss >> tempy)) { exit(1); }
+			if(!(iss >> tempz)) { exit(1); }
+			newCup = new Cup(tileIndex, tempx, tempy, tempz);
+			level->addCup(newCup);
+			break;
+	
+			case(2):
+			int tileIndex;
+			if(!(iss >> tileIndex)) { exit(1); }
+			float tempx, tempy, tempz;
+			if(!(iss >> tempx)) { exit(1); }
+			if(!(iss >> tempy)) { exit(1); }
+			if(!(iss >> tempz)) { exit(1); }
+			newTee = new Tee(tileIndex, tempx, tempy, tempz);
+			level->addTee(newTee);
+			break;
+	
+			default:
+			exit(1);
+			break;
 		}
-		tileList.push_back(newTile);
-		break;
-
-		case(1):
-		break;
-
-		case(2):
-		break;
-	}
 		linecount++;
 
  // process pair (a,b)
 	}
+	level->addTiles(tileList);
 	//put list of tiles into level
 }
 
@@ -119,9 +139,10 @@ void cb_display() {
 			  0,1,0);  //up
 	
 	//test_tile_render();
-	for(int i = 0; i < tileList.size(); i++){
-		tileList[i]->renderTile();
-	}
+	//for(int i = 0; i < tileList.size(); i++){
+	//	tileList[i]->renderTile();
+	//}
+	level->render();
 	glFlush();
 	glutSwapBuffers(); // for smoother animation
 }
@@ -218,7 +239,7 @@ void cb_keyboard(unsigned char key, int x, int y){
 
 int main(int argc, char* argv[]){
 	glutInit(&argc, argv);
-	
+	level = new Level(1);
 	levelData.open(argv[1]);
 	get_input();
 	levelData.close();

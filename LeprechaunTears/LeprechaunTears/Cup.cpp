@@ -16,6 +16,6 @@ void Cup::renderCup(){
 	glPushMatrix();{
 		glTranslatef(x, y, z);
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glutSolidSphere(1.0f, 25, 25);
+		glutSolidSphere(0.5f, 25, 25);
 	}glPopMatrix();
 }

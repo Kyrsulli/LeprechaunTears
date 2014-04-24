@@ -25,6 +25,12 @@ void Level::render(){
 	
 }
 
+void Level::addTiles(std::vector<Tile*> t){
+	for(int i = 0; i < t.size(); i++){
+		tiles.push_back(*t[i]);
+	}
+}
+
 void Level::addCup(Cup* c){
 	hole = c;
 }
