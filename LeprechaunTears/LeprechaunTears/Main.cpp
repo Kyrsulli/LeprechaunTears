@@ -9,6 +9,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <glm.hpp>
 #include "util.h"
 #include "Tile.h"
 #include "Level.h"
