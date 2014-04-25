@@ -42,6 +42,13 @@ void printMenu(){
 		 << "c: close this program" << endl;
 }
 
+void errorExit(int i){
+	printf("Error on line %d. Press Enter to exit.", i);
+	int x;
+	cin >> x;
+	exit(1);
+}
+
 void get_input(){
 	int linecount = 0;
 	while (!levelData.eof())
@@ -64,19 +71,19 @@ void get_input(){
 		switch(type_int){
 
 			case(0):
-			if(!(iss >> tileIndex)) { exit(1); }
-			if(!(iss >> edgeCount)) { exit(1); }
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
+			if(!(iss >> edgeCount)) { errorExit(linecount); }
 			newTile = new Tile(tileIndex);
 			for(int i = 0; i < edgeCount; i++){
-				if(!(iss >> tempx)) { exit(1); }
-				if(!(iss >> tempy)) { exit(1); }
-				if(!(iss >> tempz)) { exit(1); }
+				if(!(iss >> tempx)) { errorExit(linecount); }
+				if(!(iss >> tempy)) { errorExit(linecount); }
+				if(!(iss >> tempz)) { errorExit(linecount); }
 				newTile->addVertex(tempx, tempy, tempz);
 			}
 		
 			int tempEdge;
 			for(int i = 0; i < edgeCount; i++){
-				if(!(iss >> tempEdge)) { exit(1); }
+				if(!(iss >> tempEdge)) { errorExit(linecount); }
 				newTile->addNeighbor(tempEdge);
 	
 			}
@@ -84,27 +91,27 @@ void get_input(){
 			break;
 
 			case(1):
-			if(!(iss >> tileIndex)) { exit(1); }
-			if(!(iss >> tempx)) { exit(1); }
-			if(!(iss >> tempy)) { exit(1); }
-			if(!(iss >> tempz)) { exit(1); }
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
+			if(!(iss >> tempx)) { errorExit(linecount); }
+			if(!(iss >> tempy)) { errorExit(linecount); }
+			if(!(iss >> tempz)) { errorExit(linecount); }
 			newCup = new Cup(tileIndex, tempx, tempy, tempz);
 			level->addCup(newCup);
 			break;
 	
 			case(2):
 			int tileIndex;
-			if(!(iss >> tileIndex)) { exit(1); }
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
 			float tempx, tempy, tempz;
-			if(!(iss >> tempx)) { exit(1); }
-			if(!(iss >> tempy)) { exit(1); }
-			if(!(iss >> tempz)) { exit(1); }
+			if(!(iss >> tempx)) { errorExit(linecount); }
+			if(!(iss >> tempy)) { errorExit(linecount); }
+			if(!(iss >> tempz)) { errorExit(linecount); }
 			newTee = new Tee(tileIndex, tempx, tempy, tempz);
 			level->addTee(newTee);
 			break;
 	
 			default:
-			exit(1);
+			errorExit(linecount);
 			break;
 		}
 		linecount++;
