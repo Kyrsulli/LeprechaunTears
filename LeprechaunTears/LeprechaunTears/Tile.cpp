@@ -1,6 +1,7 @@
 #include <vector>
 #include <glut.h>
 #include <cstdlib>
+#include <glm.hpp>
 #include "Tile.h"
 
 #define wallHeight 0.5
@@ -31,12 +32,12 @@ void Tile::renderTile(){
 		exit(1);
 	}
 	if(!normalCalculated){
-		//calculate normal
-		//store normal
+		calculateFaceNormal();
 		normalCalculated = true;
 	}
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glColor3f(0.0f, 0.8f, 0.0f);
 	glBegin(GL_TRIANGLE_FAN);
+	glNormal3f(normal.x, normal.y, normal.z);
 	for(int i = 0; i < vertices.size(); i++){
 		
 		Point* p = vertices[i];
@@ -68,7 +69,10 @@ void Tile::drawWalls(){
 		//get the 2 indexes to be edges
 		Point* p1 = vertices[n];
 		Point* p2 = vertices[(n + 1 >= vertices.size()?0:n+1)];
-		glColor3f(1.0f, 0, 0);
+		Point* p3 = new Point(p1->x, p1->y + wallHeight, p1->z);
+		glColor3f(0.75f, 0, 0);
+		glm::vec3 wallNormal = calculateNormal(p1, p2, p3);
+		glNormal3f(wallNormal.x, wallNormal.y, wallNormal.z);
 		glBegin(GL_QUADS);
 		glVertex3f(p1->x, p1->y, p1->z);
 		glVertex3f(p1->x, p1->y + wallHeight, p1->z);
@@ -76,4 +80,52 @@ void Tile::drawWalls(){
 		glVertex3f(p2->x, p2->y, p2->z);
 		glEnd();
 	}
+}
+
+void Tile::calculateFaceNormal(){
+	//this assumes that all points are in memory, and that there are at least 3
+	Point* p0 = vertices[0];
+	Point* p1 = vertices[1];
+	Point* p2 = vertices[2];
+	//grab the vector forms of the 3 points
+	glm::vec3 v0(p0->x, p0->y, p0->z);
+	glm::vec3 v1(p1->x, p1->y, p0->z);
+	glm::vec3 v2(p2->x, p2->y, p2->z);
+	//grab 2 vectors of the triangle
+	glm::vec3 u = v2 - v0;
+	glm::vec3 v = v2 - v1;
+
+	float x = u.y * v.z - u.z * v.y;
+	float y = u.z * v.x - u.x * v.z;
+	float z = u.x * v.y - u.y * v.x;
+
+	//delete the default normal made by the initialization of the class
+	normal = glm::vec3(x, y, z);
+
+/*
+https://www.opengl.org/wiki/Calculating_a_Surface_Normal
+
+Set Vector U to (Triangle.p2 minus Triangle.p1)
+Set Vector V to (Triangle.p3 minus Triangle.p1)
+ 
+Set Normal.x to (multiply U.y by V.z) minus (multiply U.z by V.y)
+Set Normal.y to (multiply U.z by V.x) minus (multiply U.x by V.z)
+Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
+*/
+	
+}
+
+glm::vec3 Tile::calculateNormal(Point* p0, Point* p1, Point* p2){
+	glm::vec3 v0(p0->x, p0->y, p0->z);
+	glm::vec3 v1(p1->x, p1->y, p0->z);
+	glm::vec3 v2(p2->x, p2->y, p2->z);
+	//grab 2 vectors of the triangle
+	glm::vec3 u = v2 - v0;
+	glm::vec3 v = v2 - v1;
+
+	float x = u.y * v.z - u.z * v.y;
+	float y = u.z * v.x - u.x * v.z;
+	float z = u.x * v.y - u.y * v.x;
+
+	return glm::vec3(x, y, z);
 }

@@ -9,7 +9,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <glm.hpp>
 #include "util.h"
 #include "Tile.h"
 #include "Level.h"
@@ -23,9 +22,9 @@ std::vector<Tile*> tileList;
 
 std::string line;
 
-float camx = 10, 
-	camy = 10, 
-	camz = 10, 
+float camx = 3, 
+	camy = 3, 
+	camz = 3, 
 	targetx = 0, 
 	targety = 0, 
 	targetz = 0;
