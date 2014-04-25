@@ -16,7 +16,6 @@
 using namespace std;
 
 ifstream levelData;
-Tile* testTile;
 Level* level;
 std::vector<Tile*> tileList;
 
@@ -29,24 +28,18 @@ float camx = 3,
 	targety = 0, 
 	targetz = 0;
 
-void test_tile_setup(){
-	//tile 1 4 
-	//-0.5 0 1
-	//0.5 0 1 
-	//0.5 0 0
-	//-0.5 0 0
-	//0 0 3 0
-	testTile = new Tile(1);
-	//normally these next 4 lines would be done in a for loop
-	testTile->addVertex(-0.5f, 0, 1);
-	testTile->addVertex(0.5f, 0, 1);
-	testTile->addVertex(0.5f, 0, 0);
-	testTile->addVertex(-0.5f, 0, 0);
-	//also in a for loop, but different from the last one
-	testTile->addNeighbor(0);
-	testTile->addNeighbor(0);
-	testTile->addNeighbor(3);
-	testTile->addNeighbor(0);
+float xRotate = 0, yRotate = 0, zRotate = 0;
+
+void printMenu(){
+	cout << "Menu:" << endl << endl
+		 << "m: print this menu" << endl
+		 << "Q, q, W, w, E, e: move camera" << endl
+		 << "A, a, S, s, D, d: move target" << endl
+		 << "X, x: rotate world about x axis"<< endl
+		 << "Y, y: rotate world about y axis"<< endl
+		 << "Z, z: rotate world about z axis"<< endl
+		 << "Note: y axis is the vertical axis" << endl
+		 << "c: close this program" << endl;
 }
 
 void get_input(){
@@ -122,11 +115,6 @@ void get_input(){
 	//put list of tiles into level
 }
 
-void test_tile_render(){
-	testTile->renderTile();
-	glutWireSphere(10, 10, 10);
-}
-
 void cb_display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -142,7 +130,12 @@ void cb_display() {
 	//for(int i = 0; i < tileList.size(); i++){
 	//	tileList[i]->renderTile();
 	//}
-	level->render();
+	glPushMatrix();{
+		glRotatef(xRotate, 1, 0, 0);
+		glRotatef(yRotate, 0, 1, 0);
+		glRotatef(zRotate, 0, 0, 1);
+		level->render();
+	}glPopMatrix();
 	glFlush();
 	glutSwapBuffers(); // for smoother animation
 }
@@ -234,6 +227,29 @@ void cb_keyboard(unsigned char key, int x, int y){
 		targetz = targetLoc[2];
 		break;
 		*/
+	case 'm':
+		printMenu();
+		break;
+	case 'x':
+		xRotate += 0.5;
+		break;
+	case 'X':
+		xRotate -= 0.5;
+		break;
+	case 'y':
+		yRotate += 0.5;
+		break;
+	case 'Y':
+		yRotate -= 0.5;
+		break;
+	case 'z':
+		zRotate += 0.5;
+		break;
+	case 'Z':
+		zRotate -= 0.5;
+		break;
+	case 'c':
+		exit(0);
 	}
 }
 
@@ -276,9 +292,7 @@ int main(int argc, char* argv[]){
 	//glClearColor(18.0/255.0,148.0/255.0,255.0/255.0,0); // set background to blue
 	glClearColor(0, 0, 0, 0);
 
-	test_tile_setup();
-	cout << "DEBUG: remove test_tile_render() in function main asap" << endl;
-	cout << "DEBUG: remove test_tile_render() in funcion cb_display asap" << endl;
+	printMenu();
 	glutMainLoop();
 
 	return 0;
