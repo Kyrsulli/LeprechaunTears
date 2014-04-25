@@ -50,7 +50,7 @@ void get_input(){
 		std::istringstream iss(line);
 		std::string type;
 		int type_int = 0;
-		if (!(iss >> type)) { cout << "Error, invalid type. Press any key." << endl; int x; cin >> x; exit(0); } // error
+		if (!(iss >> type)) { break; } // error
 		if(type.compare("tile") == 0) type_int = 0;
 		if(type.compare("cup") == 0) type_int = 1;
 		if(type.compare("tee") == 0) type_int = 2;
@@ -64,19 +64,19 @@ void get_input(){
 		switch(type_int){
 
 			case(0):
-			if(!(iss >> tileIndex)) { cout << "Error, invalid tile index. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> edgeCount)) { cout << "Error, invalid tile edge count. Press any key." << endl; int x; cin >> x; exit(0); }
+			if(!(iss >> tileIndex)) { exit(1); }
+			if(!(iss >> edgeCount)) { exit(1); }
 			newTile = new Tile(tileIndex);
 			for(int i = 0; i < edgeCount; i++){
-				if(!(iss >> tempx)) { cout << "Error, invalid tile x coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-				if(!(iss >> tempy)) { cout << "Error, invalid tile y coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-				if(!(iss >> tempz)) { cout << "Error, invalid tile z coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
+				if(!(iss >> tempx)) { exit(1); }
+				if(!(iss >> tempy)) { exit(1); }
+				if(!(iss >> tempz)) { exit(1); }
 				newTile->addVertex(tempx, tempy, tempz);
 			}
 		
 			int tempEdge;
 			for(int i = 0; i < edgeCount; i++){
-				if(!(iss >> tempEdge)) { cout << "Error, invalid tile neighbor. Press any key." << endl; int x; cin >> x; exit(0); }
+				if(!(iss >> tempEdge)) { exit(1); }
 				newTile->addNeighbor(tempEdge);
 	
 			}
@@ -84,25 +84,27 @@ void get_input(){
 			break;
 
 			case(1):
-			if(!(iss >> tileIndex)) { cout << "Error, invalid cup index. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempx)) { cout << "Error, invalid cup x coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempy)) { cout << "Error, invalid cup y coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempz)) { cout << "Error, invalid cup z coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
+			if(!(iss >> tileIndex)) { exit(1); }
+			if(!(iss >> tempx)) { exit(1); }
+			if(!(iss >> tempy)) { exit(1); }
+			if(!(iss >> tempz)) { exit(1); }
 			newCup = new Cup(tileIndex, tempx, tempy, tempz);
 			level->addCup(newCup);
 			break;
 	
 			case(2):
-			if(!(iss >> tileIndex)) { cout << "Error, invalid tee index. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempx)) { cout << "Error, invalid tee x coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempy)) { cout << "Error, invalid tee y coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
-			if(!(iss >> tempz)) { cout << "Error, invalid tee z coordinate. Press any key." << endl; int x; cin >> x; exit(0); }
+			int tileIndex;
+			if(!(iss >> tileIndex)) { exit(1); }
+			float tempx, tempy, tempz;
+			if(!(iss >> tempx)) { exit(1); }
+			if(!(iss >> tempy)) { exit(1); }
+			if(!(iss >> tempz)) { exit(1); }
 			newTee = new Tee(tileIndex, tempx, tempy, tempz);
 			level->addTee(newTee);
 			break;
 	
 			default:
-			cout << "Error, invalid type. Press any key." << endl; int x; cin >> x; exit(0);
+			exit(1);
 			break;
 		}
 		linecount++;
