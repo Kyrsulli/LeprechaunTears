@@ -4,7 +4,9 @@
 #include "Level.h"
 
 Level::Level(int number){
-
+	levelNumber = number;
+	tee = nullptr;
+	hole = nullptr;
 }
 
 Level::~Level(){
@@ -13,8 +15,19 @@ Level::~Level(){
 
 void Level::render(){
 	if(tiles.size() == 0){
-		std::cout << "Tiles in level " << levelNumber << " is empty" << std::endl;
-		return;
+		std::cout << "No tiles have been added to level " << levelNumber << ". Press Enter to exit." << std::flush;
+		std::cin.ignore( std::numeric_limits <std::streamsize>::max(), '\n');
+		exit(1);
+	}
+	if(hole == nullptr){
+		std::cout << "No cup has been added to level " << levelNumber << ". Press Enter to exit." << std::flush;
+		std::cin.ignore( std::numeric_limits <std::streamsize>::max(), '\n');
+		exit(1);
+	}
+	if(tee == nullptr){
+		std::cout << "No tee has been added to level " << levelNumber << ". Press Enter to exit." << std::flush;
+		std::cin.ignore( std::numeric_limits <std::streamsize>::max(), '\n');
+		exit(1);
 	}
 	
 	for(Tile &t: tiles){

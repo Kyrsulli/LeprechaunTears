@@ -43,9 +43,9 @@ void printMenu(){
 }
 
 void errorExit(int i){
-	printf("Error on line %d. Press Enter to exit.", i);
-	int x;
-	cin >> x;
+	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
+	cout << "Error on line " << i << ". Press Enter to exit." << flush;
+	cin.ignore( numeric_limits <streamsize>::max(), '\n');
 	exit(1);
 }
 
