@@ -4,7 +4,7 @@
 #include <glm.hpp>
 #include "Tile.h"
 
-#define wallHeight 0.5
+#define wallHeight 0.1
 #define aLittleBit 0.005
 
 Tile::Tile(int ID){
@@ -27,8 +27,8 @@ void Tile::addVertex(float x, float y, float z){
 }
 
 void Tile::renderTile(){
-	if(vertices.empty()){ 
-		printf("Vertices in tile ID %d is empty\n", this->id); 
+	if(vertices.empty() || vertices.size() <= 2){ 
+		printf("Not enough vertices have been added to tile %d\n", this->id); 
 		exit(1);
 	}
 	if(!normalCalculated){
@@ -44,7 +44,7 @@ void Tile::renderTile(){
 		glVertex3f(p->x, p->y, p->z);
 	}
 	glEnd();
-	defineEdges();
+	//defineEdges();
 	drawWalls();
 }
 

@@ -36,6 +36,12 @@
     <ClCompile Include="Tee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlutConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -56,10 +62,19 @@
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlutConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LevelData\hole.00.db" />
     <None Include="..\..\LevelData\hole.01.db" />
     <None Include="..\..\LevelData\hole.02.db" />
+    <None Include="testcourse1.db" />
+    <None Include="testcourse2.db" />
+    <None Include="testcourse3.db" />
   </ItemGroup>
 </Project>
