@@ -24,3 +24,7 @@ void PhysicsObject::render(){
 void PhysicsObject::addDrag(){
 
 }
+
+void PhysicsObject::addForce(vec3 force){
+
+}

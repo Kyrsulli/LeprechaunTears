@@ -33,6 +33,7 @@ void Tile::renderTile(){
 	}
 	if(!normalCalculated){
 		calculateFaceNormal();
+		calculateExtremes();
 		normalCalculated = true;
 	}
 	glColor3f(0.0f, 0.8f, 0.0f);
@@ -48,7 +49,7 @@ void Tile::renderTile(){
 	drawWalls();
 }
 
-void Tile::defineEdges(){
+inline void Tile::defineEdges(){
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_LINES);
 	for(int i = 0; i < vertices.size(); i++){
@@ -60,7 +61,7 @@ void Tile::defineEdges(){
 	glEnd();
 }
 
-void Tile::drawWalls(){
+inline void Tile::drawWalls(){
 	for(int n = 0; n < vertices.size(); n++){
 		//check if we need to even draw a wall here
 		if(neighbors[n] != 0){
@@ -82,7 +83,7 @@ void Tile::drawWalls(){
 	}
 }
 
-void Tile::calculateFaceNormal(){
+inline void Tile::calculateFaceNormal(){
 	//this assumes that all points are in memory, and that there are at least 3
 	Point* p0 = vertices[0];
 	Point* p1 = vertices[1];
@@ -129,3 +130,43 @@ glm::vec3 Tile::calculateNormal(Point* p0, Point* p1, Point* p2){
 
 	return glm::vec3(x, y, z);
 }
+
+inline void Tile::calculateExtremes(){
+	minx = vertices[0]->x;
+	maxx = vertices[0]->x;
+	miny = vertices[0]->y;
+	maxy = vertices[0]->y;
+	minz = vertices[0]->z;
+	maxz = vertices[0]->z;
+	for(int i = 1; i < vertices.size(); i++){
+		if(vertices[i]->x < minx){
+			minx = vertices[i]->x;
+		}
+		if(vertices[i]->x > maxx){
+			maxx = vertices[i]->x;
+		}
+		if(vertices[i]->y < miny){
+			miny = vertices[i]->y;
+		}
+		if(vertices[i]->y > maxy){
+			maxy = vertices[i]->y;
+		}
+		if(vertices[i]->z < minz){
+			minz = vertices[i]->z;
+		}
+		if(vertices[i]->z > maxz){
+			maxz = vertices[i]->z;
+		}
+	}
+}
+
+float Tile::getHeightAtPoint(glm::vec3 position){
+	if(position.x > maxx || position.x < minx ||
+	   position.y > maxy || position.y < miny ||
+	   position.z > maxz || position.z < minz){
+		   throw "Position is outside the extremes of this tile";
+	}
+	//use bilinear interpolation to extract z values
+	return 0;
+}
+
