@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="Cup.cpp" />
     <ClCompile Include="GlutConfig.cpp" />
+    <ClCompile Include="LeprechaunTears.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="Cup.h" />
     <ClInclude Include="GlutConfig.h" />
+    <ClInclude Include="LeprechaunTears.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Point.h" />
