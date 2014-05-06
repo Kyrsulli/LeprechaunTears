@@ -5,6 +5,9 @@
 #include <sstream>
 #include "Tile.h"
 #include "Level.h"
+#include "Ball.h"
+
+#define WINTHRESHOLD 0.5
 
 using namespace std;
 
@@ -19,6 +22,30 @@ Level::Level(int number, std::string file){
 
 Level::~Level(){
 
+}
+
+void Level::update(){
+	for(int i = 0; i < physicsObjects.size(); i++){
+		int currentTileID = physicsObjects[i]->getCurrentTile();
+		Tile* currentTile;
+		for(int j = 0; j < tiles.size(); j++){
+			if(tiles[j].getID() == currentTileID){
+				currentTile = &tiles[j];
+				break;
+			}
+		}
+		physicsObjects[i]->update(currentTile);
+		//check win condition
+		if(physicsObjects[0]->getCurrentTile() == hole->id){
+			glm::vec3 ballPos = physicsObjects[0]->getPosition();
+			glm::vec3 cupPos(hole->x, hole->y, hole->z);
+			/*
+			if(dist(ballPos, cupPos) <=	WINTHRESHOLD){
+				//win
+			}
+			*/
+		}
+	}
 }
 
 void Level::render(){
@@ -43,6 +70,9 @@ void Level::render(){
 	}
 	hole->renderCup();
 	tee->renderTee();
+	for(int i = 0; i < physicsObjects.size(); i++){
+		physicsObjects[i]->render();
+	}
 	
 }
 
@@ -58,6 +88,8 @@ void Level::addCup(Cup* c){
 
 void Level::addTee(Tee* t){
 	tee = t;
+	Ball* b = new Ball(tee, 1);
+	physicsObjects.push_back(b);
 }
 
 float* Level::getCupLocation(){

@@ -9,6 +9,7 @@ using namespace std;
 void LeprechaunTears::printMenu(){
 	cout << "Menu:" << endl << endl
 		 << "m: print this menu" << endl
+		 << "l: next level" << endl
 		 << "Q, q, W, w, E, e: move camera" << endl
 		 << "A, a, S, s, D, d: move target" << endl
 		 << "X, x: rotate world about x axis"<< endl

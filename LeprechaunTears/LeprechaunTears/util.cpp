@@ -1,6 +1,7 @@
 #include "util.h"
-
+#include <cstdlib>
 #include <glut.h>
+#include <cmath>
 
 float rotationX = 0;
 float rotationY = 0;
@@ -60,3 +61,21 @@ void draw_axis(float len) {
   
 	glPopMatrix();
 }
+
+/*
+inline double dist(glm::vec3 a, glm::vec3 b){
+	double ax2 = pow(a.x, 2);
+	double ay2 = pow(a.y, 2);
+	double az2 = pow(a.z, 2);
+	double bx2 = pow(b.x, 2);
+	double by2 = pow(b.y, 2);
+	double bz2 = pow(b.z, 2);
+	
+	double a = abs(ax2 - bx2);
+	double b = abs(ay2 - by2);
+	double c = abs(az2 - bz2);
+	double val = a + b + c;
+
+	return glm::sqrt(a + b + c);
+}
+*/

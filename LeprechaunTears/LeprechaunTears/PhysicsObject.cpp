@@ -1,4 +1,6 @@
 #include <glm.hpp>
+#include <cstdlib>
+#include <glut.h>
 #include <iostream>
 #include "PhysicsObject.h"
 
@@ -13,12 +15,12 @@ PhysicsObject::~PhysicsObject(){
 
 }
 
-void PhysicsObject::update(){
+void PhysicsObject::update(Tile* t){
 	
 }
 
 void PhysicsObject::render(){
-
+	
 }
 
 void PhysicsObject::addDrag(){

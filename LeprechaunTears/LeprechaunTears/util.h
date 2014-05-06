@@ -4,8 +4,7 @@
 * Lab 2: Animated Animal
 */
 
-//#ifndef UTIL_H
-//#define UTIL_H
+#include <glm.hpp>
 
 void RotateView(float deltaX, float deltaY);
 
@@ -13,4 +12,5 @@ void draw_string( float x, float y, float z, char *txt );
 
 void draw_axis(float len);
 
-//#endif
+//inline double dist(glm::vec3, glm::vec3);
+

@@ -13,6 +13,9 @@ public:
 	void addVertex(float x, float y, float z);
 	void renderTile();
 	float getHeightAtPoint(glm::vec3);
+	int getID(){return id;}
+	std::vector<int> getNeigbhors(){ return neighbors;}
+	std::vector<Point*> getVertices(){ return vertices;}
 
 private:
 	int id;
