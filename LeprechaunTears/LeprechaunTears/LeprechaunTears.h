@@ -14,6 +14,8 @@ public:
 	void mouseMove(int x, int y);
 	void printMenu();
 private:
+	int ySpinDir;
+	int xSpinDir;
 	Level* level;
 	int currentLevel;
 	std::vector<std::string> levelNames;

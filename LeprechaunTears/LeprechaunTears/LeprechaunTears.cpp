@@ -19,6 +19,7 @@ void LeprechaunTears::printMenu(){
 }
 
 LeprechaunTears::LeprechaunTears(){
+	ySpinDir = xSpinDir = 0;
 	currentLevel = 0;
 	levelNames.push_back("hole.00.db");
 	levelNames.push_back("hole.01.db");
@@ -37,6 +38,8 @@ LeprechaunTears::~LeprechaunTears(){
 }
 
 void LeprechaunTears::update(){
+	yRotate += ySpinDir;
+	//xRotate += xSpinDir;
 	
 }
 
@@ -155,7 +158,20 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 }
 
 void LeprechaunTears::mouseClick(int button, int state, int x, int y){
-
+	if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
+		if(x > 400)
+			ySpinDir = 1;
+		else if(x < 300)
+			ySpinDir = -1;
+		if(y > 400)
+			xSpinDir = 1;
+		else if(y < 300)
+			xSpinDir = -1;
+	}
+	if(button == GLUT_RIGHT_BUTTON && state == GLUT_UP){
+		ySpinDir = 0;
+		xSpinDir = 0;
+	}
 }
 
 void LeprechaunTears::mouseMove(int x, int y){
