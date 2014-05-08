@@ -18,10 +18,13 @@ private:
 	int xSpinDir;
 	Level* level;
 	int currentLevel;
+	int cameraMode;
+	enum CAMERAMODES{free, thirdperson, top};
 	std::vector<std::string> levelNames;
 	float camx, camy, camz, targetx, targety, targetz;
 	float xRotate, yRotate, zRotate;
 
 	void nextLevel();
-	glm::vec3 getForce();
+	//glm::vec3 getForce();
+	void setCameraLocation();
 };

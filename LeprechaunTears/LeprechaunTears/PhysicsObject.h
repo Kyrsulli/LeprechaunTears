@@ -9,12 +9,12 @@ public:
 	virtual void update(Tile*);
 	virtual void render();
 	void addForce(glm::vec3);
-	virtual float getAngle();
-	virtual float getMagnitude();
-	virtual void changeAngle(float f);
-	virtual void changeMag(float f);
+	virtual float getAngle(){return 0;};
+	virtual float getMagnitude(){return 0;};
+	virtual void changeAngle(float f){};
+	virtual void changeMag(float f){};
+	glm::vec3 getPosition(){return position;};
 	int getCurrentTile(){return currentTile;}
-	glm::vec3 getPosition(){return position;}
 protected:
 	glm::vec3 position;
 	glm::vec3 velocity;

@@ -47,9 +47,11 @@ void Ball::render() {
 		glColor3f(1, 1, 1);
 		glTranslatef(position.x, position.y, position.z);
 		glutSolidSphere(0.085f, 30, 30);
-		glRotatef(angle, 0, 1, 0);
-		glTranslatef(0, 0, 0.06*magnitude/20);
-		glScalef(1, 1, magnitude/10);
-		glutSolidCube(0.06);
+		//if(velocity.length() == 0){
+			glRotatef(angle, 0, 1, 0);
+			glTranslatef(0, 0, 0.06*magnitude/20);
+			glScalef(1, 1, magnitude/10);
+			glutSolidCube(0.06);
+		//}
 	}glPopMatrix();
 }

@@ -18,9 +18,11 @@ public:
 	void addTiles(std::vector<Tile*>);
 	float* getCupLocation();
 	float* getTeeLocation();
+	//float* getBallLocation();
 	void addForce();
 	void changeAngle(float f){physicsObjects[0]->changeAngle(f);};
 	void changeMag(float f){physicsObjects[0]->changeMag(f);};
+	bool levelComplete(){return completed;};
 private:
 	std::ifstream levelData;
 	std::vector<Tile*> tileList;
@@ -28,12 +30,15 @@ private:
 
 	std::vector<Tile> tiles;
 	std::vector<PhysicsObject*> physicsObjects;
+	PhysicsObject* ball;
 	int levelNumber;
 	Tee* tee;
 	Cup* hole;
+	bool completed;
 
 	void errorExit(int);
 	void get_input();
+	double vec3Dist(glm::vec3, glm::vec3);
 
 };
 

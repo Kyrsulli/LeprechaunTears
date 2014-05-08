@@ -7,8 +7,9 @@
 #include "Tile.h"
 #include "Level.h"
 #include "Ball.h"
+#include "util.h"
 
-#define WINTHRESHOLD 0.5
+#define WINTHRESHOLD 0.005
 
 using namespace std;
 
@@ -16,6 +17,8 @@ Level::Level(int number, std::string file){
 	levelNumber = number;
 	tee = nullptr;
 	hole = nullptr;
+	ball = nullptr;
+	completed = false;
 	levelData.open(file);
 	get_input();
 	levelData.close();
@@ -40,11 +43,9 @@ void Level::update(){
 		if(physicsObjects[0]->getCurrentTile() == hole->id){
 			glm::vec3 ballPos = physicsObjects[0]->getPosition();
 			glm::vec3 cupPos(hole->x, hole->y, hole->z);
-			/*
-			if(dist(ballPos, cupPos) <=	WINTHRESHOLD){
-				//win
+			if(vec3Dist(ballPos, cupPos) <=	WINTHRESHOLD){
+				completed = true;
 			}
-			*/
 		}
 	}
 }
@@ -91,6 +92,7 @@ void Level::addTee(Tee* t){
 	tee = t;
 	Ball* b = new Ball(tee, 1);
 	physicsObjects.push_back(b);
+	ball = b;
 }
 
 float* Level::getCupLocation(){
@@ -108,6 +110,17 @@ float* Level::getTeeLocation(){
 	pos[2] = tee->z;
 	return pos;
 }
+
+/*
+float* Level::getBallLocation(){
+	float* pos = new float[3];
+	glm::vec3 pos2 = ball->getPosition();
+	pos[0] = pos2.x;
+	pos[1] = pos2.y;
+	pos[2] = pos2.z;
+	return pos;
+}
+*/
 
 void Level::errorExit(int i){
 	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
@@ -193,4 +206,13 @@ void Level::addForce(){
 	const float pi = 3.1415926535897;
 	printf("%f, %f\n", physicsObjects[0]->getAngle(), physicsObjects[0]->getAngle()*pi/180);
 	physicsObjects[0]->addForce(glm::vec3(sin(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude(), 0, cos(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude()));
+}
+
+
+inline double Level::vec3Dist(glm::vec3 a, glm::vec3 b){
+	float x = a.x - b.x;
+	float y = a.y - b.y;
+	float z = a.z - b.z;
+
+	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }

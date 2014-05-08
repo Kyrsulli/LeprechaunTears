@@ -34,6 +34,7 @@ LeprechaunTears::LeprechaunTears(){
 	camx = camy = camz = 3;
 	targetx = targety = targetz = 0;
 	xRotate = yRotate = zRotate = 0;
+	cameraMode = thirdperson;
 }
 
 LeprechaunTears::~LeprechaunTears(){
@@ -44,13 +45,13 @@ void LeprechaunTears::update(){
 	yRotate += ySpinDir;
 	//xRotate += xSpinDir;
 	level->update();
-	
+	if(level->levelComplete()){
+		nextLevel();
+	}
 }
 
 void LeprechaunTears::draw(){
-	gluLookAt(camx, camy,camz,  //location
-			  targetx, targety, targetz,   //target
-			  0,1,0);  //up
+	setCameraLocation();
 	glPushMatrix();{
 		glRotatef(xRotate, 1, 0, 0);
 		glRotatef(yRotate, 0, 1, 0);
@@ -119,31 +120,18 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 //		break;
 	case 'D':
 		targetz--;
-		break;
+		break;*/
 	case '1': ;
-		/*
-		float* camLoc = level->getCupLocation();
-		float* targetLoc = level->getTeeLocation();
-		camx = camLoc[0];
-		camy = camLoc[1] + 10;
-		camz = camLoc[2];
-		targetx = targetLoc[0];
-		targety = targetLoc[1];
-		targetz = targetLoc[2];
-		break;
-		*/
+		cameraMode = free;
+		cout << "Free camera mode not implemented" << endl;
+		cout << "Defaulting to third person" << endl;
+		//break;
 	case '2': ;
-		/*
-		float* camLoc = level->getTeeLocation();
-		float* targetLoc = level->getCupLocation();
-		camx = camLoc[0];
-		camy = camLoc[1] + 10;
-		camz = camLoc[2];
-		targetx = targetLoc[0];
-		targety = targetLoc[1];
-		targetz = targetLoc[2];
+		cameraMode = thirdperson;
 		break;
-		*/
+	case '3':
+		cameraMode = top;
+		break;
 	case 'm':
 		printMenu();
 		break;
@@ -197,6 +185,7 @@ void LeprechaunTears::mouseMove(int x, int y){
 
 }
 
+/*
 glm::vec3 LeprechaunTears::getForce(){
 	cout << "Enter x component of force: ";
 	float x;
@@ -205,4 +194,22 @@ glm::vec3 LeprechaunTears::getForce(){
 	float z;
 	cin >> z;
 	return glm::vec3(x, 0, z);
+}
+*/
+
+void LeprechaunTears::setCameraLocation(){
+	float* cupLoc, ballLoc;
+	switch(cameraMode){
+	case free:;
+	case top:;
+	case thirdperson:;
+		/*
+		cupLoc = level->getCupLocation();
+		ballLoc = level->getBallLocation();
+		*/
+	}
+	gluLookAt(camx, camy,camz,             //location
+			  targetx, targety, targetz,   //target
+			  0,1,0);                      //up
+
 }
