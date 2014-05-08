@@ -27,7 +27,7 @@ void cb_reshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90.0, aspect, 0.5, 100); // necessary to preserve aspect ratio
+	gluPerspective(90.0, aspect, 0.0005, 100); // necessary to preserve aspect ratio
 	glMatrixMode(GL_MODELVIEW);
 }
 

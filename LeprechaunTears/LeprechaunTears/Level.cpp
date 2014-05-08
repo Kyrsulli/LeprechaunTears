@@ -111,7 +111,6 @@ float* Level::getTeeLocation(){
 	return pos;
 }
 
-/*
 float* Level::getBallLocation(){
 	float* pos = new float[3];
 	glm::vec3 pos2 = ball->getPosition();
@@ -120,7 +119,6 @@ float* Level::getBallLocation(){
 	pos[2] = pos2.z;
 	return pos;
 }
-*/
 
 void Level::errorExit(int i){
 	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
@@ -204,7 +202,7 @@ void Level::get_input(){
 
 void Level::addForce(){
 	const float pi = 3.1415926535897;
-	printf("%f, %f\n", physicsObjects[0]->getAngle(), physicsObjects[0]->getAngle()*pi/180);
+	//printf("%f, %f\n", physicsObjects[0]->getAngle(), physicsObjects[0]->getAngle()*pi/180);
 	physicsObjects[0]->addForce(glm::vec3(sin(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude(), 0, cos(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude()));
 }
 

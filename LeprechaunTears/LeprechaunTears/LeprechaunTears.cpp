@@ -12,8 +12,11 @@ void LeprechaunTears::printMenu(){
 		 << "m: print this menu" << endl
 		 << "l: next level" << endl
 		 << "f: apply force to ball" << endl
-		 << "Q, q, W, w, E, e: move camera" << endl
-		 << "A, a, S, s, D, d: move target" << endl
+		 //<< "Q, q, W, w, E, e: move camera" << endl
+		 //<< "A, a, S, s, D, d: move target" << endl
+		 << "1: Free camera mode" << endl
+		 << "2: 3rd person camera mode" << endl
+		 << "3: Top-down camera mode" << endl
 		 << "X, x: rotate world about x axis"<< endl
 		 << "Y, y: rotate world about y axis"<< endl
 		 << "Z, z: rotate world about z axis"<< endl
@@ -34,7 +37,7 @@ LeprechaunTears::LeprechaunTears(){
 	camx = camy = camz = 3;
 	targetx = targety = targetz = 0;
 	xRotate = yRotate = zRotate = 0;
-	cameraMode = thirdperson;
+	//cameraMode = thirdperson;
 }
 
 LeprechaunTears::~LeprechaunTears(){
@@ -123,9 +126,7 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		break;*/
 	case '1': ;
 		cameraMode = free;
-		cout << "Free camera mode not implemented" << endl;
-		cout << "Defaulting to third person" << endl;
-		//break;
+		break;
 	case '2': ;
 		cameraMode = thirdperson;
 		break;
@@ -165,8 +166,9 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 }
 
 void LeprechaunTears::mouseClick(int button, int state, int x, int y){
+	if(cameraMode != free){ return; }
 	if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-		if(x > 400)
+		if(x > 400)//GLUT_WINDOW_WIDTH - 100)
 			ySpinDir = 1;
 		else if(x < 300)
 			ySpinDir = -1;
@@ -198,15 +200,38 @@ glm::vec3 LeprechaunTears::getForce(){
 */
 
 void LeprechaunTears::setCameraLocation(){
-	float* cupLoc, ballLoc;
+	float* cupLoc;
+	float* ballLoc;
 	switch(cameraMode){
-	case free:;
-	case top:;
+	case free:
+		camx = 3;
+		camy = 3;
+		camz = 3;
+		targetx = 0;
+		targety = 0;
+		targetz = 0;
+		break;
+	case top:
+		ballLoc = level->getBallLocation();
+		targetx = ballLoc[0];
+		targety = ballLoc[1];
+		targetz = ballLoc[2];
+		camx = ballLoc[0] + 0.0001;
+		camy = ballLoc[1] + 7;
+		camz = ballLoc[2] + 0.0001;
+		delete ballLoc;
+		break;
 	case thirdperson:;
-		/*
 		cupLoc = level->getCupLocation();
 		ballLoc = level->getBallLocation();
-		*/
+		targetx = cupLoc[0];
+		targety = cupLoc[1];
+		targetz = cupLoc[2];
+		camx = ballLoc[0] + -0.1*(cupLoc[0] - ballLoc[0]);
+		camy = ballLoc[1] + 0.2;
+		camz = ballLoc[2] + -0.1*(cupLoc[2] - ballLoc[2]);
+		delete cupLoc;
+		delete ballLoc;
 	}
 	gluLookAt(camx, camy,camz,             //location
 			  targetx, targety, targetz,   //target
