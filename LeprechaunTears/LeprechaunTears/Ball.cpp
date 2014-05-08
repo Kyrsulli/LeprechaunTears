@@ -23,6 +23,10 @@ Ball::~Ball(){
 }
 
 void Ball::update(Tile* t){
+	//update position
+	position += velocity;
+	addDrag();
+	//update collisions
 	vector<int> n = t->getNeigbhors();
 	vector<Point*> v = t->getVertices();
 

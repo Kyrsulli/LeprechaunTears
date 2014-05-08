@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <glut.h>
 #include <string>
+#include <iostream>
 #include "LeprechaunTears.h"
 
 
@@ -10,6 +11,7 @@ void LeprechaunTears::printMenu(){
 	cout << "Menu:" << endl << endl
 		 << "m: print this menu" << endl
 		 << "l: next level" << endl
+		 << "f: apply force to ball" << endl
 		 << "Q, q, W, w, E, e: move camera" << endl
 		 << "A, a, S, s, D, d: move target" << endl
 		 << "X, x: rotate world about x axis"<< endl
@@ -41,6 +43,7 @@ LeprechaunTears::~LeprechaunTears(){
 void LeprechaunTears::update(){
 	yRotate += ySpinDir;
 	//xRotate += xSpinDir;
+	level->update();
 	
 }
 
@@ -155,6 +158,9 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 	case 'l':
 		nextLevel();
 		break;
+	case 'f':
+		level->addForce(getForce());
+		break;
 	}
 }
 
@@ -177,4 +183,14 @@ void LeprechaunTears::mouseClick(int button, int state, int x, int y){
 
 void LeprechaunTears::mouseMove(int x, int y){
 
+}
+
+glm::vec3 LeprechaunTears::getForce(){
+	cout << "Enter x component of force: ";
+	float x;
+	cin >> x;
+	cout << "Enter z component of force: ";
+	float z;
+	cin >> z;
+	return glm::vec3(x, 0, z);
 }

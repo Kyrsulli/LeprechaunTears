@@ -18,6 +18,7 @@ public:
 	void addTiles(std::vector<Tile*>);
 	float* getCupLocation();
 	float* getTeeLocation();
+	void addForce(glm::vec3);
 private:
 	std::ifstream levelData;
 	std::vector<Tile*> tileList;

@@ -23,4 +23,5 @@ private:
 	float xRotate, yRotate, zRotate;
 
 	void nextLevel();
+	glm::vec3 getForce();
 };

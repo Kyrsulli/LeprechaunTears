@@ -187,3 +187,7 @@ void Level::get_input(){
 	addTiles(tileList);
 	//put list of tiles into level
 }
+
+void Level::addForce(glm::vec3 f){
+	physicsObjects[0]->addForce(f);
+}
