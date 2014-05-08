@@ -1,3 +1,4 @@
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -188,6 +189,8 @@ void Level::get_input(){
 	//put list of tiles into level
 }
 
-void Level::addForce(glm::vec3 f){
-	physicsObjects[0]->addForce(f);
+void Level::addForce(){
+	const float pi = 3.1415926535897;
+	printf("%f, %f\n", physicsObjects[0]->getAngle(), physicsObjects[0]->getAngle()*pi/180);
+	physicsObjects[0]->addForce(glm::vec3(sin(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude(), 0, cos(physicsObjects[0]->getAngle()*pi/180) * physicsObjects[0]->getMagnitude()));
 }

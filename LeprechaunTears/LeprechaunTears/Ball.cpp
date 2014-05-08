@@ -16,6 +16,8 @@ Ball::Ball(Tee* t, int m){
 	velocity.x = velocity.y = velocity.z = 0;
 	mass = m;
 	friction = 0.99;
+	angle = 180;
+	magnitude = 50;
 }
 
 Ball::~Ball(){
@@ -23,6 +25,14 @@ Ball::~Ball(){
 }
 
 void Ball::update(Tile* t){
+	if(angle > 360)
+		angle = 0;
+	if(angle < 0)
+		angle = 360;
+	if(magnitude > 100)
+		magnitude = 100;
+	if(magnitude < 0)
+		magnitude = 0;
 	//update position
 	position += velocity;
 	addDrag();
@@ -37,5 +47,9 @@ void Ball::render() {
 		glColor3f(1, 1, 1);
 		glTranslatef(position.x, position.y, position.z);
 		glutSolidSphere(0.085f, 30, 30);
+		glRotatef(angle, 0, 1, 0);
+		glTranslatef(0, 0, 0.06*magnitude/20);
+		glScalef(1, 1, magnitude/10);
+		glutSolidCube(0.06);
 	}glPopMatrix();
 }

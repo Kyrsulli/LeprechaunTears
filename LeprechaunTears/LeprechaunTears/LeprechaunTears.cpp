@@ -72,7 +72,19 @@ void LeprechaunTears::nextLevel(){
 
 void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		switch(key){
-	case 'q':
+	case 'd':
+		level->changeAngle(-1);
+		break;
+	case 'a':
+		level->changeAngle(1);
+		break;
+	case 'w':
+		level->changeMag(1);
+		break;
+	case 's':
+		level->changeMag(-1);
+		break;
+/*	case 'q':
 		camx++;
 		break;
 	case 'Q':
@@ -84,9 +96,9 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 	case 'W':
 		camy--;
 		break;
-	case 'e':
-		camz++;
-		break;
+//	case 'e':
+//		camz++;
+//		break;
 	case 'E':
 		camz--;
 		break;
@@ -102,9 +114,9 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 	case 'S':
 		targety--;
 		break;
-	case 'd':
-		targetz++;
-		break;
+//	case 'd':
+//		targetz++;
+//		break;
 	case 'D':
 		targetz--;
 		break;
@@ -159,7 +171,7 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		nextLevel();
 		break;
 	case 'f':
-		level->addForce(getForce());
+		level->addForce();
 		break;
 	}
 }

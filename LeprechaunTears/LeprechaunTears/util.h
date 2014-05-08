@@ -1,10 +1,7 @@
 #pragma once
-/**
-* CMPS 160L (Fall 2011)
-* Lab 2: Animated Animal
-*/
 
 #include <glm.hpp>
+inline float constrain(float&, float, float);
 
 void RotateView(float deltaX, float deltaY);
 

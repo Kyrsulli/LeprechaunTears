@@ -7,7 +7,10 @@ float rotationX = 0;
 float rotationY = 0;
 
 // Some camera functions are provided for viewing convinience
-
+inline float constrain(float& val, float min, float max){
+   if(val < min) val = min;
+   if(val > max) val = max;
+}
 
 void RotateView(float deltaX, float deltaY) {
 	
