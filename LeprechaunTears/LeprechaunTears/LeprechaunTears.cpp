@@ -168,7 +168,7 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 }
 
 void LeprechaunTears::mouseClick(int button, int state, int x, int y){
-	if(cameraMode != free){ return; }
+	//if(cameraMode != free){ return; }
 	if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
 		if(x > 400)//GLUT_WINDOW_WIDTH - 100)
 			ySpinDir = 1;
@@ -214,6 +214,7 @@ void LeprechaunTears::setCameraLocation(){
 		targetz = 0;
 		break;
 	case top:
+		xRotate = yRotate = zRotate = 0;
 		ballLoc = level->getBallLocation();
 		targetx = ballLoc[0];
 		targety = ballLoc[1];
@@ -223,7 +224,8 @@ void LeprechaunTears::setCameraLocation(){
 		camz = ballLoc[2] + 0.0001;
 		delete ballLoc;
 		break;
-	case thirdperson:;
+	case thirdperson:
+		xRotate = yRotate = zRotate = 0;
 		cupLoc = level->getCupLocation();
 		ballLoc = level->getBallLocation();
 		targetx = cupLoc[0];
