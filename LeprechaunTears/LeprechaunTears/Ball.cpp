@@ -85,14 +85,28 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 					return currentTile;
 				}
 			}
+		}else{//neighbors[i] == 0
+			//currentTile = neighbors[i];
 		}
 	}
 	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
-		velocity = -velocity;
+		//velocity = -velocity;
+		//velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(currentTile-1));
+		velocity = calculateBounceVector(glm::vec3(1, 0, 0));
 	}
 	else bounce = false;
 	return currentTile;
+}
+
+vec3 Ball::calculateBounceVector(vec3 wallNormal){
+	//http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+	//r = d - 2(d(dot)n)n
+	//r is reflection, d is direction, n is normal
+	//d = velocity, n = wallNormal, r is return value
+	glm::normalize(wallNormal);
+	return velocity - 2 * glm::dot(velocity, wallNormal) * wallNormal;
+	//return vec3(0, 0, 0);
 }

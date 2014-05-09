@@ -17,6 +17,7 @@ public:
 	int getID(){return id;}
 	std::vector<int> getNeighbors(){ return neighbors;}
 	std::vector<Point*> getVertices(){ return vertices;}
+	glm::vec3 getWallNormal(int);//returns the normal of the wall defined by points n, and n + 1
 
 private:
 	int id;

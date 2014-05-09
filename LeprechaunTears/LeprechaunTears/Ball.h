@@ -1,6 +1,7 @@
 #pragma once
 #include "PhysicsObject.h"
 #include <vector>
+#include <glm.hpp>
 #include "Tee.h"
 
 class Ball : public PhysicsObject{
@@ -18,4 +19,5 @@ private:
 	float angle;
 	float magnitude;
 	bool bounce;
+	glm::vec3 calculateBounceVector(glm::vec3);
 };

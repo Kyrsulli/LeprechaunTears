@@ -13,7 +13,9 @@ Tile::Tile(int ID){
 }
 
 Tile::~Tile(){
-
+	while(!vertices.empty()){
+		vertices.pop_back();
+	}
 }
 
 void Tile::addNeighbor(int val){
@@ -185,5 +187,14 @@ float Tile::withinBounds(glm::vec3 position){
 		   return 0;
 	}
 	else return 1;
+}
+
+glm::vec3 Tile::getWallNormal(int n){
+	Point* p1 = vertices[n];
+	Point* p2 = vertices[(n == vertices.size()?0:n+1)];
+	Point* p3 = new Point(p1->x, p1->y + 1, p1->z);//create a point above one of the existing points.  Doesn't matter how tall
+	glm::vec3 N = calculateNormal(p1, p2, p3);
+	//delete p3;
+	return N;
 }
 
