@@ -15,7 +15,7 @@ public:
 	float getHeightAtPoint(glm::vec3);
 	float withinBounds(glm::vec3);
 	int getID(){return id;}
-	std::vector<int> getNeigbhors(){ return neighbors;}
+	std::vector<int> getNeighbors(){ return neighbors;}
 	std::vector<Point*> getVertices(){ return vertices;}
 
 private:

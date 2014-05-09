@@ -77,10 +77,10 @@ void LeprechaunTears::nextLevel(){
 void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		switch(key){
 	case 'd':
-		level->changeAngle(-1);
+		level->changeAngle(-3);
 		break;
 	case 'a':
-		level->changeAngle(1);
+		level->changeAngle(3);
 		break;
 	case 'w':
 		level->changeMag(1);

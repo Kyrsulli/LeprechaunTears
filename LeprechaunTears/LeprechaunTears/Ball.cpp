@@ -38,9 +38,10 @@ void Ball::update(Tile* t){
 	/*if(t->getHeightAtPoint(position)!=0)
 	printf("%f\n", t->getHeightAtPoint(position));*/
 	position.y = t->getHeightAtPoint(position);
+	//printf("%f",t->getHeightAtPoint(position));
 	addDrag();
 	//update collisions
-	vector<int> n = t->getNeigbhors();
+	vector<int> n = t->getNeighbors();
 	vector<Point*> v = t->getVertices();
 
 }
@@ -62,14 +63,28 @@ void Ball::render() {
 int Ball::getCurrentTile(std::vector<Tile> tiles){
 	if(tiles.empty())
 		return currentTile;
-	if(tiles[currentTile-1].withinBounds(position)==1)
-		return currentTile;
-	for(int j = 0; j < tiles.size(); j++){
+	/*if(tiles[currentTile-1].withinBounds(position)==1)
+		return currentTile;*/
+	/*for(int j = 0; j < tiles.size(); j++){
 		if(tiles[j].withinBounds(position)==1){
-			currentTile = j+1;
-			return j+1;
+			if(tiles[j].getHeightAtPoint(position) >= tiles[currentTile-1].getHeightAtPoint(position)){
+				currentTile = j+1;
+				return j+1;
+			}
+			
+		}
+	}*/
+	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
+	for(int i = 0; i < neighbors.size(); i++){
+		if(neighbors[i]!=0){
+			if(tiles[neighbors[i]-1].withinBounds(position) == 1){
+				if(tiles[neighbors[i]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position)){
+					currentTile = neighbors[i];
+					printf("%d\n", currentTile);
+					return currentTile;
+				}
+			}
 		}
 	}
-	printf("Out of bounds!\n");
 	return currentTile;
 }
