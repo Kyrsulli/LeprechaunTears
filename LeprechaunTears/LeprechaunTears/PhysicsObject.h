@@ -24,5 +24,5 @@ protected:
 	float friction;
 	int currentTile;
 
-	void addDrag();
+	void addDrag(glm::vec3);
 };

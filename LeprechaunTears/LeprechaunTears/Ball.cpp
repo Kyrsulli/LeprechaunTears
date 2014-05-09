@@ -40,20 +40,16 @@ void Ball::update(Tile* t){
 	printf("%f\n", t->getHeightAtPoint(position));*/
 	position.y = t->getHeightAtPoint(position);
 	//printf("%f",t->getHeightAtPoint(position));
-	addDrag();
-	//update collisions
-	//vector<int> n = t->getNeighbors();
-	//vector<Point*> v = t->getVertices();
-	if(glm::length(velocity) == 0){
+	//if(glm::length(velocity) == 0){
 		if(glm::normalize(t->faceNormal()) != glm::vec3(0, 1, 0)){//if it is on a slanted slope
 			
 			glm::vec3 foo = glm::cross(glm::vec3(0, 1, 0), t->faceNormal());
 			glm::vec3 rollDir = glm::cross(glm::vec3(0, 1, 0), foo);
 			printf("Roll Dir:%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
-			printf("Position:%f %f %f\n", position.x, position.y, position.z);
-			printf("Sum     :%f %f %f\n\n", rollDir.x + position.x, rollDir.y + position.y, rollDir.z + position.z);
-			position.x += rollDir.x;
-			position.z += rollDir.z;
+			printf("Velocity:%f %f %f\n", velocity.x, velocity.y, velocity.z);
+			//printf("Sum     :%f %f %f\n\n", rollDir.x + position.x, rollDir.y + position.y, rollDir.z + position.z);
+			//velocity.x -= rollDir.x/750;
+			//velocity.z -= rollDir.z/750;
 			position.y = t->getHeightAtPoint(position);
 			
 			
@@ -64,10 +60,15 @@ void Ball::update(Tile* t){
 				//velocity = rollDir;
 			//	printf("%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
 			//}
-			
+			addDrag(rollDir);
 		}
-	}
+		else addDrag(glm::vec3(0,0,0));
+	//}
+//}
 }
+	//update collisions
+	//vector<int> n = t->getNeighbors();
+	//vector<Point*> v = t->getVertices();
 
 void Ball::render() {
 	glPushMatrix();{
