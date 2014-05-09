@@ -18,6 +18,7 @@ Ball::Ball(Tee* t, int m){
 	friction = 0.99;
 	angle = 180;
 	magnitude = 50;
+	bounce = false;
 }
 
 Ball::~Ball(){
@@ -86,5 +87,12 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 			}
 		}
 	}
+	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce){
+		bounce = true;
+		/*Velocity Calculations go here!*/
+		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
+		velocity = -velocity;
+	}
+	else bounce = false;
 	return currentTile;
 }

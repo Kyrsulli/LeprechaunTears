@@ -175,9 +175,9 @@ float Tile::getHeightAtPoint(glm::vec3 position){
 
 float Tile::withinBounds(glm::vec3 position){
 	
-	if(position.x > maxx || position.x < minx ||
+	if(position.x > maxx - 0.085f || position.x < minx + 0.085f ||
 	   //position.y > maxy || position.y < miny ||
-	   position.z > maxz || position.z < minz){
+	   position.z > maxz - 0.085f || position.z < minz + 0.085f){
 		   //throw "Position is outside the extremes of this tile";
 		   /*printf("Position is out of the extremes of this tile\n");
 		   printf("X: %f, MaxX: %f, MinX: %f\n", position.x, maxx, minx);

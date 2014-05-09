@@ -9,7 +9,7 @@
 #include "Ball.h"
 #include "util.h"
 
-#define WINTHRESHOLD 0.005
+#define WINTHRESHOLD 0.05
 
 using namespace std;
 

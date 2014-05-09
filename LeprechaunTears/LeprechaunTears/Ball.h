@@ -17,4 +17,5 @@ public:
 private:
 	float angle;
 	float magnitude;
+	bool bounce;
 };

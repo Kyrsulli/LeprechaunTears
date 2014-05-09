@@ -23,6 +23,7 @@ public:
 	void changeAngle(float f){physicsObjects[0]->changeAngle(f);};
 	void changeMag(float f){physicsObjects[0]->changeMag(f);};
 	bool levelComplete(){return completed;};
+	double vec3Dist(glm::vec3, glm::vec3);
 private:
 	std::ifstream levelData;
 	std::vector<Tile*> tileList;
@@ -38,7 +39,6 @@ private:
 
 	void errorExit(int);
 	void get_input();
-	double vec3Dist(glm::vec3, glm::vec3);
 
 };
 

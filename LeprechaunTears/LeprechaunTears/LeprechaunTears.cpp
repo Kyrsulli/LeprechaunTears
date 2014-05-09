@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <glut.h>
+#include <glm.hpp>
 #include <string>
 #include <iostream>
 #include "LeprechaunTears.h"
@@ -162,6 +163,7 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 	case 'f':
 		level->addForce();
 		break;
+		
 	}
 }
 
