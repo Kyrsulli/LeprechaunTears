@@ -80,7 +80,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	for(int i = 0; i < neighbors.size(); i++){
 		if(neighbors[i]!=0){
 			if(tiles[neighbors[i]-1].withinBounds(position) == 1){
-				if(tiles[neighbors[i]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position)){
+				if(tiles[neighbors[i]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position) || tiles[currentTile-1].withinBounds(position)==0){
 					currentTile = neighbors[i];
 					printf("%d\n", currentTile);
 					return currentTile;
@@ -90,14 +90,20 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 			vector<Point*> v = tiles[currentTile-1].getVertices();
 			for(int j = 0; j < v.size(); j++){
 				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
-				if(distToWall <= 0.85){
+				if(distToWall <= 0.1){
 					edgePointIndex = j;
+					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position)
+						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position)){
+						currentTile = tiles[currentTile-1].getNeighbors()[edgePointIndex];
+						printf("%d\n", currentTile);
+						return currentTile;
+					}
 					break;
 				}
 			}
 		}
 	}
-	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce){
+	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
@@ -105,6 +111,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 		if(edgePointIndex == -99999999){
 			return currentTile;
 		}*/
+		//printf("%d\n", edgePointIndex);
 		velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(edgePointIndex));
 		//velocity = calculateBounceVector(glm::vec3(1, 0, 0));
 	}
@@ -117,7 +124,7 @@ inline vec3 Ball::calculateBounceVector(vec3 wallNormal){
 	//r = d - 2(d(dot)n)n
 	//r is reflection, d is direction, n is normal
 	//d = velocity, n = wallNormal, r is return value
-	glm::normalize(wallNormal);
+	wallNormal = glm::normalize(wallNormal);
 	return velocity - 2 * glm::dot(velocity, wallNormal) * wallNormal;
 	//return vec3(0, 0, 0);
 }

@@ -47,7 +47,7 @@ void Tile::renderTile(){
 		glVertex3f(p->x, p->y, p->z);
 	}
 	glEnd();
-	//defineEdges();
+	defineEdges();
 	drawWalls();
 }
 
@@ -92,7 +92,7 @@ inline void Tile::calculateFaceNormal(){
 	Point* p2 = vertices[2];
 	//grab the vector forms of the 3 points
 	glm::vec3 v0(p0->x, p0->y, p0->z);
-	glm::vec3 v1(p1->x, p1->y, p0->z);
+	glm::vec3 v1(p1->x, p1->y, p1->z);
 	glm::vec3 v2(p2->x, p2->y, p2->z);
 	//grab 2 vectors of the triangle
 	glm::vec3 u = v2 - v0;
@@ -120,7 +120,7 @@ Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
 
 glm::vec3 Tile::calculateNormal(Point* p0, Point* p1, Point* p2){
 	glm::vec3 v0(p0->x, p0->y, p0->z);
-	glm::vec3 v1(p1->x, p1->y, p0->z);
+	glm::vec3 v1(p1->x, p1->y, p1->z);
 	glm::vec3 v2(p2->x, p2->y, p2->z);
 	//grab 2 vectors of the triangle
 	glm::vec3 u = v2 - v0;
@@ -177,9 +177,9 @@ float Tile::getHeightAtPoint(glm::vec3 position){
 
 float Tile::withinBounds(glm::vec3 position){
 	
-	if(position.x > maxx - 0.085f || position.x < minx + 0.085f ||
-	   //position.y > maxy || position.y < miny ||
-	   position.z > maxz - 0.085f || position.z < minz + 0.085f){
+	if(position.x > maxx || position.x < minx||
+	   //position.y > maxy || position.y < miny  ||
+	   position.z > maxz || position.z < minz){
 		   //throw "Position is outside the extremes of this tile";
 		   /*printf("Position is out of the extremes of this tile\n");
 		   printf("X: %f, MaxX: %f, MinX: %f\n", position.x, maxx, minx);
@@ -191,9 +191,15 @@ float Tile::withinBounds(glm::vec3 position){
 
 glm::vec3 Tile::getWallNormal(int n){
 	Point* p1 = vertices[n];
-	Point* p2 = vertices[(n == vertices.size()?0:n+1)];
+	if(n+1 >= vertices.size())
+		n = 0;
+	else
+		n = n + 1;
+	//Point* p2 = vertices[(n + 1 == vertices.size()?0:n+1)];
+	Point* p2 = vertices[n];
 	Point* p3 = new Point(p1->x, p1->y + 1, p1->z);//create a point above one of the existing points.  Doesn't matter how tall
 	glm::vec3 N = calculateNormal(p1, p2, p3);
+	printf("Bounced off wall %d\n", neighbors[n]);
 	//delete p3;
 	return N;
 }
