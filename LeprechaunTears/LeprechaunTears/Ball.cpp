@@ -35,6 +35,9 @@ void Ball::update(Tile* t){
 		magnitude = 0;
 	//update position
 	position += velocity;
+	/*if(t->getHeightAtPoint(position)!=0)
+	printf("%f\n", t->getHeightAtPoint(position));*/
+	position.y = t->getHeightAtPoint(position);
 	addDrag();
 	//update collisions
 	vector<int> n = t->getNeigbhors();
@@ -54,4 +57,19 @@ void Ball::render() {
 			glutSolidCube(0.06);
 		}
 	}glPopMatrix();
+}
+
+int Ball::getCurrentTile(std::vector<Tile> tiles){
+	if(tiles.empty())
+		return currentTile;
+	if(tiles[currentTile-1].withinBounds(position)==1)
+		return currentTile;
+	for(int j = 0; j < tiles.size(); j++){
+		if(tiles[j].withinBounds(position)==1){
+			currentTile = j+1;
+			return j+1;
+		}
+	}
+	printf("Out of bounds!\n");
+	return currentTile;
 }

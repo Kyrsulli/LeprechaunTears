@@ -161,12 +161,28 @@ inline void Tile::calculateExtremes(){
 }
 
 float Tile::getHeightAtPoint(glm::vec3 position){
+	if(!normalCalculated) return 0;
+	if(withinBounds(position) == 0) return 0;
+	//use bilinear interpolation to extract z values
+	//glm::vec3 n = calculateNormal(new Point(minx,miny,minz), new Point(maxx,maxy,maxz),new Point(position.x,position.y,position.z));
+	float y = (normal.x*(position.x - vertices[0]->x) - normal.y * vertices[0]->y + normal.z*(position.z - vertices[0]->z))/(-normal.y);
+	//float t = (position.x - minx)/paramvec.x;
+	return y;
+
+	//return 0;
+}
+
+float Tile::withinBounds(glm::vec3 position){
+	
 	if(position.x > maxx || position.x < minx ||
 	   position.y > maxy || position.y < miny ||
 	   position.z > maxz || position.z < minz){
-		   throw "Position is outside the extremes of this tile";
+		   //throw "Position is outside the extremes of this tile";
+		   /*printf("Position is out of the extremes of this tile\n");
+		   printf("X: %f, MaxX: %f, MinX: %f\n", position.x, maxx, minx);
+		   printf("Z: %f, MaxZ: %f, MinZ: %f\n", position.z, maxz, minz);*/
+		   return 0;
 	}
-	//use bilinear interpolation to extract z values
-	return 0;
+	else return 1;
 }
 

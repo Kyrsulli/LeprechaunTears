@@ -30,7 +30,7 @@ Level::~Level(){
 
 void Level::update(){
 	for(int i = 0; i < physicsObjects.size(); i++){
-		int currentTileID = physicsObjects[i]->getCurrentTile();
+		int currentTileID = physicsObjects[i]->getCurrentTile(tiles);
 		Tile* currentTile;
 		for(int j = 0; j < tiles.size(); j++){
 			if(tiles[j].getID() == currentTileID){
@@ -38,9 +38,10 @@ void Level::update(){
 				break;
 			}
 		}
+//		printf("%d, %d\n", currentTile->getID(), currentTileID);
 		physicsObjects[i]->update(currentTile);
 		//check win condition
-		if(physicsObjects[0]->getCurrentTile() == hole->id){
+		if(physicsObjects[0]->getCurrentTile(tiles) == hole->id){
 			glm::vec3 ballPos = physicsObjects[0]->getPosition();
 			glm::vec3 cupPos(hole->x, hole->y, hole->z);
 			if(vec3Dist(ballPos, cupPos) <=	WINTHRESHOLD){

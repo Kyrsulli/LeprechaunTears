@@ -1,5 +1,6 @@
 #pragma once
 #include <glm.hpp>
+#include <vector>
 #include "Tile.h"
 
 class PhysicsObject{
@@ -14,7 +15,7 @@ public:
 	virtual void changeAngle(float f){};
 	virtual void changeMag(float f){};
 	glm::vec3 getPosition(){return position;};
-	int getCurrentTile(){return currentTile;}
+	virtual int getCurrentTile(std::vector<Tile>){return currentTile;}
 protected:
 	glm::vec3 position;
 	glm::vec3 velocity;
