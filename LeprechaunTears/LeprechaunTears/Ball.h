@@ -20,4 +20,5 @@ private:
 	float magnitude;
 	bool bounce;
 	glm::vec3 calculateBounceVector(glm::vec3);
+	float Ball::calcDistanceToWall(Point* x1, Point* x2, glm::vec3 x3);
 };

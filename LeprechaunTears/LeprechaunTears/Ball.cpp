@@ -76,6 +76,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 		}
 	}*/
 	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
+	int edgePointIndex = -99999999;
 	for(int i = 0; i < neighbors.size(); i++){
 		if(neighbors[i]!=0){
 			if(tiles[neighbors[i]-1].withinBounds(position) == 1){
@@ -86,22 +87,32 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 				}
 			}
 		}else{//neighbors[i] == 0
-			//currentTile = neighbors[i];
+			vector<Point*> v = tiles[currentTile-1].getVertices();
+			for(int j = 0; j < v.size(); j++){
+				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
+				if(distToWall <= 0.85){
+					edgePointIndex = j;
+					break;
+				}
+			}
 		}
 	}
 	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
-		//velocity = -velocity;
-		//velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(currentTile-1));
-		velocity = calculateBounceVector(glm::vec3(1, 0, 0));
+		/*
+		if(edgePointIndex == -99999999){
+			return currentTile;
+		}*/
+		velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(edgePointIndex));
+		//velocity = calculateBounceVector(glm::vec3(1, 0, 0));
 	}
 	else bounce = false;
 	return currentTile;
 }
 
-vec3 Ball::calculateBounceVector(vec3 wallNormal){
+inline vec3 Ball::calculateBounceVector(vec3 wallNormal){
 	//http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
 	//r = d - 2(d(dot)n)n
 	//r is reflection, d is direction, n is normal
@@ -109,4 +120,16 @@ vec3 Ball::calculateBounceVector(vec3 wallNormal){
 	glm::normalize(wallNormal);
 	return velocity - 2 * glm::dot(velocity, wallNormal) * wallNormal;
 	//return vec3(0, 0, 0);
+}
+
+inline float Ball::calcDistanceToWall(Point* x0, Point* x1, glm::vec3 x2v){
+	/*
+	| (x0 - x1) [cross] (x0 - x2) | / | x2 - x1 |
+	x0 is the ball, x1 and x2 are points of the edge
+	http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+	*/
+	//make vectors of the first two points
+	glm::vec3 x0v(x0->x, x0->y, x0->z);
+	glm::vec3 x1v(x1->x, x1->y, x1->z);
+	return glm::length( glm::cross((x0v - x1v), (x0v - x2v)) ) / glm::length( x2v - x1v);
 }
