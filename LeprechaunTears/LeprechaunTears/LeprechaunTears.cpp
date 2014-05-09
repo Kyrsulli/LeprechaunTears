@@ -3,6 +3,7 @@
 #include <glm.hpp>
 #include <string>
 #include <iostream>
+#include <ctime>
 #include "LeprechaunTears.h"
 
 
@@ -39,6 +40,7 @@ LeprechaunTears::LeprechaunTears(){
 	targetx = targety = targetz = 0;
 	xRotate = yRotate = zRotate = 0;
 	//cameraMode = thirdperson;
+	srand(time(NULL));
 }
 
 LeprechaunTears::~LeprechaunTears(){

@@ -24,7 +24,7 @@ void PhysicsObject::render(){
 }
 
 void PhysicsObject::addDrag(glm::vec3 foo){
-	printf("%f, %f\n", velocity.x, velocity.z);
+	//printf("%f, %f\n", velocity.x, velocity.z);
 	velocity.x -= foo.x/1000;
 	velocity.z -= foo.z/1000;
 	velocity *= friction;

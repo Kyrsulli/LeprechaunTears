@@ -45,8 +45,8 @@ void Ball::update(Tile* t){
 			
 			glm::vec3 foo = glm::cross(glm::vec3(0, 1, 0), t->faceNormal());
 			glm::vec3 rollDir = glm::cross(glm::vec3(0, 1, 0), foo);
-			printf("Roll Dir:%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
-			printf("Velocity:%f %f %f\n", velocity.x, velocity.y, velocity.z);
+			//printf("Roll Dir:%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
+			//printf("Velocity:%f %f %f\n", velocity.x, velocity.y, velocity.z);
 			//printf("Sum     :%f %f %f\n\n", rollDir.x + position.x, rollDir.y + position.y, rollDir.z + position.z);
 			//velocity.x -= rollDir.x/750;
 			//velocity.z -= rollDir.z/750;
@@ -105,7 +105,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 			if(tiles[neighbors[i]-1].withinBounds(position) == 1){
 				if(tiles[neighbors[i]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position) || tiles[currentTile-1].withinBounds(position)==0){
 					currentTile = neighbors[i];
-					printf("%d\n", currentTile);
+					//printf("%d\n", currentTile);
 					return currentTile;
 				}
 			}
@@ -118,7 +118,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position)
 						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position)){
 						currentTile = tiles[currentTile-1].getNeighbors()[edgePointIndex];
-						printf("%d\n", currentTile);
+						//printf("%d\n", currentTile);
 						return currentTile;
 					}
 					break;

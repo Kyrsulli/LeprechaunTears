@@ -15,6 +15,7 @@ public:
 	virtual void changeAngle(float f){};
 	virtual void changeMag(float f){};
 	glm::vec3 getPosition(){return position;};
+	glm::vec3 getVelocity(){return velocity;};
 	virtual int getCurrentTile(std::vector<Tile>){return currentTile;}
 protected:
 	glm::vec3 position;

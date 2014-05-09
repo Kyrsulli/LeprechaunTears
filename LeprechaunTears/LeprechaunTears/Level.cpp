@@ -1,4 +1,5 @@
 #include <cmath>
+#include <ctime>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -9,7 +10,8 @@
 #include "Ball.h"
 #include "util.h"
 
-#define WINTHRESHOLD 0.05
+#define WINTHRESHOLD 0.1
+#define VELOCITYTHRESHOLD 0.05
 
 using namespace std;
 
@@ -44,8 +46,19 @@ void Level::update(){
 		if(physicsObjects[0]->getCurrentTile(tiles) == hole->id){
 			glm::vec3 ballPos = physicsObjects[0]->getPosition();
 			glm::vec3 cupPos(hole->x, hole->y, hole->z);
-			if(vec3Dist(ballPos, cupPos) <=	WINTHRESHOLD){
-				completed = true;
+			if(vec3Dist(ballPos, cupPos) <=	WINTHRESHOLD){//if the ball is close enough to the cup
+				//is the ball going too fast?
+				if(glm::length(ball->getVelocity()) < VELOCITYTHRESHOLD){
+					printf("%f\n", glm::length(ball->getVelocity()));
+					completed = true;
+				}else{
+					//if it is going too fast, knock it around a bit
+					//get random floats to add to x and z
+					float rx = (static_cast<float>(rand() % 200) - 100.0f) / 1500.0f;
+					float rz = (static_cast<float>(rand() % 200) - 100.0f) / 1500.0f;
+					printf("random values: %f %f\n", rx, rz);
+					ball->addForce(glm::vec3(rx, 0, rz));
+				}
 			}
 		}
 	}
