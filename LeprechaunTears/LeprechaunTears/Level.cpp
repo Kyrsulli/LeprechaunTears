@@ -49,15 +49,17 @@ void Level::update(){
 			if(vec3Dist(ballPos, cupPos) <=	WINTHRESHOLD){//if the ball is close enough to the cup
 				//is the ball going too fast?
 				if(glm::length(ball->getVelocity()) < VELOCITYTHRESHOLD){
-					printf("%f\n", glm::length(ball->getVelocity()));
+					//wprintf("%f\n", glm::length(ball->getVelocity()));
 					completed = true;
 				}else{
 					//if it is going too fast, knock it around a bit
 					//get random floats to add to x and z
-					float rx = (static_cast<float>(rand() % 200) - 100.0f) / 1500.0f;
-					float rz = (static_cast<float>(rand() % 200) - 100.0f) / 1500.0f;
-					printf("random values: %f %f\n", rx, rz);
-					ball->addForce(glm::vec3(rx, 0, rz));
+					//float rx = (static_cast<float>(rand() % 600) - 300.0f) / 1000.0f;
+					//float rz = (static_cast<float>(rand() % 600) - 300.0f) / 1000.0f;
+					physicsObjects[0]->changeAngle(rand() % 360);
+					addForce();
+					//printf("random values: %f %f\n", rx, rz);
+					//ball->addForce(glm::vec3(rx, 0, rz));
 				}
 			}
 		}

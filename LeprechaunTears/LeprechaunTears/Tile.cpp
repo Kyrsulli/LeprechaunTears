@@ -47,7 +47,7 @@ void Tile::renderTile(){
 		glVertex3f(p->x, p->y, p->z);
 	}
 	glEnd();
-	defineEdges();
+	//defineEdges();
 	drawWalls();
 }
 
