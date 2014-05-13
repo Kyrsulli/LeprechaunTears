@@ -5,7 +5,7 @@
 
 class LeprechaunTears{
 public:
-	LeprechaunTears();
+	LeprechaunTears(int, char*[]);
 	~LeprechaunTears();
 	void update();
 	void draw();
@@ -27,4 +27,5 @@ private:
 	void nextLevel();
 	//glm::vec3 getForce();
 	void setCameraLocation();
+	void resetLevel();
 };

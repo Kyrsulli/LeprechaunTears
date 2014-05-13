@@ -79,7 +79,6 @@ void setupGlut(int& argc, char* argv[]){
 
 	glClearColor(0, 0, 0, 0);
 
-	//level = new Level(1, argv[1]);
-	engine = new LeprechaunTears();
+	engine = new LeprechaunTears(argc, argv);
 	engine->printMenu();
 }

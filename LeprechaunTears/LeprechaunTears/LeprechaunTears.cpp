@@ -10,7 +10,7 @@
 using namespace std;
 
 void LeprechaunTears::printMenu(){
-	cout << "Menu:" << endl << endl
+	cout << endl << "Menu:" << endl
 		 << "m: print this menu" << endl
 		 << "l: next level" << endl
 		 << "f: apply force to ball" << endl
@@ -23,18 +23,18 @@ void LeprechaunTears::printMenu(){
 		 << "Y, y: rotate world about y axis"<< endl
 		 << "Z, z: rotate world about z axis"<< endl
 		 << "Note: y axis is the vertical axis" << endl
+		 << "Right click on the left and right side of the screen to rotate" << endl
+		 << "r: reset level" << endl
+		 << "b: berate the programmers for shoddy physics" << endl
 		 << "c: close this program" << endl;
 }
 
-LeprechaunTears::LeprechaunTears(){
+LeprechaunTears::LeprechaunTears(int argi, char* argv[]){
 	ySpinDir = xSpinDir = 0;
 	currentLevel = 0;
-	levelNames.push_back("hole.00.db");
-	levelNames.push_back("hole.01.db");
-	levelNames.push_back("hole.02.db");
-	levelNames.push_back("testcourse1.db");
-	levelNames.push_back("testcourse2.db");
-	levelNames.push_back("testcourse3.db");
+	for(int i = 1; i < argi; i++){
+		levelNames.push_back(argv[i]);
+	}
 	level = new Level(currentLevel, levelNames[currentLevel]);
 	camx = camy = camz = 3;
 	targetx = targety = targetz = 0;
@@ -44,7 +44,10 @@ LeprechaunTears::LeprechaunTears(){
 }
 
 LeprechaunTears::~LeprechaunTears(){
-
+	delete level;
+	while(!levelNames.empty()){
+		levelNames.pop_back();
+	}
 }
 
 void LeprechaunTears::update(){
@@ -73,6 +76,11 @@ void LeprechaunTears::nextLevel(){
 		--currentLevel;
 		return;
 	}
+	delete level;
+	level = new Level(currentLevel, levelNames[currentLevel]);
+}
+
+void LeprechaunTears::resetLevel(){
 	delete level;
 	level = new Level(currentLevel, levelNames[currentLevel]);
 }
@@ -164,6 +172,12 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		break;
 	case 'f':
 		level->addForce();
+		break;
+	case 'r':
+		resetLevel();
+		break;
+	case 'b':
+		cout << "We feel shame" << endl;
 		break;
 		
 	}
