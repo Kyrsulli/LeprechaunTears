@@ -18,6 +18,6 @@ void Tee::renderTee(){
 		glTranslatef(x, y, z);
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glRotatef(-90, 1, 0, 0);
-		glutSolidCone(0.125f, 0.05f, 25, 25);
+		glutSolidCone(0.125f, 0.02f, 25, 25);
 	}glPopMatrix();
 }

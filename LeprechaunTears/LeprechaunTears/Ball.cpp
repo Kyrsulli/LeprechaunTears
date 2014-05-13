@@ -74,7 +74,7 @@ void Ball::render() {
 	glPushMatrix();{
 		glColor3f(1, 1, 1);
 		glTranslatef(position.x, position.y, position.z);
-		glutSolidSphere(0.085f, 30, 30);
+		glutSolidSphere(0.04f, 30, 30);
 		if(velocity.x == 0 && velocity.y == 0 && velocity.z == 0){
 			glRotatef(angle, 0, 1, 0);
 			glTranslatef(0, 0, 0.06*magnitude/20);
