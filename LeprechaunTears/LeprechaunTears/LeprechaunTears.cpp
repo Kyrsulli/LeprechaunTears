@@ -9,27 +9,11 @@
 
 using namespace std;
 
-void LeprechaunTears::printMenu(){
-	cout << endl << "Menu:" << endl
-		 << "m: print this menu" << endl
-		 << "l: next level" << endl
-		 << "f: apply force to ball" << endl
-		 //<< "Q, q, W, w, E, e: move camera" << endl
-		 //<< "A, a, S, s, D, d: move target" << endl
-		 << "1: Free camera mode" << endl
-		 << "2: 3rd person camera mode" << endl
-		 << "3: Top-down camera mode" << endl
-		 << "X, x: rotate world about x axis"<< endl
-		 << "Y, y: rotate world about y axis"<< endl
-		 << "Z, z: rotate world about z axis"<< endl
-		 << "Note: y axis is the vertical axis" << endl
-		 << "Right click on the left and right side of the screen to rotate" << endl
-		 << "r: reset level" << endl
-		 << "b: berate the programmers for shoddy physics" << endl
-		 << "c: close this program" << endl;
-}
+
 
 LeprechaunTears::LeprechaunTears(int argi, char* argv[]){
+	glutInit(&argi, argv);
+	setup();
 	ySpinDir = xSpinDir = 0;
 	currentLevel = 0;
 	for(int i = 1; i < argi; i++){
@@ -41,6 +25,7 @@ LeprechaunTears::LeprechaunTears(int argi, char* argv[]){
 	xRotate = yRotate = zRotate = 0;
 	//cameraMode = thirdperson;
 	srand(time(NULL));
+	printMenu();
 }
 
 LeprechaunTears::~LeprechaunTears(){
@@ -177,7 +162,7 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		resetLevel();
 		break;
 	case 'b':
-		cout << "We feel shame" << endl;
+		cout << "We feel shame as a minor action." << endl;
 		break;
 		
 	}
@@ -205,6 +190,24 @@ void LeprechaunTears::mouseMove(int x, int y){
 
 }
 
+void LeprechaunTears::display(){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	draw_axis(4.0);
+	update();
+	draw();
+	glFlush();
+	glutSwapBuffers(); // for smoother animation
+}
+void LeprechaunTears::reshape(int w, int h){
+	int aspect = w/h;
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(90.0, aspect, 0.0005, 100); // necessary to preserve aspect ratio
+	glMatrixMode(GL_MODELVIEW);
+}
+
 /*
 glm::vec3 LeprechaunTears::getForce(){
 	cout << "Enter x component of force: ";
@@ -216,6 +219,28 @@ glm::vec3 LeprechaunTears::getForce(){
 	return glm::vec3(x, 0, z);
 }
 */
+
+void LeprechaunTears::printMenu(){
+	cout << endl << "Menu:" << endl
+		 << "m: print this menu" << endl
+		 << "l: next level" << endl
+		 << "w, s: adjust power level of the ball" << endl
+		 << "a, d: adjust angle of the shot" << endl
+		 << "f: apply force to ball" << endl
+		 //<< "Q, q, W, w, E, e: move camera" << endl
+		 //<< "A, a, S, s, D, d: move target" << endl
+		 << "1: Free camera mode" << endl
+		 << "2: 3rd person camera mode" << endl
+		 << "3: Top-down camera mode" << endl
+		 << "X, x: rotate world about x axis"<< endl
+		 << "Y, y: rotate world about y axis"<< endl
+		 << "Z, z: rotate world about z axis"<< endl
+		 << "Note: y axis is the vertical axis" << endl
+		 << "Right click on the left and right side of the screen to rotate" << endl
+		 << "r: reset level" << endl
+		 << "b: berate the programmers for shoddy physics" << endl
+		 << "c: close this program" << endl;
+}
 
 void LeprechaunTears::setCameraLocation(){
 	float* cupLoc;
@@ -257,4 +282,30 @@ void LeprechaunTears::setCameraLocation(){
 			  targetx, targety, targetz,   //target
 			  0,1,0);                      //up
 
+}
+
+void LeprechaunTears::setup(){
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(700, 700);
+	glutCreateWindow("Cody and Kyle's Bitchin' Mini Golf game");
+	glutIgnoreKeyRepeat(false);
+
+	glEnable(GL_TEXTURE_2D);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glEnable (GL_DEPTH_TEST);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
+	glCullFace(GL_FRONT_AND_BACK);
+	//lighting
+	GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+	GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	//GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+
+	glClearColor(0.64f/255.0f, 76.0f/255.0f, 1, 0);
 }

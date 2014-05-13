@@ -12,6 +12,8 @@ public:
 	void keyboard(unsigned char key, int x, int y);
 	void mouseClick(int button, int state, int x, int y);
 	void mouseMove(int x, int y);
+	void display();
+	void reshape(int, int);
 	void printMenu();
 private:
 	int ySpinDir;
@@ -28,4 +30,5 @@ private:
 	//glm::vec3 getForce();
 	void setCameraLocation();
 	void resetLevel();
+	void setup();
 };

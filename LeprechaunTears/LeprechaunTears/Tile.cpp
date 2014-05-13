@@ -199,7 +199,7 @@ glm::vec3 Tile::getWallNormal(int n){
 	Point* p2 = vertices[n];
 	Point* p3 = new Point(p1->x, p1->y + 1, p1->z);//create a point above one of the existing points.  Doesn't matter how tall
 	glm::vec3 N = calculateNormal(p1, p2, p3);
-	printf("Bounced off wall %d\n", neighbors[n]);
+	//printf("Bounced off wall %d\n", neighbors[n]);
 	//delete p3;
 	return N;
 }
