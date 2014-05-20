@@ -23,6 +23,7 @@ LeprechaunTears::LeprechaunTears(int argi, char* argv[]){
 	camx = camy = camz = 3;
 	targetx = targety = targetz = 0;
 	xRotate = yRotate = zRotate = 0;
+	currentHole = courseTotal = 0;
 	//cameraMode = thirdperson;
 	srand(time(NULL));
 	printMenu();
@@ -63,6 +64,8 @@ void LeprechaunTears::nextLevel(){
 	}
 	delete level;
 	level = new Level(currentLevel, levelNames[currentLevel]);
+	courseTotal += currentHole;
+	currentHole = 0;
 }
 
 void LeprechaunTears::resetLevel(){
@@ -157,9 +160,11 @@ void LeprechaunTears::keyboard(unsigned char key, int x, int y){
 		break;
 	case 'f':
 		level->addForce();
+		currentHole++;
 		break;
 	case 'r':
 		resetLevel();
+		currentHole = 0;
 		break;
 	case 'b':
 		cout << "We feel shame as a minor action." << endl;

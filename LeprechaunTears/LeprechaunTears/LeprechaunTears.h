@@ -26,6 +26,9 @@ private:
 	float camx, camy, camz, targetx, targety, targetz;
 	float xRotate, yRotate, zRotate;
 
+	//scoring
+	int currentHole, courseTotal;
+
 	void nextLevel();
 	//glm::vec3 getForce();
 	void setCameraLocation();
