@@ -44,7 +44,6 @@ private:
 
 	//void errorExit(int);
 	//void get_input();
-
 };
 
 
