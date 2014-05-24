@@ -6,13 +6,14 @@
 #include "Tee.h"
 #include "Cup.h"
 #include "PhysicsObject.h"
+#include "LTObject.h"
 
-class Level{
+class Level : public LTObject{
 public:
-	Level(int, std::string);
+	Level(int, std::string, int);
 	~Level();
-	void update();
-	void render();
+	void update() override;
+	void render() override;
 	void addCup(Cup*);
 	void addTee(Tee*);
 	void addTiles(std::vector<Tile*>);
@@ -24,6 +25,7 @@ public:
 	void changeMag(float f){physicsObjects[0]->changeMag(f);};
 	bool levelComplete(){return completed;};
 	double vec3Dist(glm::vec3, glm::vec3);
+	int getPar(){return par;};
 private:
 	std::ifstream levelData;
 	std::vector<Tile*> tileList;
@@ -33,9 +35,9 @@ private:
 	std::vector<PhysicsObject*> physicsObjects;
 	PhysicsObject* ball;
 	int levelNumber;
+	int par;
 	Tee* tee;
 	Cup* hole;
-	bool completed;
 
 	void errorExit(int);
 	void get_input();

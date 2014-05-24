@@ -2,36 +2,39 @@
 #include <string>
 #include <vector>
 #include "Level.h"
+#include "LTObject.h"
 
 class LeprechaunTears{
 public:
-	LeprechaunTears(int, char*[]);
+	LeprechaunTears(std::vector<LTObject*>);
 	~LeprechaunTears();
 	void update();
-	void draw();
-	void keyboard(unsigned char key, int x, int y);
-	void mouseClick(int button, int state, int x, int y);
-	void mouseMove(int x, int y);
-	void display();
-	void reshape(int, int);
+	void draw(float&, float&, float&);
+	void nextLevel();
+	void jumpToLevel(int);
+	void resetLevel();
+	//void keyboard(unsigned char key, int x, int y);
+	//void mouseClick(int button, int state, int x, int y);
+	//void mouseMove(int x, int y);
+	//void display();
+	//void reshape(int, int);
 	void printMenu();
-private:
-	int ySpinDir;
-	int xSpinDir;
-	Level* level;
 	int currentLevel;
 	int cameraMode;
 	enum CAMERAMODES{free, thirdperson, top};
-	std::vector<std::string> levelNames;
+	std::vector<Level*> levels;
 	float camx, camy, camz, targetx, targety, targetz;
-	float xRotate, yRotate, zRotate;
+private:
+	//Level* level;
+	
+	
 
 	//scoring
-	int currentHole, courseTotal;
+	//int currentHole, courseTotal;
 
-	void nextLevel();
+	
 	//glm::vec3 getForce();
-	void setCameraLocation();
-	void resetLevel();
-	void setup();
+	void setCameraLocation(float&, float&, float&);
+	
+	//void setup();
 };
