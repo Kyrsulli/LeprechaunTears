@@ -94,5 +94,6 @@
     <None Include="testcourse1.db" />
     <None Include="testcourse2.db" />
     <None Include="testcourse3.db" />
+    <None Include="course.db" />
   </ItemGroup>
 </Project>

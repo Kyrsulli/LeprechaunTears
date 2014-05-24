@@ -107,6 +107,7 @@
     <None Include="..\..\LevelData\hole.00.db" />
     <None Include="..\..\LevelData\hole.01.db" />
     <None Include="..\..\LevelData\hole.02.db" />
+    <None Include="course.db" />
     <None Include="testcourse1.db" />
     <None Include="testcourse2.db" />
     <None Include="testcourse3.db" />

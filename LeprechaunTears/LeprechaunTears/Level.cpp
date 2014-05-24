@@ -230,3 +230,10 @@ inline double Level::vec3Dist(glm::vec3 a, glm::vec3 b){
 
 	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }
+
+void Level::reset(){
+	Ball* b = new Ball(tee, 1);
+	delete physicsObjects[0];
+	physicsObjects[0] = b;
+	ball = b;
+}

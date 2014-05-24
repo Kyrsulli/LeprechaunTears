@@ -23,10 +23,11 @@ public:
 	void addForce();
 	void changeAngle(float f){physicsObjects[0]->changeAngle(f);};
 	void changeMag(float f){physicsObjects[0]->changeMag(f);};
-	bool levelComplete(){return completed;};
+	//bool levelComplete(){return completed;};
 	double vec3Dist(glm::vec3, glm::vec3);
 	void setPar(int p){par = p;};
 	int getPar(){return par;};
+	void reset();
 	std::string name;
 private:
 	std::ifstream levelData;
