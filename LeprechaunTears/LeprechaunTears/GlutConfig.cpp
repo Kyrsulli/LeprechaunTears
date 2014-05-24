@@ -1,5 +1,10 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <glut.h>
+#include "Level.h"
+#include "Tile.h"
 #include "util.h"
 #include "LeprechaunTears.h"
 
@@ -10,11 +15,128 @@ int ySpinDir;
 int xSpinDir;
 float xRotate, yRotate, zRotate;
 
+
+void errorExit(int i){
+	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
+	cout << "Error on line " << i << ". Press Enter to exit." << flush;
+	cin.ignore( numeric_limits <streamsize>::max(), '\n');
+	exit(1);
+}
+
 std::vector<LTObject*> readLevels(char* courseData){
 	cout << "Kyle, move your modified level reading code to GlutConfig.cpp in function readLevels near the top" << endl;
 	cout << "Create the levels and put them into this vector in order, Level now inherits from LTObject" << endl;
 	cout << "Eventually I will make a menu/score screen to be inserted before/after all the levels that extends this class too" << endl;
 	vector<LTObject*> levels;
+	int linecount = 0;
+	int levelCount = 0;
+	int currentcount = 0;
+	string courseName;
+	string line;
+	fstream levelData;
+	levelData.open(courseData);
+	std::getline(levelData, line);
+	std::istringstream iss(line);
+	std::string type;
+	if(!(iss >> type)) {errorExit(linecount); }
+	if(type.compare("course") != 0) {errorExit(linecount); }
+	//This is where the name of the whole course is assigned.
+	if(!(iss >> courseName)) {errorExit(linecount); }
+	if(!(iss >> levelCount)) {errorExit(linecount); }
+	//I have to set up this level pointer here, otherwise it will complain.
+	Level* currLevel = new Level(currentcount, "");
+	vector<Tile*> tileList;
+	while (!levelData.eof())
+	{
+		std::getline(levelData, line);
+		std::istringstream iss(line);
+		std::string type;
+		int p;
+		int type_int = 0;
+		if (!(iss >> type)) { break; } // error
+		if(type.compare("begin_hole") == 0){
+			currLevel = new Level(currentcount, "");
+			continue;
+		}
+		if(type.compare("end_hole") == 0){
+			currentcount++;
+			currLevel->addTiles(tileList);
+			tileList.clear();
+			levels.push_back(currLevel);
+			continue;
+		}
+		if(type.compare("tile") == 0) type_int = 0;
+		if(type.compare("cup") == 0) type_int = 1;
+		if(type.compare("tee") == 0) type_int = 2;
+		if(type.compare("name") == 0) type_int = 3;
+		if(type.compare("par") == 0) type_int = 4;
+		Tile* newTile;
+		Cup* newCup;
+		Tee* newTee;
+		int tileIndex;
+		int edgeCount;
+		float tempx, tempy, tempz;
+
+		switch(type_int){
+
+			case(0):
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
+			if(!(iss >> edgeCount)) { errorExit(linecount); }
+			newTile = new Tile(tileIndex);
+			for(int i = 0; i < edgeCount; i++){
+				if(!(iss >> tempx)) { errorExit(linecount); }
+				if(!(iss >> tempy)) { errorExit(linecount); }
+				if(!(iss >> tempz)) { errorExit(linecount); }
+				newTile->addVertex(tempx, tempy, tempz);
+			}
+		
+			int tempEdge;
+			for(int i = 0; i < edgeCount; i++){
+				if(!(iss >> tempEdge)) { errorExit(linecount); }
+				newTile->addNeighbor(tempEdge);
+	
+			}
+			tileList.push_back(newTile);
+			break;
+
+			case(1):
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
+			if(!(iss >> tempx)) { errorExit(linecount); }
+			if(!(iss >> tempy)) { errorExit(linecount); }
+			if(!(iss >> tempz)) { errorExit(linecount); }
+			newCup = new Cup(tileIndex, tempx, tempy, tempz);
+			currLevel->addCup(newCup);
+			break;
+	
+			case(2):
+			int tileIndex;
+			if(!(iss >> tileIndex)) { errorExit(linecount); }
+			float tempx, tempy, tempz;
+			if(!(iss >> tempx)) { errorExit(linecount); }
+			if(!(iss >> tempy)) { errorExit(linecount); }
+			if(!(iss >> tempz)) { errorExit(linecount); }
+			newTee = new Tee(tileIndex, tempx, tempy, tempz);
+			currLevel->addTee(newTee);
+			break;
+
+			case(3):
+				if(!(iss >> currLevel->name)) { errorExit(linecount); }
+			break;
+
+			case(4):
+				if(!(iss >> p)) { errorExit(linecount); }
+				currLevel->setPar(p);
+			break;
+	
+			default:
+			errorExit(linecount);
+			break;
+		}
+		linecount++;
+
+ // process pair (a,b)
+	}
+	//put list of tiles into level
 	//level reading goes here
 	return levels;
 }

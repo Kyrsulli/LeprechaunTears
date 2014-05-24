@@ -22,7 +22,7 @@ Level::Level(int number, std::string file){
 	ball = nullptr;
 	completed = false;
 	levelData.open(file);
-	get_input();
+	//get_input();
 	levelData.close();
 }
 
@@ -135,7 +135,7 @@ float* Level::getBallLocation(){
 	pos[2] = pos2.z;
 	return pos;
 }
-
+/*
 void Level::errorExit(int i){
 	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
 	cout << "Error on line " << i << ". Press Enter to exit." << flush;
@@ -190,8 +190,8 @@ void Level::get_input(){
 			if(!(iss >> tempy)) { errorExit(linecount); }
 			if(!(iss >> tempz)) { errorExit(linecount); }
 			newCup = new Cup(tileIndex, tempx, tempy, tempz);
-			/*level->*/addCup(newCup);
-			break;
+			//level->addCup(newCup);
+/*			break;
 	
 			case(2):
 			int tileIndex;
@@ -201,8 +201,8 @@ void Level::get_input(){
 			if(!(iss >> tempy)) { errorExit(linecount); }
 			if(!(iss >> tempz)) { errorExit(linecount); }
 			newTee = new Tee(tileIndex, tempx, tempy, tempz);
-			/*level->*/addTee(newTee);
-			break;
+			//level->addTee(newTee);
+/*			break;
 	
 			default:
 			errorExit(linecount);
@@ -215,7 +215,7 @@ void Level::get_input(){
 	addTiles(tileList);
 	//put list of tiles into level
 }
-
+*/
 void Level::addForce(){
 	const float pi = 3.1415926535897;
 	//printf("%f, %f\n", physicsObjects[0]->getAngle(), physicsObjects[0]->getAngle()*pi/180);

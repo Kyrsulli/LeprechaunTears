@@ -10,7 +10,7 @@
 
 class Level : public LTObject{
 public:
-	Level(int, std::string, int);
+	Level(int, std::string);
 	~Level();
 	void update() override;
 	void render() override;
@@ -25,7 +25,9 @@ public:
 	void changeMag(float f){physicsObjects[0]->changeMag(f);};
 	bool levelComplete(){return completed;};
 	double vec3Dist(glm::vec3, glm::vec3);
+	void setPar(int p){par = p;};
 	int getPar(){return par;};
+	std::string name;
 private:
 	std::ifstream levelData;
 	std::vector<Tile*> tileList;
@@ -34,13 +36,14 @@ private:
 	std::vector<Tile> tiles;
 	std::vector<PhysicsObject*> physicsObjects;
 	PhysicsObject* ball;
+
 	int levelNumber;
 	int par;
 	Tee* tee;
 	Cup* hole;
 
-	void errorExit(int);
-	void get_input();
+	//void errorExit(int);
+	//void get_input();
 
 };
 
