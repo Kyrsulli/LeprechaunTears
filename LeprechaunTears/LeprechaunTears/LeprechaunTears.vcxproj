@@ -82,6 +82,7 @@
     <ClCompile Include="GlutConfig.cpp" />
     <ClCompile Include="LeprechaunTears.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LTObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="Point.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="GlutConfig.h" />
     <ClInclude Include="LeprechaunTears.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LTObject.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Tee.h" />

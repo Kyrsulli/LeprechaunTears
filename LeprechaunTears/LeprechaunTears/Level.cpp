@@ -84,7 +84,7 @@ void Level::render(){
 	}
 	
 	for(Tile &t: tiles){
-		t.renderTile();
+		t.render();
 	}
 	hole->renderCup();
 	tee->renderTee();

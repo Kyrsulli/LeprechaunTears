@@ -11,7 +11,7 @@ public:
 
 	void addNeighbor(int val);
 	void addVertex(float x, float y, float z);
-	void renderTile();
+	void render();
 	float getHeightAtPoint(glm::vec3);
 	float withinBounds(glm::vec3);
 	int getID(){return id;}

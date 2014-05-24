@@ -28,7 +28,7 @@ void Tile::addVertex(float x, float y, float z){
 	//printf("vertex added\n");
 }
 
-void Tile::renderTile(){
+void Tile::render(){
 	if(vertices.empty() || vertices.size() <= 2){ 
 		printf("Not enough vertices have been added to tile %d\n", this->id); 
 		exit(1);
