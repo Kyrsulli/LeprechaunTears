@@ -148,8 +148,32 @@ std::vector<LTObject*> readLevels(char* courseData){
 	return levels;
 }
 
+//taken from http://www.csse.monash.edu.au/~jonmc/CSE3313/Resources/SampleCode/Code/text.c
+void drawText(const char * message)
+{
+	/* raster pos sets the current raster position
+	 * mapped via the modelview and projection matrices
+	 */
+	glRasterPos2f((GLfloat)0, (GLfloat)-400);
+
+	/*
+	 * write using bitmap and stroke chars
+	 */
+	while (*message) {
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
+		glutStrokeCharacter(GLUT_STROKE_ROMAN,*message++);
+	}
+}
+
 void DrawHUD(){
-	cout << "Drawing HUD on line 151 of GlutConfig.cpp not implemented" << endl;
+	//cout << "Drawing HUD on line 151 of GlutConfig.cpp not implemented" << endl;
+	int r = 1, g = 1, b = 1;
+	glColor3f( r, g, b );
+	string s = static_cast<Level*>(engine->levels[engine->currentLevel])->name;
+	s += "\nThis hole: " + currentHoleScore;
+	s += "\nCourse total: " + totalCourseScore;
+	//glClear( GL_COLOR_BUFFER_BIT );
+	drawText("Hello World!");
 }
 
 void printMenu(){
