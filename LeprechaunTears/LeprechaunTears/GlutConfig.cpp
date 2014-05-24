@@ -48,6 +48,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 	vector<Tile*> tileList;
 	while (!levelData.eof())
 	{
+		//cout << "blarghehonk" << endl;
 		std::getline(levelData, line);
 		std::istringstream iss(line);
 		std::string type;
@@ -136,6 +137,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 
  // process pair (a,b)
 	}
+	printf("%d, %d\n", currentcount, levelCount);
 	//put list of tiles into level
 	//level reading goes here
 	return levels;
