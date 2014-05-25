@@ -102,8 +102,8 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	int edgePointIndex = -99999999;
 	for(int i = 0; i < neighbors.size(); i++){
 		if(neighbors[i]!=0){
-			if(tiles[neighbors[i]-1].withinBounds(position) == 1){
-				if(tiles[neighbors[i]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position) || tiles[currentTile-1].withinBounds(position)==0){
+			if(tiles[neighbors[i]-1].withinBounds(position+velocity) == 1){
+				if(tiles[neighbors[i]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity) || tiles[currentTile-1].withinBounds(position+velocity)==0){
 					currentTile = neighbors[i];
 					//printf("%d\n", currentTile);
 					return currentTile;
@@ -112,11 +112,11 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 		}else{//neighbors[i] == 0
 			vector<Point*> v = tiles[currentTile-1].getVertices();
 			for(int j = 0; j < v.size(); j++){
-				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
+				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position+velocity);
 				if(distToWall <= 0.1){
 					edgePointIndex = j;
-					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position)
-						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position)>=tiles[currentTile-1].getHeightAtPoint(position)){
+					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position+velocity)
+						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)){
 						currentTile = tiles[currentTile-1].getNeighbors()[edgePointIndex];
 						//printf("%d\n", currentTile);
 						return currentTile;
@@ -126,7 +126,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 			}
 		}
 	}
-	if(tiles[currentTile-1].withinBounds(position)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
+	if(tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
