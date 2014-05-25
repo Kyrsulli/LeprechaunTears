@@ -85,24 +85,15 @@ void Ball::render() {
 }
 
 int Ball::getCurrentTile(std::vector<Tile> tiles){
+	//So that this doesn't crash before the level loads.
 	if(tiles.empty())
 		return currentTile;
-	/*if(tiles[currentTile-1].withinBounds(position)==1)
-		return currentTile;*/
-	/*for(int j = 0; j < tiles.size(); j++){
-		if(tiles[j].withinBounds(position)==1){
-			if(tiles[j].getHeightAtPoint(position) >= tiles[currentTile-1].getHeightAtPoint(position)){
-				currentTile = j+1;
-				return j+1;
-			}
-			
-		}
-	}*/
+	//Check to see if the ball is within the bounds of any of its neighbors.
 	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
 	int edgePointIndex = -99999999;
 	for(int i = 0; i < neighbors.size(); i++){
 		if(neighbors[i]!=0){
-			if(tiles[neighbors[i]-1].withinBounds(position+velocity) == 1){
+			if((tiles[neighbors[i]-1].withinBounds(position+velocity) == 1) || (tiles[neighbors[i]-1].withinBounds(position) == 1)){
 				if(tiles[neighbors[i]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity) || tiles[currentTile-1].withinBounds(position+velocity)==0){
 					currentTile = neighbors[i];
 					//printf("%d\n", currentTile);
@@ -110,15 +101,16 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 				}
 			}
 		}else{//neighbors[i] == 0
+			//See if it has hit a wall.
 			vector<Point*> v = tiles[currentTile-1].getVertices();
 			for(int j = 0; j < v.size(); j++){
-				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position+velocity);
-				if(distToWall <= 0.1){
+				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
+				float distToWallSoon = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position+velocity);
+				if(distToWall <= 0.1 || distToWallSoon <= 0.1){
 					edgePointIndex = j;
 					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position+velocity)
 						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)){
 						currentTile = tiles[currentTile-1].getNeighbors()[edgePointIndex];
-						//printf("%d\n", currentTile);
 						return currentTile;
 					}
 					break;
@@ -129,14 +121,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	if(tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
 		/*Velocity Calculations go here!*/
-		//This is just temp to show that the collision works. We need to just make it bounce at the correct angles.
-		/*
-		if(edgePointIndex == -99999999){
-			return currentTile;
-		}*/
-		//printf("%d\n", edgePointIndex);
 		velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(edgePointIndex));
-		//velocity = calculateBounceVector(glm::vec3(1, 0, 0));
 	}
 	else bounce = false;
 	return currentTile;

@@ -53,13 +53,14 @@ std::vector<LTObject*> readLevels(char* courseData){
 	vector<Tile*> tileList;
 	while (!levelData.eof())
 	{
-		//cout << "blarghehonk" << endl;
+		//This runs through til the end of the file.
 		std::getline(levelData, line);
 		std::istringstream iss(line);
 		std::string type;
 		int p;
 		int type_int = 0;
-		if (!(iss >> type)) { break; } // error
+		if (!(iss >> type)) { break; } 
+		//We need to be able to switch which data is referring to which hole.
 		if(type.compare("begin_hole") == 0){
 			currLevel = new Level(currentcount, "");
 			continue;
@@ -71,6 +72,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 			levels.push_back(currLevel);
 			continue;
 		}
+		//And we need to make sure that data instructs the right thing.
 		if(type.compare("tile") == 0) type_int = 0;
 		if(type.compare("cup") == 0) type_int = 1;
 		if(type.compare("tee") == 0) type_int = 2;
@@ -84,18 +86,19 @@ std::vector<LTObject*> readLevels(char* courseData){
 		float tempx, tempy, tempz;
 
 		switch(type_int){
-
+			//If it's a tile
 			case(0):
 			if(!(iss >> tileIndex)) { errorExit(linecount); }
 			if(!(iss >> edgeCount)) { errorExit(linecount); }
 			newTile = new Tile(tileIndex);
+			//Make each of the vertices.
 			for(int i = 0; i < edgeCount; i++){
 				if(!(iss >> tempx)) { errorExit(linecount); }
 				if(!(iss >> tempy)) { errorExit(linecount); }
 				if(!(iss >> tempz)) { errorExit(linecount); }
 				newTile->addVertex(tempx, tempy, tempz);
 			}
-		
+			//Make each edge definition.
 			int tempEdge;
 			for(int i = 0; i < edgeCount; i++){
 				if(!(iss >> tempEdge)) { errorExit(linecount); }
@@ -105,6 +108,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 			tileList.push_back(newTile);
 			break;
 
+			//If it's a cup
 			case(1):
 			if(!(iss >> tileIndex)) { errorExit(linecount); }
 			if(!(iss >> tempx)) { errorExit(linecount); }
@@ -113,7 +117,8 @@ std::vector<LTObject*> readLevels(char* courseData){
 			newCup = new Cup(tileIndex, tempx, tempy, tempz);
 			currLevel->addCup(newCup);
 			break;
-	
+
+			//If it's a tee
 			case(2):
 			int tileIndex;
 			if(!(iss >> tileIndex)) { errorExit(linecount); }
@@ -125,26 +130,25 @@ std::vector<LTObject*> readLevels(char* courseData){
 			currLevel->addTee(newTee);
 			break;
 
+			//If it's a name
 			case(3):
 				if(!(iss >> currLevel->name)) { errorExit(linecount); }
 			break;
 
+			//If it's a par
 			case(4):
 				if(!(iss >> p)) { errorExit(linecount); }
 				currLevel->setPar(p);
 			break;
-	
+
+			//Otherwise, I don't know what to do with it!
 			default:
 			errorExit(linecount);
 			break;
 		}
 		linecount++;
 
- // process pair (a,b)
 	}
-	//printf("%d, %d\n", currentcount, levelCount);
-	//put list of tiles into level
-	//level reading goes here
 	return levels;
 }
 
