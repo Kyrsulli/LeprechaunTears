@@ -19,6 +19,7 @@ LeprechaunTears* engine;
 int ySpinDir;
 int xSpinDir;
 float xRotate, yRotate, zRotate;
+int h = 700, w = 700;
 
 
 void errorExit(int i){
@@ -81,6 +82,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 		Tile* newTile;
 		Cup* newCup;
 		Tee* newTee;
+		string temp;
 		int tileIndex;
 		int edgeCount;
 		float tempx, tempy, tempz;
@@ -132,8 +134,11 @@ std::vector<LTObject*> readLevels(char* courseData){
 
 			//If it's a name
 			case(3):
-				if(!(iss >> currLevel->name)) { errorExit(linecount); }
-			break;
+				while(iss >> temp){
+					currLevel->name += " ";
+					currLevel->name += temp;
+				}
+				break;
 
 			//If it's a par
 			case(4):
@@ -151,33 +156,50 @@ std::vector<LTObject*> readLevels(char* courseData){
 	}
 	return levels;
 }
-
-//taken from http://www.csse.monash.edu.au/~jonmc/CSE3313/Resources/SampleCode/Code/text.c
-void drawText(const char * message)
-{
-	/* raster pos sets the current raster position
-	 * mapped via the modelview and projection matrices
-	 */
-	glRasterPos2f((GLfloat)0, (GLfloat)-400);
-
-	/*
-	 * write using bitmap and stroke chars
-	 */
-	while (*message) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
-		glutStrokeCharacter(GLUT_STROKE_ROMAN,*message++);
+ 
+inline void drawGUIText(string s, int x, int y){
+	glDisable(GL_TEXTURE_2D); 
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0.0, w, 0.0, h);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glRasterPos2i(x, y);
+	void * font = GLUT_BITMAP_9_BY_15;
+	for (string::iterator i = s.begin(); i != s.end(); ++i)
+	{
+	  char c = *i;
+	  glColor3f(1.0, 1.0, 1.0);
+	  glutBitmapCharacter(font, c);
 	}
+	glMatrixMode(GL_PROJECTION); 
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW); 
+	glPopMatrix();
+	glEnable(GL_TEXTURE_2D);
 }
 
 void DrawHUD(){
 	//cout << "Drawing HUD on line 151 of GlutConfig.cpp not implemented" << endl;
-	int r = 1, g = 1, b = 1;
+	int r = 0, g = 0, b = 0;
 	glColor3f( r, g, b );
 	string s = static_cast<Level*>(engine->levels[engine->currentLevel])->name;
-	s += "\nThis hole: " + currentHoleScore;
-	s += "\nCourse total: " + totalCourseScore;
+	//s += "\nThis hole: " + currentHoleScore;
+	//s += "\nCourse total: " + totalCourseScore;
 	//glClear( GL_COLOR_BUFFER_BIT );
-	drawText("Hello World!");
+	drawGUIText(s, 5, h-15);
+	glColor3f(r, g, b);
+	s = " Par: " + to_string(static_cast<Level*>(engine->levels[engine->currentLevel])->getPar());
+	drawGUIText(s, 5, h-30);
+	s = " This hole: " + to_string(currentHoleScore);
+	glColor3f( r, g, b );
+	drawGUIText(s, 5, h-45);
+	s = " Course Total: " + to_string(totalCourseScore);
+	glColor3f( r, g, b );
+	drawGUIText(s, 5, h-60);
+
 }
 
 void printMenu(){
@@ -187,8 +209,6 @@ void printMenu(){
 		 << "w, s: adjust power level of the ball" << endl
 		 << "a, d: adjust angle of the shot" << endl
 		 << "f: apply force to ball" << endl
-		 //<< "Q, q, W, w, E, e: move camera" << endl
-		 //<< "A, a, S, s, D, d: move target" << endl
 		 << "1: Free camera mode" << endl
 		 << "2: 3rd person camera mode" << endl
 		 << "3: Top-down camera mode" << endl
@@ -248,7 +268,7 @@ void setCameraLocation(){
 void cb_display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	draw_axis(4.0);
+	//draw_axis(4.0);
 	bool engineChangedLevel = false;
 	engine->update(engineChangedLevel);
 	if(engineChangedLevel){
@@ -298,7 +318,7 @@ void cb_mouseclick(int button, int state, int x, int y) {
 }
 
 void cb_mousemove(int x, int y) {
-	//engine->mouseMove(x, y);
+	return;
 }
 
 void cb_keyboard(unsigned char key, int x, int y){
@@ -315,42 +335,6 @@ void cb_keyboard(unsigned char key, int x, int y){
 	case 's':
 		static_cast<Level*>(engine->levels[engine->currentLevel])->changeMag(-1);
 		break;
-/*	case 'q':
-		camx++;
-		break;
-	case 'Q':
-		camx--;
-		break;
-	case 'w':
-		camy++;
-		break;
-	case 'W':
-		camy--;
-		break;
-//	case 'e':
-//		camz++;
-//		break;
-	case 'E':
-		camz--;
-		break;
-	case 'a':
-		targetx++;
-		break;
-	case 'A':
-		targetx--;
-		break;
-	case 's':
-		targety++;
-		break;
-	case 'S':
-		targety--;
-		break;
-//	case 'd':
-//		targetz++;
-//		break;
-	case 'D':
-		targetz--;
-		break;*/
 	case '1': ;
 		engine->cameraMode = freeCamera;
 		break;
@@ -414,7 +398,7 @@ void setupGlut(int& argc, char* argv[]){
 	engine = new LeprechaunTears(readLevels(argv[1]));
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(700, 700);
+	glutInitWindowSize(w, h);
 	glutCreateWindow("Cody and Kyle's Bitchin' Mini Golf game");
 	glutIgnoreKeyRepeat(false);
 

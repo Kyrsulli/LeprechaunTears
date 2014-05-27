@@ -11,7 +11,6 @@
 using namespace std;
 
 
-
 LeprechaunTears::LeprechaunTears(std::vector<LTObject*> l){
 	levels = l;
 	currentLevel = 0;
