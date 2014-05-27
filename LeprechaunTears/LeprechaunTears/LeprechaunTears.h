@@ -6,7 +6,7 @@
 
 class LeprechaunTears{
 public:
-	LeprechaunTears(std::vector<LTObject*>);
+	LeprechaunTears(std::vector<LTObject*>, int, int);
 	~LeprechaunTears();
 	void update(bool&);
 	void draw();
@@ -18,9 +18,12 @@ public:
 	//void display();
 	//void reshape(int, int);
 	void printMenu();
+	void OnGUI(std::string, int, int);
 	int currentLevel;
 	int cameraMode;
 	std::vector<LTObject*> levels;
 	float camx, camy, camz, targetx, targety, targetz;
 private:
+	int w, h;
+
 };

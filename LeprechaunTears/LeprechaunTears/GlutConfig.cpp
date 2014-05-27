@@ -156,30 +156,6 @@ std::vector<LTObject*> readLevels(char* courseData){
 	}
 	return levels;
 }
- 
-inline void drawGUIText(string s, int x, int y){
-	glDisable(GL_TEXTURE_2D); 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D(0.0, w, 0.0, h);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	glRasterPos2i(x, y);
-	void * font = GLUT_BITMAP_9_BY_15;
-	for (string::iterator i = s.begin(); i != s.end(); ++i)
-	{
-	  char c = *i;
-	  glColor3f(1.0, 1.0, 1.0);
-	  glutBitmapCharacter(font, c);
-	}
-	glMatrixMode(GL_PROJECTION); 
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW); 
-	glPopMatrix();
-	glEnable(GL_TEXTURE_2D);
-}
 
 void DrawHUD(){
 	//cout << "Drawing HUD on line 151 of GlutConfig.cpp not implemented" << endl;
@@ -189,17 +165,16 @@ void DrawHUD(){
 	//s += "\nThis hole: " + currentHoleScore;
 	//s += "\nCourse total: " + totalCourseScore;
 	//glClear( GL_COLOR_BUFFER_BIT );
-	drawGUIText(s, 5, h-15);
+	engine->OnGUI(s, 5, h-15);
 	glColor3f(r, g, b);
 	s = " Par: " + to_string(static_cast<Level*>(engine->levels[engine->currentLevel])->getPar());
-	drawGUIText(s, 5, h-30);
+	engine->OnGUI(s, 5, h-30);
 	s = " This hole: " + to_string(currentHoleScore);
 	glColor3f( r, g, b );
-	drawGUIText(s, 5, h-45);
+	engine->OnGUI(s, 5, h-45);
 	s = " Course Total: " + to_string(totalCourseScore);
 	glColor3f( r, g, b );
-	drawGUIText(s, 5, h-60);
-
+	engine->OnGUI(s, 5, h-60);
 }
 
 void printMenu(){
@@ -395,7 +370,7 @@ void cb_keyboard(unsigned char key, int x, int y){
 
 void setupGlut(int& argc, char* argv[]){
 	glutInit(&argc, argv);
-	engine = new LeprechaunTears(readLevels(argv[1]));
+	engine = new LeprechaunTears(readLevels(argv[1]), w, h);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(w, h);

@@ -11,8 +11,10 @@
 using namespace std;
 
 
-LeprechaunTears::LeprechaunTears(std::vector<LTObject*> l){
+LeprechaunTears::LeprechaunTears(std::vector<LTObject*> l, int width, int height){
 	levels = l;
+	w = width;
+	h = height;
 	currentLevel = 0;
 	camx = camy = camz = 3;
 	targetx = targety = targetz = 0;
@@ -53,4 +55,28 @@ void LeprechaunTears::jumpToLevel(int l){
 		return;
 	}
 	currentLevel = l;
+}
+
+void LeprechaunTears::OnGUI(string s, int x, int y){
+	glDisable(GL_TEXTURE_2D); 
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0.0, w, 0.0, h);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glRasterPos2i(x, y);
+	void * font = GLUT_BITMAP_9_BY_15;
+	for (string::iterator i = s.begin(); i != s.end(); ++i)
+	{
+	  char c = *i;
+	  glColor3f(1.0, 1.0, 1.0);
+	  glutBitmapCharacter(font, c);
+	}
+	glMatrixMode(GL_PROJECTION); 
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW); 
+	glPopMatrix();
+	glEnable(GL_TEXTURE_2D);
 }
