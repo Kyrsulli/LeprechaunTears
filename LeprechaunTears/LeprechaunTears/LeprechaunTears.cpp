@@ -30,6 +30,7 @@ LeprechaunTears::~LeprechaunTears(){
 
 void LeprechaunTears::update(bool& changed){
 	levels[currentLevel]->update();
+	levels[currentLevel]->onGUI();
 	if(levels[currentLevel]->levelComplete()){
 		nextLevel();
 		changed = true;

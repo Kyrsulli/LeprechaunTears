@@ -7,3 +7,7 @@ void LTObject::update(){
 void LTObject::render(){
 	return;
 }
+
+void LTObject::onGUI(){
+	return;
+}
