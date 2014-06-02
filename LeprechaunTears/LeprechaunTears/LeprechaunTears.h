@@ -12,7 +12,6 @@ public:
 	void draw();
 	void nextLevel();
 	void jumpToLevel(int);
-	void printMenu();
 	void OnGUI(std::string, int, int);
 	int currentLevel;
 	int cameraMode;
