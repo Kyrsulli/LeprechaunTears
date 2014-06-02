@@ -21,6 +21,7 @@ Level::Level(int number, std::string file){
 	hole = nullptr;
 	ball = nullptr;
 	completed = false;
+	debug = false;
 	levelData.open(file);
 	//get_input();
 	levelData.close();
@@ -84,7 +85,7 @@ void Level::render(){
 	}
 	
 	for(Tile &t: tiles){
-		t.render();
+		t.render(debug);
 	}
 	hole->renderCup();
 	tee->renderTee();
@@ -236,4 +237,8 @@ void Level::reset(){
 	delete physicsObjects[0];
 	physicsObjects[0] = b;
 	ball = b;
+}
+
+void Level::toggleDebug(){
+	debug = !debug;
 }

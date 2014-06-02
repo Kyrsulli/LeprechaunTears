@@ -23,16 +23,12 @@ int h = 700, w = 700;
 
 
 void errorExit(int i){
-	//printf("Error on line %d. Press any key followed by Enter to exit.", i);
 	cout << "Error on line " << i << ". Press Enter to exit." << flush;
 	cin.ignore( numeric_limits <streamsize>::max(), '\n');
 	exit(1);
 }
 
 std::vector<LTObject*> readLevels(char* courseData){
-	//cout << "Kyle, move your modified level reading code to GlutConfig.cpp in function readLevels near the top" << endl;
-	//cout << "Create the levels and put them into this vector in order, Level now inherits from LTObject" << endl;
-	//cout << "Eventually I will make a menu/score screen to be inserted before/after all the levels that extends this class too" << endl;
 	vector<LTObject*> levels;
 	int linecount = 0;
 	int levelCount = 0;
@@ -158,13 +154,9 @@ std::vector<LTObject*> readLevels(char* courseData){
 }
 
 void DrawHUD(){
-	//cout << "Drawing HUD on line 151 of GlutConfig.cpp not implemented" << endl;
 	int r = 0, g = 0, b = 0;
 	glColor3f( r, g, b );
 	string s = static_cast<Level*>(engine->levels[engine->currentLevel])->name;
-	//s += "\nThis hole: " + currentHoleScore;
-	//s += "\nCourse total: " + totalCourseScore;
-	//glClear( GL_COLOR_BUFFER_BIT );
 	engine->OnGUI(s, 5, h-15);
 	glColor3f(r, g, b);
 	s = " Par: " + to_string(static_cast<Level*>(engine->levels[engine->currentLevel])->getPar());
@@ -195,6 +187,7 @@ void printMenu(){
 		 << "r: reset level" << endl
 		 << "b: berate the programmers for shoddy physics" << endl
 		 << "j: jump to level (move to command prompt window to enter value)" << endl
+		 << "D: enable debugging options" << endl
 		 << "c: close this program" << endl;
 }
 
@@ -243,7 +236,6 @@ void setCameraLocation(){
 void cb_display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	//draw_axis(4.0);
 	bool engineChangedLevel = false;
 	engine->update(engineChangedLevel);
 	if(engineChangedLevel){
@@ -277,7 +269,7 @@ void cb_reshape(int w, int h) {
 
 void cb_mouseclick(int button, int state, int x, int y) {
 		if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-		if(x > 400)//GLUT_WINDOW_WIDTH - 100)
+		if(x > 400)
 			ySpinDir = 1;
 		else if(x < 300)
 			ySpinDir = -1;
@@ -341,6 +333,7 @@ void cb_keyboard(unsigned char key, int x, int y){
 		zRotate -= 0.5;
 		break;
 	case 'c':
+		delete engine;
 		exit(0);
 	case 'l':
 		static_cast<Level*>(engine->levels[engine->currentLevel])->reset();
@@ -363,6 +356,9 @@ void cb_keyboard(unsigned char key, int x, int y){
 		int foo;
 		cin >> foo;
 		engine->jumpToLevel(foo);
+		break;
+	case 'D'://debugging support
+		static_cast<Level*>(engine->levels[engine->currentLevel])->toggleDebug();
 		break;
 	}
 }

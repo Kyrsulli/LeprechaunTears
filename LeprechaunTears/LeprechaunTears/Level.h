@@ -28,6 +28,7 @@ public:
 	void setPar(int p){par = p;};
 	int getPar(){return par;};
 	void reset();
+	void toggleDebug();
 	std::string name;
 private:
 	std::ifstream levelData;
@@ -42,6 +43,8 @@ private:
 	int par;
 	Tee* tee;
 	Cup* hole;
+
+	bool debug;
 
 	//void errorExit(int);
 	//void get_input();

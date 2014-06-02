@@ -12,11 +12,6 @@ public:
 	void draw();
 	void nextLevel();
 	void jumpToLevel(int);
-	//void keyboard(unsigned char key, int x, int y);
-	//void mouseClick(int button, int state, int x, int y);
-	//void mouseMove(int x, int y);
-	//void display();
-	//void reshape(int, int);
 	void printMenu();
 	void OnGUI(std::string, int, int);
 	int currentLevel;

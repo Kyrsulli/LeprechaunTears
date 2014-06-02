@@ -28,7 +28,7 @@ void Tile::addVertex(float x, float y, float z){
 	//printf("vertex added\n");
 }
 
-void Tile::render(){
+void Tile::render(bool debug){
 	if(vertices.empty() || vertices.size() <= 2){ 
 		printf("Not enough vertices have been added to tile %d\n", this->id); 
 		exit(1);
@@ -47,8 +47,10 @@ void Tile::render(){
 		glVertex3f(p->x, p->y, p->z);
 	}
 	glEnd();
-	//defineEdges();
-	drawWalls();
+	if(debug){
+		defineEdges();
+	}
+	drawWalls(debug);
 }
 
 inline void Tile::defineEdges(){
@@ -63,7 +65,7 @@ inline void Tile::defineEdges(){
 	glEnd();
 }
 
-inline void Tile::drawWalls(){
+inline void Tile::drawWalls(bool debug){
 	for(int n = 0; n < vertices.size(); n++){
 		//check if we need to even draw a wall here
 		if(neighbors[n] != 0){
@@ -73,9 +75,18 @@ inline void Tile::drawWalls(){
 		Point* p1 = vertices[n];
 		Point* p2 = vertices[(n + 1 >= vertices.size()?0:n+1)];
 		Point* p3 = new Point(p1->x, p1->y + wallHeight, p1->z);
-		glColor3f(0.75f, 0, 0);
 		glm::vec3 wallNormal = calculateNormal(p1, p2, p3);
+		if(debug){
+			glColor3f(0, 0, 0);
+			glLineWidth(3);
+			glBegin(GL_LINES);
+			glVertex3f(p3->x, p3->y, p3->z);
+			glVertex3f(p3->x + wallNormal.x, p3->y + wallNormal.y, p3->z + wallNormal.z);
+			glEnd();
+			glLineWidth(1);
+		}
 		glNormal3f(wallNormal.x, wallNormal.y, wallNormal.z);
+		glColor3f(0.75f, 0, 0);
 		glBegin(GL_QUADS);
 		glVertex3f(p1->x, p1->y, p1->z);
 		glVertex3f(p1->x, p1->y + wallHeight, p1->z);

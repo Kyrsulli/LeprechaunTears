@@ -11,7 +11,7 @@ public:
 
 	void addNeighbor(int val);
 	void addVertex(float x, float y, float z);
-	void render();
+	void render(bool);
 	float getHeightAtPoint(glm::vec3);
 	float withinBounds(glm::vec3);
 	int getID(){return id;}
@@ -30,7 +30,7 @@ private:
 	float minx, miny, minz, maxx, maxy, maxz;
 
 	void defineEdges();
-	void drawWalls();
+	void drawWalls(bool);
 	void calculateFaceNormal();
 	glm::vec3 calculateNormal(Point*, Point*, Point*);
 	void calculateExtremes();
