@@ -54,7 +54,6 @@ std::vector<LTObject*> readLevels(char* courseData){
 		std::getline(levelData, line);
 		std::istringstream iss(line);
 		std::string type;
-		if(line.compare("") == 0){continue;}
 		int p;
 		int type_int = 0;
 		if (!(iss >> type)) { break; } 
