@@ -88,11 +88,12 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	//So that this doesn't crash before the level loads.
 	if(tiles.empty())
 		return currentTile;
+	float distToDest = glm::length(velocity);
 	//Check to see if the ball is within the bounds of any of its neighbors.
 	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
 	int edgePointIndex = -99999999;
-	for(int i = 0; i < neighbors.size(); i++){
-		if(neighbors[i]!=0){
+	//for(int i = 0; i < neighbors.size(); i++){
+		/*if(neighbors[i]!=0){
 			if((tiles[neighbors[i]-1].withinBounds(position+velocity) == 1) || (tiles[neighbors[i]-1].withinBounds(position) == 1)){
 				if(tiles[neighbors[i]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity) || tiles[currentTile-1].withinBounds(position+velocity)==0){
 					currentTile = neighbors[i];
@@ -100,23 +101,24 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 					return currentTile;
 				}
 			}
-		}else{//neighbors[i] == 0
+		}else{*///neighbors[i] == 0
 			//See if it has hit a wall.
 			vector<Point*> v = tiles[currentTile-1].getVertices();
 			for(int j = 0; j < v.size(); j++){
 				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
 				float distToWallSoon = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position+velocity);
-				if(distToWall <= 0.1 || distToWallSoon <= 0.1){
+				if(distToWall <= distToDest || distToWallSoon <= distToDest){
 					edgePointIndex = j;
-					if(tiles[currentTile-1].getNeighbors()[edgePointIndex] != 0 && tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].withinBounds(position+velocity)
-						&&tiles[tiles[currentTile-1].getNeighbors()[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)){
-						currentTile = tiles[currentTile-1].getNeighbors()[edgePointIndex];
+					if(neighbors[edgePointIndex] != 0 && tiles[neighbors[edgePointIndex]-1].withinBounds(position+velocity)
+						&&tiles[neighbors[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)){
+						currentTile = neighbors[edgePointIndex];
+						//printf("%f, %f, %f\n", distToWall, distToWallSoon, distToDest);
 						return currentTile;
 					}
 					break;
 				}
-			}
-		}
+			//}
+		//}
 	}
 	if(tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
