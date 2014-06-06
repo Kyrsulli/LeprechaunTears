@@ -54,6 +54,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 		std::getline(levelData, line);
 		std::istringstream iss(line);
 		std::string type;
+		if(line.compare("") == 0){continue;}
 		int p;
 		int type_int = 0;
 		if (!(iss >> type)) { break; } 
@@ -243,10 +244,12 @@ void cb_display() {
 		currentHoleScore = 0;
 	}
 	glPushMatrix();{
+		setCameraLocation();
+		xRotate += xSpinDir;
+		yRotate += ySpinDir;
 		glRotatef(xRotate, 1, 0, 0);
 		glRotatef(yRotate, 0, 1, 0);
 		glRotatef(zRotate, 0, 0, 1);
-		setCameraLocation();
 		engine->draw();
 	}glPopMatrix();
 	DrawHUD();
