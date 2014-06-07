@@ -22,9 +22,9 @@ Level::Level(int number, std::string file){
 	ball = nullptr;
 	completed = false;
 	debug = false;
-	levelData.open(file);
+	//levelData.open(file);
 	//get_input();
-	levelData.close();
+	//levelData.close();
 }
 
 Level::~Level(){
