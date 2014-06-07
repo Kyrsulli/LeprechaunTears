@@ -10,6 +10,9 @@
 Tile::Tile(int ID){
 	id = ID;
 	normalCalculated = false;
+	debugColor.x = (float) rand() / RAND_MAX;
+	debugColor.y = (float) rand() / RAND_MAX;
+	debugColor.z = (float) rand() / RAND_MAX;
 }
 
 Tile::~Tile(){
@@ -25,7 +28,7 @@ void Tile::addNeighbor(int val){
 void Tile::addVertex(float x, float y, float z){
 	Point* newpoint = new Point(x, y, z);
 	vertices.push_back(newpoint);
-	//printf("vertex added\n");
+	calculateExtremes();
 }
 
 void Tile::render(bool debug){
@@ -35,10 +38,13 @@ void Tile::render(bool debug){
 	}
 	if(!normalCalculated){
 		calculateFaceNormal();
-		calculateExtremes();
 		normalCalculated = true;
 	}
-	glColor3f(0.0f, 0.8f, 0.0f);
+	if(debug){
+		glColor3f(debugColor.x, debugColor.y, debugColor.z);
+	}else{
+		glColor3f(0.0f, 0.8f, 0.0f);
+	}
 	glBegin(GL_TRIANGLE_FAN);
 	glNormal3f(normal.x, normal.y, normal.z);
 	for(int i = 0; i < vertices.size(); i++){

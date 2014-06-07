@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <string>
 #include "Level.h"
 #include "LTObject.h"
 
@@ -8,6 +9,14 @@
 
 using namespace std;
 using namespace glm;
+
+const string word1[] = {"Unending", "Eternal", "Incomparable", "Spiralling", "Rocking", "Static", "Dynamic", "Wilting", "Metal"};
+const string word2[] = {"Valley", "Mountain", "River", "Crucible", "Firepit", "Grassland", "Swamp", "Castle", "Metropolis"};
+const string word3[] = {"Destruction", "Annihilation", "Fire", "Storms", "Brutality", "Perfection", "Glory", "Magic", "Light", "Darkness"};
+const int word1len = 9;
+const int word2len = 9;
+const int word3len = 10;
+
 
 template<typename T>
 inline void constrain(T& curr, T min, T max){
@@ -22,9 +31,12 @@ inline void constrain(T& curr, T min, T max){
 	return;
 }
 
+//this function assumes there are more known names than holes being built
 inline string getRandomName(){
-	cout << "Random name not yet implemented" << endl;
-	return "";
+	int a = rand() % word1len;
+	int b = rand() % word2len;
+	int c = rand() % word3len;
+	return " The " + word1[a] + " " + word2[b] + " of " + word3[c];
 }
 
 inline Cup* getCup(vector<Tile*> tiles){
@@ -58,20 +70,28 @@ inline vector<Tile*> getTiles(int complexity){
 	//these define the two points of the current tile that will be used to connect to the next tile
 	vec3 p1;
 	vec3 p2;
-	srand(time(NULL));
 	Tile* t = nullptr;
 	for(int i = 1; i <= complexity; i++){//i being used for tile ID's also, so it can't be 0 because an ID of 0 defines a null neighbor, hence a wall
 		//make new tile
 		t = new Tile(i);
 		//generate tile corners
-		float dx = rand() % MAX_TILE_SIDE_LENGTH;
-		float dz = rand() % MAX_TILE_SIDE_LENGTH;
+		float dx = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+		float dz = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+		//printf("%d %f %f\n", i, dx, dz);
 		t->addVertex(p1.x, p1.y, p1.z);
 		t->addVertex(p1.x + dx, p1.y, p1.z);
 		t->addVertex(p1.x + dx, p1.y, p1.z + dz);
 		t->addVertex(p1.x, p1.y, p1.z + dz);
 		//figure out connection to last neighbor
 		if(p1.x != 0 && p1.y != 0 && p1.z != 0){//not the first tile
+			//know which edge connects to the last tile
+			//figure out which edge connects to the next tile
+				//if this is the last tile, assign 0
+			//assign the rest 0
+		}else{//first tile
+			//pick random edge to be neighbor
+			//assign that edge to the appropriate tile number
+			//assign rest 0
 			for(int i = 0; i < 4; i++){
 				t->addNeighbor(0);
 			}
@@ -99,7 +119,11 @@ inline Level* newLevel(int num, int complexity){
 }
 
 vector<LTObject*> proceduralCourse(int holes){
+	//seed the random numbers
+	srand(time(NULL));
+	//create the course
 	vector<LTObject*> course;
+	//create each level
 	for(int i = 0; i < holes; i++){
 		course.push_back(newLevel(i, i/2 + 2));
 	}

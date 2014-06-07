@@ -35,5 +35,6 @@ private:
 	void calculateFaceNormal();
 	glm::vec3 calculateNormal(Point*, Point*, Point*);
 	void calculateExtremes();
+	glm::vec3 debugColor;
 };
 
