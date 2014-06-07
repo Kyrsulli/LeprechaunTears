@@ -19,6 +19,7 @@ public:
 	std::vector<Point*> getVertices(){ return vertices;}
 	glm::vec3 getWallNormal(int);//returns the normal of the wall defined by points n, and n + 1
 	glm::vec3 faceNormal(){return normal;};
+	float* getExtremes();
 
 private:
 	int id;

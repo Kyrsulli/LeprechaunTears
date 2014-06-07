@@ -215,3 +215,13 @@ glm::vec3 Tile::getWallNormal(int n){
 	return N;
 }
 
+float* Tile::getExtremes(){
+	float* returnVal = new float[6];
+	returnVal[0] = minx;
+	returnVal[1] = maxx;
+	returnVal[2] = miny;
+	returnVal[3] = maxy;
+	returnVal[4] = minz;
+	returnVal[5] = maxz;
+	return returnVal;
+}
