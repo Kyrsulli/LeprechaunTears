@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "util.h"
 #include "LeprechaunTears.h"
+#include "ProceduralCourse.h"
 
 using namespace std;
 
@@ -20,6 +21,30 @@ int ySpinDir;
 int xSpinDir;
 float xRotate, yRotate, zRotate;
 int h = 700, w = 700;
+
+bool pickCourse(){
+	cout << "Would you like to play on the pre-built course?" << endl;
+	cout << "Enter (y) to play the pre-built, (n) for a procedural one: ";
+	char choice;
+	while(true){
+		cin >> choice;
+		if(cin.fail()){
+			cout << "Invalid option" << endl;
+			continue;
+		}
+		switch (choice){
+		case 'y':;
+		case 'Y':
+			return true;
+		case 'n':;
+		case 'N':
+			return false;
+		default:
+			cout << "Invalid option" << endl;
+			continue;
+		}
+	}
+}
 
 
 void errorExit(int i){
@@ -369,7 +394,7 @@ void cb_keyboard(unsigned char key, int x, int y){
 
 void setupGlut(int& argc, char* argv[]){
 	glutInit(&argc, argv);
-	engine = new LeprechaunTears(readLevels(argv[1]), w, h);
+	engine = new LeprechaunTears(pickCourse()?readLevels(argv[1]):proceduralCourse(18), w, h);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(w, h);

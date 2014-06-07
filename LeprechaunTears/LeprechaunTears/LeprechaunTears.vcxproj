@@ -86,6 +86,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="ProceduralCourseGenerator.cpp" />
     <ClCompile Include="Tee.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="util.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="LTObject.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="ProceduralCourse.h" />
     <ClInclude Include="Tee.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="util.h" />
