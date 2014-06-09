@@ -91,6 +91,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	float distToDest = glm::length(velocity);
 	//Check to see if the ball is within the bounds of any of its neighbors.
 	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
+	int check=0;
 	int edgePointIndex = -99999999;
 	//for(int i = 0; i < neighbors.size(); i++){
 		/*if(neighbors[i]!=0){
@@ -115,12 +116,14 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 						//printf("%f, %f, %f\n", distToWall, distToWallSoon, distToDest);
 						return currentTile;
 					}
+					else if(neighbors[edgePointIndex] == 0)
+						check=1;
 					break;
 				}
 			//}
 		//}
 	}
-	if(tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
+	if(/*tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && */check==1&&tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(edgePointIndex));
@@ -148,5 +151,6 @@ inline float Ball::calcDistanceToWall(Point* x0, Point* x1, glm::vec3 x2v){
 	//make vectors of the first two points
 	glm::vec3 x0v(x0->x, x0->y, x0->z);
 	glm::vec3 x1v(x1->x, x1->y, x1->z);
-	return glm::length( glm::cross((x0v - x1v), (x0v - x2v)) ) / glm::length( x2v - x1v);
+	//return glm::length( glm::cross((x0v - x1v), (x0v - x2v)) ) / glm::length( x2v - x1v);
+	return glm::length( glm::cross((x2v - x0v), (x2v - x1v)) ) / glm::length( x1v - x0v);
 }
