@@ -222,9 +222,9 @@ void setCameraLocation(){
 	float* ballLoc;
 	switch(engine->cameraMode){
 	case freeCamera:
-		engine->camx = 3;
+		engine->camx = -3;
 		engine->camy = 3;
-		engine->camz = 3;
+		engine->camz = -3;
 		engine->targetx = 0;
 		engine->targety = 0;
 		engine->targetz = 0;

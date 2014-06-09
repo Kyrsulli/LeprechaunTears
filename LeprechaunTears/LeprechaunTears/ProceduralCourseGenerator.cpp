@@ -5,7 +5,7 @@
 #include "Level.h"
 #include "LTObject.h"
 
-#define MAX_TILE_SIDE_LENGTH 7
+#define MAX_TILE_SIDE_LENGTH 4
 
 using namespace std;
 using namespace glm;
@@ -71,33 +71,94 @@ inline vector<Tile*> getTiles(int complexity){
 	vec3 p1;
 	vec3 p2;
 	Tile* t = nullptr;
+	bool addX; //controls whether the next tile will jut off in the x or y direction
 	for(int i = 1; i <= complexity; i++){//i being used for tile ID's also, so it can't be 0 because an ID of 0 defines a null neighbor, hence a wall
 		//make new tile
 		t = new Tile(i);
 		//generate tile corners
-		float dx = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
-		float dz = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
-		//printf("%d %f %f\n", i, dx, dz);
-		t->addVertex(p1.x, p1.y, p1.z);
-		t->addVertex(p1.x + dx, p1.y, p1.z);
-		t->addVertex(p1.x + dx, p1.y, p1.z + dz);
-		t->addVertex(p1.x, p1.y, p1.z + dz);
-		//figure out connection to last neighbor
-		if(p1.x != 0 && p1.y != 0 && p1.z != 0){//not the first tile
-			//know which edge connects to the last tile
-			//figure out which edge connects to the next tile
-				//if this is the last tile, assign 0
-			//assign the rest 0
-		}else{//first tile
-			//pick random edge to be neighbor
-			//assign that edge to the appropriate tile number
-			//assign rest 0
-			for(int i = 0; i < 4; i++){
+		if(i == 1){//first tile
+			//width and height
+			float w = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+			float h = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+			//add vertices of tile
+			t->addVertex(0, 0, 0);
+			t->addVertex(w, 0, 0);
+			t->addVertex(w, 0, h);
+			t->addVertex(0, 0, h);
+			//add neighbors, hard code first neighbor
+			t->addNeighbor(0);
+			t->addNeighbor(0);
+			t->addNeighbor(2);
+			t->addNeighbor(0);
+			//store the 2 points of connection so the next tile knows where to grab on to
+			p1.x = w;
+			p1.y = 0;
+			p1.z = h;
+			p2.x = 0;
+			p2.y = 0;
+			p2.z = h;
+			//so the next tile knows what direction to go
+			addX = false;
+		}else if(i == complexity){//last tile
+			//add first two points and their neighbor in
+			t->addVertex(p1.x, p1.y, p1.z);
+			t->addVertex(p2.x, p2.y, p2.z);
+			t->addNeighbor(i - 1);
+			//grab a new side length
+			float s = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+			//figure out if we are adding to the x or z axis
+			vec3 diff = p1 - p2;
+			if(diff.x == 0){
+				//move the 2 points over and put them in the tile
+				p1.z += s;
+				p2.z += s;
+				t->addVertex(p1.x, p1.y, p1.z);
+				t->addVertex(p2.x, p2.y, p2.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
+				t->addNeighbor(0);
+			}else{//diff.z == 0
+				//move the 2 points over and put them in the tile
+				p1.x += s;
+				p2.x += s;
+				t->addVertex(p1.x, p1.y, p1.z);
+				t->addVertex(p2.x, p2.y, p2.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
+				t->addNeighbor(0);
+			}
+		}else{//middle tiles
+			//add first two points and their neighbor in
+			t->addVertex(p1.x, p1.y, p1.z);
+			t->addVertex(p2.x, p2.y, p2.z);
+			t->addNeighbor(i - 1);
+			//grab a new side length
+			float s = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+			//figure out if we are adding to the x or z axis
+			if(addX){
+				//move the 2 points over and put them in the tile
+				p1.x += s;
+				p2.x += s;
+				t->addVertex(p2.x, p2.y, p2.z);
+				t->addVertex(p1.x, p1.y, p1.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
+				t->addNeighbor(0);
+			}else{// !addX, i.e. this tile is moving in the z direction
+				//move the 2 points over and put them in the tile
+				p1.z += s;
+				p2.z += s;
+				t->addVertex(p2.x, p2.y, p2.z);
+				t->addVertex(p1.x, p1.y, p1.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
 				t->addNeighbor(0);
 			}
 		}
-		//figure out connection to next neighbor
-
 		//add to the list
 		course.push_back(t);
 	}
