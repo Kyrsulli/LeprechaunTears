@@ -46,11 +46,6 @@ inline Cup* getCup(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
-	//get a little variation
-	float jiggleX = ((rand() % 3) - 1.5f) * 0.5f;
-	float jiggleZ = ((rand() % 3) - 1.5f) * 0.5f;
-	x += jiggleX;
-	z += jiggleZ;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -64,11 +59,6 @@ inline Tee* getTee(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
-	//get a little variation
-	float jiggleX = ((rand() % 3) - 1.5f) * 0.5f;
-	float jiggleZ = ((rand() % 3) - 1.5f) * 0.5f;
-	x += jiggleX;
-	z += jiggleZ;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -127,10 +117,10 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addVertex(i + 1, 0, j);
 			}else{//other tiles
 				//all of the ?:s are there to check for the first tile override
-				t->addVertex(i    , (i == 2 && j == 2? 0 : scaleNoise(i    , j    )), j);
-				t->addVertex(i    , (i == 2 && j == 2? 0 : scaleNoise(i    , j + 1)), j + 1);
-				t->addVertex(i + 1, (i == 2 && j == 2? 0 : scaleNoise(i + 1, j + 1)), j + 1);
-				t->addVertex(i + 1, (i == 2 && j == 2? 0 : scaleNoise(i + 1, j    )), j);
+				t->addVertex(i    , (i     < 2  && j <  2    ? 0 : scaleNoise( i    , j    )), j);
+				t->addVertex(i    , (i     < 2  && j + 1 < 2 ? 0 : scaleNoise( i    , j + 1)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2  && j + 1 < 2 ? 0 : scaleNoise( i + 1, j + 1)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2  && j < 2     ? 0 : scaleNoise( i + 1, j    )), j);
 			}
 			if(i == 0)
 				t->addNeighbor(0);

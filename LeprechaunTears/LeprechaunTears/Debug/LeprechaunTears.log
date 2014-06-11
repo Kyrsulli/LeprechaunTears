@@ -1,17 +1,17 @@
-﻿Build started 6/11/2014 1:27:15 AM.
+﻿Build started 6/11/2014 11:17:39 AM.
      1>Project "C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\LeprechaunTears\LeprechaunTears.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\LeprechaunTears\glm\ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ProceduralCourseGenerator.cpp
          ProceduralCourseGenerator.cpp
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(124): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(125): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(126): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(127): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(131): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(132): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(133): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(134): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(178): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(114): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(115): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(116): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(117): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(120): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(121): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(122): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(123): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\cody\downloads\documents\github\leprechauntears\leprechauntears\leprechauntears\proceduralcoursegenerator.cpp(167): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Cody\Downloads\Documents\GitHub\LeprechaunTears\LeprechaunTears\Debug\LeprechaunTears.lib" /MACHINE:X86 Debug\Ball.obj
          Debug\Cup.obj
@@ -31,4 +31,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.51
+Time Elapsed 00:00:01.34
