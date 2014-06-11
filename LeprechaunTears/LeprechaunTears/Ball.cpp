@@ -73,7 +73,7 @@ void Ball::update(Tile* t){
 void Ball::render() {
 	glPushMatrix();{
 		glColor3f(1, 1, 1);
-		glTranslatef(position.x, position.y, position.z);
+		glTranslatef(position.x, position.y + 0.05f, position.z);
 		glutSolidSphere(0.04f, 30, 30);
 		if(velocity.x == 0 && velocity.y == 0 && velocity.z == 0){
 			glRotatef(angle, 0, 1, 0);
