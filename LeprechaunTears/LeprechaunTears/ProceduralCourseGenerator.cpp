@@ -46,6 +46,8 @@ inline Cup* getCup(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
+	x += (rand() % 2)/*0 - 1*/ / 4.0f /*0 - 0.25*/ - 1.0f/8.0f/*-1/8 - 1/8*/;
+	z += (rand() % 2)/*0 - 1*/ / 4.0f /*0 - 0.25*/ - 1.0f/8.0f/*-1/8 - 1/8*/;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -59,6 +61,8 @@ inline Tee* getTee(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
+	x += (rand() % 2)/*0 - 1*/ / 4.0f /*0 - 0.25*/ - 1.0f/8.0f/*-1/8 - 1/8*/;
+	z += (rand() % 2)/*0 - 1*/ / 4.0f /*0 - 0.25*/ - 1.0f/8.0f/*-1/8 - 1/8*/;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -119,10 +123,10 @@ inline vector<Tile*> getTiles(int a, int b){
 //				t->addVertex(i + 1, 0, j);
 //			}else{//other tiles
 				//all of the ?:s are there to check for the first tile override
-				t->addVertex(i    , (i     < 2 || i     >= a - 1 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
+				t->addVertex(i    , (i     < 2 || i     >= a - 1 ? 0 : scaleNoise( i    , yPerlinConstant)), j    );
 				t->addVertex(i    , (i     < 2 || i     >= a - 1 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
 				t->addVertex(i + 1, (i + 1 < 2 || i + 1 >= a - 1 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
-				t->addVertex(i + 1, (i + 1 < 2 || i + 1 >= a - 1 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
+				t->addVertex(i + 1, (i + 1 < 2 || i + 1 >= a - 1 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j    );
 //			}
 			//neighbor 1
 			if(i == 0)
@@ -160,7 +164,7 @@ inline Level* newLevel(int num, int complexity){
 	newLevel->addTee(getTee(tiles));
 	newLevel->name = getRandomName();
 	int c = complexity - 3;
-	constrain<int>(c, 2, 4);
+	constrain<int>(c, 2, 3);
 	newLevel->setPar(c);
 	return newLevel;
 }
