@@ -92,7 +92,11 @@ inline void Tile::drawWalls(bool debug){
 			glLineWidth(1);
 		}
 		glNormal3f(wallNormal.x, wallNormal.y, wallNormal.z);
-		glColor3f(0.75f, 0, 0);
+		if(debug){
+			glColor3f(debugColor.x, debugColor.y, debugColor.z);
+		}else{
+			glColor3f(0.75f, 0, 0);
+		}
 		glBegin(GL_QUADS);
 		glVertex3f(p1->x, p1->y, p1->z);
 		glVertex3f(p1->x, p1->y + wallHeight, p1->z);

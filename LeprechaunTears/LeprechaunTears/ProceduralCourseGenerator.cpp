@@ -31,7 +31,6 @@ inline void constrain(T& curr, T min, T max){
 	return;
 }
 
-//this function assumes there are more known names than holes being built
 inline string getRandomName(){
 	int a = rand() % word1len;
 	int b = rand() % word2len;
@@ -46,6 +45,11 @@ inline Cup* getCup(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
+	//get a little variation
+	float jiggleX = (rand() % 3) - 1.2f;
+	float jiggleZ = (rand() % 3) - 1.2f;
+	x += jiggleX;
+	z += jiggleZ;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -59,6 +63,11 @@ inline Tee* getTee(vector<Tile*> tiles){
 	float x = (tileBounds[0] + tileBounds[1] ) / 2;
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
+	//get a little variation
+	float jiggleX = (rand() % 3) - 1.2f;
+	float jiggleZ = (rand() % 3) - 1.2f;
+	x += jiggleX;
+	z += jiggleZ;
 	//cleanup
 	delete [] tileBounds;
 	//return a new tee in the middle
@@ -131,23 +140,51 @@ inline vector<Tile*> getTiles(int complexity){
 			//grab a new side length
 			float s = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
 			//figure out if we are adding to the x or z axis
-			if(addX){
-				//move the 2 points over and put them in the tile
-				p1.x += s;
-				p2.x += s;
-				t->addVertex(p1.x, p1.y, p1.z);
-				t->addVertex(p2.x, p2.y, p2.z);
-			}else{// !addX, i.e. this tile is moving in the z direction
+			int newDir = rand() % 3;//randomly choose the new direction
+			switch(newDir){
+			case 0://go left
+				addX = false;
 				//move the 2 points over and put them in the tile
 				p1.z += s;
 				p2.z += s;
 				t->addVertex(p1.x, p1.y, p1.z);
 				t->addVertex(p2.x, p2.y, p2.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(i + 1);
+				t->addNeighbor(0);
+				t->addNeighbor(0);
+				//pick 2 new points
+				p2 = p1;
+				p1.z -= s;
+				break;
+			case 1://go straight up
+				addX = true;
+				//move the 2 points over and put them in the tile
+				p1.x += s;
+				p2.x += s;
+				t->addVertex(p1.x, p1.y, p1.z);
+				t->addVertex(p2.x, p2.y, p2.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
+				t->addNeighbor(0);
+				break;
+			case 2://go right
+				addX = false;
+				//move the 2 points over and put them in the tile
+				p1.z -= s;
+				p2.z -= s;
+				t->addVertex(p1.x, p1.y, p1.z);
+				t->addVertex(p2.x, p2.y, p2.z);
+				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addNeighbor(0);
+				t->addNeighbor(i + 1);
+				//pick 2 new points
+				p2 = p1;
+				p1.z += s;
+				break;
 			}
-			//add the appropriate neighbors in
-			t->addNeighbor(0);
-			t->addNeighbor(i + 1);
-			t->addNeighbor(0);
 		}
 		//add to the list
 		course.push_back(t);
