@@ -107,9 +107,10 @@ inline vector<Tile*> getTiles(int a, int b){
 	vector<Tile*> course;//add tiles into this one by 1
 	Tile* t = nullptr;
 	const int yPerlinConstant = 1;
+	int j = 0;
 	for(int i = 0; i < a; i++){//row
-		for(int j = 0; j < b; j++){//column
-			t = new Tile(convert(i, j, a));
+		//for(int j = 0; j < b; j++){//column
+			t = new Tile(i + 1);
 			//redefine specific tiles
 //			if(convert(i, j, a) == 1){//first tile
 //				t->addVertex(i    , 0, j);
@@ -127,7 +128,7 @@ inline vector<Tile*> getTiles(int a, int b){
 			if(i == 0)
 				t->addNeighbor(0);
 			else
-				t->addNeighbor(convert(i - 1, j, a));
+				t->addNeighbor(i - 1);
 			//neighbor 2
 			if(j + 1 < b)
 				t->addNeighbor(convert(i, j + 1, a));
@@ -135,7 +136,7 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addNeighbor(0);
 			//neighbor 3
 			if(i + 1 < a)
-				t->addNeighbor(convert(i + 1, j, a));
+				t->addNeighbor(i + 1);
 			else
 				t->addNeighbor(0);
 			//neighbor 4
@@ -145,7 +146,7 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addNeighbor(convert(i, j - 1, a));
 			//add it to the level
 			course.push_back(t);
-		}
+		//}
 	}
 	return course;
 }
