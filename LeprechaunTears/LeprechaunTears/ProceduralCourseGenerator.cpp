@@ -111,18 +111,18 @@ inline vector<Tile*> getTiles(int a, int b){
 		for(int j = 0; j < b; j++){//column
 			t = new Tile(convert(i, j, a));
 			//redefine specific tiles
-			if(convert(i, j, a) == 1){//first tile
-				t->addVertex(i    , 0, j);
-				t->addVertex(i    , 0, j + 1);
-				t->addVertex(i + 1, 0, j + 1);
-				t->addVertex(i + 1, 0, j);
-			}else{//other tiles
+//			if(convert(i, j, a) == 1){//first tile
+//				t->addVertex(i    , 0, j);
+//				t->addVertex(i    , 0, j + 1);
+//				t->addVertex(i + 1, 0, j + 1);
+//				t->addVertex(i + 1, 0, j);
+//			}else{//other tiles
 				//all of the ?:s are there to check for the first tile override
-				t->addVertex(i    , (i     < 2  && j     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
-				t->addVertex(i    , (i     < 2  && j + 1 < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
-				t->addVertex(i + 1, (i + 1 < 2  && j + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
-				t->addVertex(i + 1, (i + 1 < 2  && j     < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
-			}
+				t->addVertex(i    , (i     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
+				t->addVertex(i    , (i     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
+//			}
 			//neighbor 1
 			if(i == 0)
 				t->addNeighbor(0);
@@ -153,7 +153,7 @@ inline vector<Tile*> getTiles(int a, int b){
 inline Level* newLevel(int num, int complexity){
 	//create the new level
 	Level* newLevel = new Level(num, "");
-	vector<Tile*> tiles = getTiles(complexity, std::max(complexity / 3, 1));
+	vector<Tile*> tiles = getTiles(complexity, 1/*std::max(complexity / 3, 1)*/);
 	newLevel->addTiles(tiles);
 	newLevel->addCup(getCup(tiles));
 	newLevel->addTee(getTee(tiles));
