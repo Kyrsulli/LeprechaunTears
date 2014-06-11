@@ -111,7 +111,7 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 				if(distToWall <= distToDest || distToWallSoon <= distToDest){
 					edgePointIndex = j;
 					if(neighbors[edgePointIndex] != 0 && tiles[neighbors[edgePointIndex]-1].withinBounds(position+velocity)
-						&&tiles[neighbors[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)){
+						/*&&tiles[neighbors[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)*/){
 						currentTile = neighbors[edgePointIndex];
 						//printf("%f, %f, %f\n", distToWall, distToWallSoon, distToDest);
 						return currentTile;
