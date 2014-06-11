@@ -118,43 +118,39 @@ inline vector<Tile*> getTiles(int a, int b){
 	Tile* t = nullptr;
 	for(int i = 0; i < a; i++){//row
 		for(int j = 0; j < b; j++){//column
+			t = new Tile(convert(i, j, a));
 			//redefine specific tiles
-			//if(convert(i, j, a) == 1){//first tile
-				
-			//}else if(convert(i, j, a) == convert(a - 1, b - 1, a)){//last tile
-
-			//}else{//middle tiles
-				t = new Tile(convert(i, j, a));
-				t->addVertex(i    , scaleNoise(i, j)        , j);
-				t->addVertex(i    , scaleNoise(i, j + 1)    , j + 1);
-				t->addVertex(i + 1, scaleNoise(i + 1, j + 1), j + 1);
-				t->addVertex(i + 1, scaleNoise(i + 1, j)    , j);
-			//}
-			//put in neighbors, check for walls first
-			//neighbor 1
+			if(convert(i, j, a) == 1){//first tile
+				t->addVertex(i    , 0, j);
+				t->addVertex(i    , 0, j + 1);
+				t->addVertex(i + 1, 0, j + 1);
+				t->addVertex(i + 1, 0, j);
+			}else{//other tiles
+				//all of the ?:s are there to check for the first tile override
+				t->addVertex(i    , (i == 2 && j == 2? 0 : scaleNoise(i    , j    )), j);
+				t->addVertex(i    , (i == 2 && j == 2? 0 : scaleNoise(i    , j + 1)), j + 1);
+				t->addVertex(i + 1, (i == 2 && j == 2? 0 : scaleNoise(i + 1, j + 1)), j + 1);
+				t->addVertex(i + 1, (i == 2 && j == 2? 0 : scaleNoise(i + 1, j    )), j);
+			}
 			if(i == 0)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i - 1, j, a));
-
 			//neighbor 2
 			if(j + 1 < b)
 				t->addNeighbor(convert(i, j + 1, a));
 			else
 				t->addNeighbor(0);
-
 			//neighbor 3
 			if(i + 1 < a)
 				t->addNeighbor(convert(i + 1, j, a));
 			else
 				t->addNeighbor(0);
-
 			//neighbor 4
 			if(j == 0)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i, j - 1, a));
-			
 			//add it to the level
 			course.push_back(t);
 		}
