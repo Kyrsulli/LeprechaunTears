@@ -128,7 +128,7 @@ inline vector<Tile*> getTiles(int a, int b){
 			if(i == 0)
 				t->addNeighbor(0);
 			else
-				t->addNeighbor(i - 1);
+				t->addNeighbor(i);
 			//neighbor 2
 			if(j + 1 < b)
 				t->addNeighbor(convert(i, j + 1, a));
@@ -136,7 +136,7 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addNeighbor(0);
 			//neighbor 3
 			if(i + 1 < a)
-				t->addNeighbor(i + 1);
+				t->addNeighbor(i + 2);
 			else
 				t->addNeighbor(0);
 			//neighbor 4
