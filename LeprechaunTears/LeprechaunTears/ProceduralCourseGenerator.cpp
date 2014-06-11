@@ -1,11 +1,11 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <cmath>
 #include <string>
 #include "Level.h"
 #include "LTObject.h"
 
-#define TILE_CUTOFF_THRESHOLD -0.08f
 #define SCALEFACTOR	0.25f
 
 using namespace std;
@@ -106,6 +106,7 @@ inline int convert(int i, int j, int a){
 inline vector<Tile*> getTiles(int a, int b){
 	vector<Tile*> course;//add tiles into this one by 1
 	Tile* t = nullptr;
+	const int yPerlinConstant = 1;
 	for(int i = 0; i < a; i++){//row
 		for(int j = 0; j < b; j++){//column
 			t = new Tile(convert(i, j, a));
@@ -116,35 +117,29 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addVertex(i + 1, 0, j + 1);
 				t->addVertex(i + 1, 0, j);
 			}else{//other tiles
-				//make sure this tile is high enough elevation to justify its existance
-				if(scaleNoise(i, j) >= TILE_CUTOFF_THRESHOLD){
-					//all of the ?:s are there to check for the first tile override
-					t->addVertex(i    , (i     < 2  && j     < 2 ? 0 : scaleNoise( i    , j    )), j);
-					t->addVertex(i    , (i     < 2  && j + 1 < 2 ? 0 : scaleNoise( i    , j + 1)), j + 1);
-					t->addVertex(i + 1, (i + 1 < 2  && j + 1 < 2 ? 0 : scaleNoise( i + 1, j + 1)), j + 1);
-					t->addVertex(i + 1, (i + 1 < 2  && j     < 2 ? 0 : scaleNoise( i + 1, j    )), j);
-				}else{//its perlin value is too low, delete it and move on
-					delete t;
-					continue;
-				}
+				//all of the ?:s are there to check for the first tile override
+				t->addVertex(i    , (i     < 2  && j     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
+				t->addVertex(i    , (i     < 2  && j + 1 < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2  && j + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2  && j     < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
 			}
 			//neighbor 1
-			if(i == 0 || scaleNoise(i - 1, j) < TILE_CUTOFF_THRESHOLD)
+			if(i == 0)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i - 1, j, a));
 			//neighbor 2
-			if(j + 1 < b || scaleNoise(i, j + 1) <= TILE_CUTOFF_THRESHOLD)
+			if(j + 1 < b)
 				t->addNeighbor(convert(i, j + 1, a));
 			else
 				t->addNeighbor(0);
 			//neighbor 3
-			if(i + 1 < a || scaleNoise(i + 1, j) < TILE_CUTOFF_THRESHOLD)
+			if(i + 1 < a)
 				t->addNeighbor(convert(i + 1, j, a));
 			else
 				t->addNeighbor(0);
 			//neighbor 4
-			if(j == 0 || scaleNoise(i, j - 1) <= TILE_CUTOFF_THRESHOLD)
+			if(j == 0)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i, j - 1, a));
@@ -158,7 +153,7 @@ inline vector<Tile*> getTiles(int a, int b){
 inline Level* newLevel(int num, int complexity){
 	//create the new level
 	Level* newLevel = new Level(num, "");
-	vector<Tile*> tiles = getTiles(complexity, complexity);
+	vector<Tile*> tiles = getTiles(complexity, std::max(complexity / 3, 1));
 	newLevel->addTiles(tiles);
 	newLevel->addCup(getCup(tiles));
 	newLevel->addTee(getTee(tiles));
