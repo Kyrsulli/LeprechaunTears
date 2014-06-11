@@ -408,7 +408,7 @@ void setupGlut(int& argc, char* argv[]){
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
-	glCullFace(GL_FRONT_AND_BACK);
+	//glCullFace(GL_FRONT_AND_BACK);
 	//lighting
 	GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
