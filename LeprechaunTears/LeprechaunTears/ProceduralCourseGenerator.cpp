@@ -5,7 +5,7 @@
 #include "Level.h"
 #include "LTObject.h"
 
-#define MAX_TILE_SIDE_LENGTH 4
+#define TILE_CUTOFF_THRESHOLD -0.08f
 #define SCALEFACTOR	0.25f
 
 using namespace std;
@@ -117,7 +117,7 @@ inline vector<Tile*> getTiles(int a, int b){
 				t->addVertex(i + 1, 0, j);
 			}else{//other tiles
 				//make sure this tile is high enough elevation to justify its existance
-				if(scaleNoise(i, j) >= -0.1f){
+				if(scaleNoise(i, j) >= TILE_CUTOFF_THRESHOLD){
 					//all of the ?:s are there to check for the first tile override
 					t->addVertex(i    , (i     < 2  && j     < 2 ? 0 : scaleNoise( i    , j    )), j);
 					t->addVertex(i    , (i     < 2  && j + 1 < 2 ? 0 : scaleNoise( i    , j + 1)), j + 1);
@@ -129,22 +129,22 @@ inline vector<Tile*> getTiles(int a, int b){
 				}
 			}
 			//neighbor 1
-			if(i == 0 || scaleNoise(i - 1, j) < 0)
+			if(i == 0 || scaleNoise(i - 1, j) < TILE_CUTOFF_THRESHOLD)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i - 1, j, a));
 			//neighbor 2
-			if(j + 1 < b || scaleNoise(i, j + 1) <= 0)
+			if(j + 1 < b || scaleNoise(i, j + 1) <= TILE_CUTOFF_THRESHOLD)
 				t->addNeighbor(convert(i, j + 1, a));
 			else
 				t->addNeighbor(0);
 			//neighbor 3
-			if(i + 1 < a || scaleNoise(i + 1, j) < 0)
+			if(i + 1 < a || scaleNoise(i + 1, j) < TILE_CUTOFF_THRESHOLD)
 				t->addNeighbor(convert(i + 1, j, a));
 			else
 				t->addNeighbor(0);
 			//neighbor 4
-			if(j == 0 || scaleNoise(i, j - 1) <= 0)
+			if(j == 0 || scaleNoise(i, j - 1) <= TILE_CUTOFF_THRESHOLD)
 				t->addNeighbor(0);
 			else
 				t->addNeighbor(convert(i, j - 1, a));
