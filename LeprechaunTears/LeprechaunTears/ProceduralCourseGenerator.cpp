@@ -6,7 +6,7 @@
 #include "Level.h"
 #include "LTObject.h"
 
-#define SCALEFACTOR	0.25f
+#define SCALEFACTOR	0.5f
 
 using namespace std;
 using namespace glm;
@@ -119,10 +119,10 @@ inline vector<Tile*> getTiles(int a, int b){
 //				t->addVertex(i + 1, 0, j);
 //			}else{//other tiles
 				//all of the ?:s are there to check for the first tile override
-				t->addVertex(i    , (i     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
-				t->addVertex(i    , (i     < 2 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
-				t->addVertex(i + 1, (i + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
-				t->addVertex(i + 1, (i + 1 < 2 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
+				t->addVertex(i    , (i     < 2 || i     >= a - 1 ? 0 : scaleNoise( i    , yPerlinConstant)), j);
+				t->addVertex(i    , (i     < 2 || i     >= a - 1 ? 0 : scaleNoise( i    , yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2 || i + 1 >= a - 1 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j + 1);
+				t->addVertex(i + 1, (i + 1 < 2 || i + 1 >= a - 1 ? 0 : scaleNoise( i + 1, yPerlinConstant)), j);
 //			}
 			//neighbor 1
 			if(i == 0)
