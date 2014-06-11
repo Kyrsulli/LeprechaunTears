@@ -17,6 +17,8 @@ const int word1len = 9;
 const int word2len = 9;
 const int word3len = 10;
 
+typedef enum directions{TILE_LEFT, TILE_STRAIGHT, TILE_RIGHT};
+
 
 template<typename T>
 inline void constrain(T& curr, T min, T max){
@@ -46,8 +48,8 @@ inline Cup* getCup(vector<Tile*> tiles){
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
 	//get a little variation
-	float jiggleX = ((rand() % 3) - 1.5f) * 0.8f;
-	float jiggleZ = ((rand() % 3) - 1.5f) * 0.8f;
+	float jiggleX = ((rand() % 3) - 1.5f) * 0.5f;
+	float jiggleZ = ((rand() % 3) - 1.5f) * 0.5f;
 	x += jiggleX;
 	z += jiggleZ;
 	//cleanup
@@ -64,8 +66,8 @@ inline Tee* getTee(vector<Tile*> tiles){
 	float y = (tileBounds[2] + tileBounds[3] ) / 2;
 	float z = (tileBounds[4] + tileBounds[5] ) / 2;
 	//get a little variation
-	float jiggleX = ((rand() % 3) - 1.5f) * 0.8f;
-	float jiggleZ = ((rand() % 3) - 1.5f) * 0.8f;
+	float jiggleX = ((rand() % 3) - 1.5f) * 0.5f;
+	float jiggleZ = ((rand() % 3) - 1.5f) * 0.5f;
 	x += jiggleX;
 	z += jiggleZ;
 	//cleanup
@@ -80,14 +82,15 @@ inline vector<Tile*> getTiles(int complexity){
 	vec3 p1;
 	vec3 p2;
 	Tile* t = nullptr;
+	bool xOpening;//whether or not the tile opening is on the x direction or z direction
 	for(int i = 1; i <= complexity; i++){//i being used for tile ID's also, so it can't be 0 because an ID of 0 defines a null neighbor, hence a wall
 		//make new tile
 		t = new Tile(i);
 		//generate tile corners
 		if(i == 1){//first tile
 			//width and height
-			float w = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
-			float h = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
+			float w = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5f;
+			float h = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5f;
 			//add vertices of tile
 			t->addVertex(0, 0, 0);
 			t->addVertex(0, 0, h);
@@ -105,75 +108,85 @@ inline vector<Tile*> getTiles(int complexity){
 			p2.x = w;
 			p2.y = 0;
 			p2.z = 0;
+			xOpening = true;
 		}else if(i == complexity){//last tile
 			//add first two points and their neighbor in
-			t->addVertex(p2.x, p2.y, p2.z);
 			t->addVertex(p1.x, p1.y, p1.z);
-			t->addNeighbor(i - 1);
+			t->addVertex(p2.x, p2.y, p2.z);
 			//grab a new side length
 			float s = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
 			//figure out if we are adding to the x or z axis
-			p1.x += s;
-			p2.x += s;
-			t->addVertex(p1.x, p1.y, p1.z);
-			t->addVertex(p2.x, p2.y, p2.z);
+			t->addVertex(p2.x + (xOpening?s:0), p2.y, p2.z + (xOpening?0:s));
+			t->addVertex(p1.x + (xOpening?s:0), p1.y, p1.z + (xOpening?0:s));
 			//add the appropriate neighbors in
+			t->addNeighbor(i - 1);
 			for(int i = 0; i < 3; i++)
 				t->addNeighbor(0);
 		}else{//middle tiles
 			//add first two points and their neighbor in
-			t->addVertex(p2.x, p2.y, p2.z);
 			t->addVertex(p1.x, p1.y, p1.z);
-			t->addNeighbor(i - 1);
+			t->addVertex(p2.x, p2.y, p2.z);
 			//grab a new side length
 			float s = (rand() % MAX_TILE_SIDE_LENGTH) + 1.5;
 			//figure out if we are adding to the x or z axis
-			int newDir = rand() % 3;//randomly choose the new direction
-			switch(newDir){
-			case 0://go left
-				//move the 2 points over and put them in the tile
-				p1.z += s;
-				p2.z += s;
+			int newDir = 2;//rand() % 3;//randomly choose the new direction
+			//TODO: make sure it doesn't self-intersect with the course here do {pick num } while (! self intersect);
+			switch(newDir){//direction defines which side it opens up on to connect to the next tile, not allowing them to go back should prevent most self-intersections
+			case TILE_LEFT:
 				t->addVertex(p1.x, p1.y, p1.z);
+				t->addNeighbor(i - 1);
 				t->addVertex(p2.x, p2.y, p2.z);
-				//add the appropriate neighbors in
+				t->addNeighbor(0);
+				t->addVertex(p2.x + (xOpening?s:0), p2.y, p2.z + (xOpening?0:s));
+				t->addNeighbor(0);
+				t->addVertex(p1.x + (xOpening?s:0), p1.y, p1.z + (xOpening?0:s));
 				t->addNeighbor(i + 1);
-				t->addNeighbor(0);
-				t->addNeighbor(0);
-				//pick 2 new points
-				p2 = p1;
-				p1.z -= s;
+				//p1 stays the same
+				p2.x = p1.x + s;
+				p2.y = p1.y;
+				p2.z = p1.z;
+				xOpening = false;
 				break;
-			case 1://go straight up
-				//move the 2 points over and put them in the tile
-				p1.x += s;
-				p2.x += s;
+			case TILE_STRAIGHT:
 				t->addVertex(p1.x, p1.y, p1.z);
+				t->addNeighbor(i - 1);
 				t->addVertex(p2.x, p2.y, p2.z);
-				//add the appropriate neighbors in
 				t->addNeighbor(0);
+				t->addVertex(p2.x + (xOpening?s:0), p2.y, p2.z - (xOpening?0:s));
 				t->addNeighbor(i + 1);
+				t->addVertex(p1.x + (xOpening?s:0), p1.y, p1.z - (xOpening?0:s));
 				t->addNeighbor(0);
+				xOpening = true;
+				p1.x += (xOpening?s:0);
+				p1.y += 0;
+				p1.z += (xOpening?0:s);
 				break;
-			case 2://go right
-				//move the 2 points over and put them in the tile
-				p1.z -= s;
-				p2.z -= s;
+			case TILE_RIGHT:
 				t->addVertex(p1.x, p1.y, p1.z);
+				t->addNeighbor(i - 1);
 				t->addVertex(p2.x, p2.y, p2.z);
-				//add the appropriate neighbors in
-				t->addNeighbor(0);
-				t->addNeighbor(0);
 				t->addNeighbor(i + 1);
-				//pick 2 new points
-				p2 = p1;
-				p1.z += s;
-				break;
+				t->addVertex(p2.x + (xOpening?s:0), p2.y, p2.z - (xOpening?0:s));
+				t->addNeighbor(0);
+				t->addVertex(p1.x + (xOpening?s:0), p1.y, p1.z - (xOpening?0:s));
+				t->addNeighbor(0);
+				//p2 stays the same
+				p1.x = p2.x + s;
+				p1.y = p2.y;
+				p1.z = p2.z;
+				xOpening = false;
 			}
 		}
 		//add to the list
 		course.push_back(t);
+		printf("Tile id=%d\n", i);
+		vector<Point*> v = t->getVertices();
+		for(int i = 0; i < 4; i++){
+			printf("Vertex %d: %f %f %f\n", i, v[i]->x, v[i]->y, v[i]->z);
+		}
+		printf("\n");
 	}
+	printf("End level\n\n\n");
 	return course;
 }
 
@@ -198,7 +211,7 @@ vector<LTObject*> proceduralCourse(int holes){
 	vector<LTObject*> course;
 	//create each level
 	for(int i = 0; i < holes; i++){
-		course.push_back(newLevel(i, i/2 + 2));
+		course.push_back(newLevel(i, /*i/2 + 2*/3));
 	}
 	return course;
 }
