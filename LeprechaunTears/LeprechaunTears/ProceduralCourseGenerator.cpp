@@ -106,7 +106,7 @@ inline int convert(int i, int j, int a){
 inline vector<Tile*> getTiles(int a, int b){
 	vector<Tile*> course;//add tiles into this one by 1
 	Tile* t = nullptr;
-	const int yPerlinConstant = 1;
+	const int yPerlinConstant = rand();
 	int j = 0;
 	for(int i = 0; i < a; i++){//row
 		//for(int j = 0; j < b; j++){//column
@@ -154,13 +154,13 @@ inline vector<Tile*> getTiles(int a, int b){
 inline Level* newLevel(int num, int complexity){
 	//create the new level
 	Level* newLevel = new Level(num, "");
-	vector<Tile*> tiles = getTiles(complexity, 1/*std::max(complexity / 3, 1)*/);
+	vector<Tile*> tiles = getTiles(complexity + 2, 1/*std::max(complexity / 3, 1)*/);
 	newLevel->addTiles(tiles);
 	newLevel->addCup(getCup(tiles));
 	newLevel->addTee(getTee(tiles));
 	newLevel->name = getRandomName();
-	int c = complexity - 1;
-	constrain<int>(c, 2, 10);
+	int c = complexity - 3;
+	constrain<int>(c, 2, 4);
 	newLevel->setPar(c);
 	return newLevel;
 }
