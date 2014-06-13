@@ -36,39 +36,17 @@ void Ball::update(Tile* t){
 		magnitude = 0;
 	//update position
 	position += velocity;
-	/*if(t->getHeightAtPoint(position)!=0)
-	printf("%f\n", t->getHeightAtPoint(position));*/
 	position.y = t->getHeightAtPoint(position);
-	//printf("%f",t->getHeightAtPoint(position));
-	//if(glm::length(velocity) == 0){
 		if(glm::normalize(t->faceNormal()) != glm::vec3(0, 1, 0)){//if it is on a slanted slope
 			
 			glm::vec3 foo = glm::cross(glm::vec3(0, 1, 0), t->faceNormal());
 			glm::vec3 rollDir = glm::cross(glm::vec3(0, 1, 0), foo);
-			//printf("Roll Dir:%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
-			//printf("Velocity:%f %f %f\n", velocity.x, velocity.y, velocity.z);
-			//printf("Sum     :%f %f %f\n\n", rollDir.x + position.x, rollDir.y + position.y, rollDir.z + position.z);
-			//velocity.x -= rollDir.x/750;
-			//velocity.z -= rollDir.z/750;
 			position.y = t->getHeightAtPoint(position);
 			
-			
-			//if(rollDir.y < 0){
-			//	rollDir = -rollDir;
-			//}
-			//if(rollDir.y != 0){
-				//velocity = rollDir;
-			//	printf("%f %f %f\n", rollDir.x, rollDir.y, rollDir.z);
-			//}
 			addDrag(rollDir);
 		}
 		else addDrag(glm::vec3(0,0,0));
-	//}
-//}
 }
-	//update collisions
-	//vector<int> n = t->getNeighbors();
-	//vector<Point*> v = t->getVertices();
 
 void Ball::render() {
 	glPushMatrix();{
@@ -89,41 +67,29 @@ int Ball::getCurrentTile(std::vector<Tile> tiles){
 	if(tiles.empty())
 		return currentTile;
 	float distToDest = glm::length(velocity);
-	//Check to see if the ball is within the bounds of any of its neighbors.
 	std::vector<int> neighbors = tiles[currentTile-1].getNeighbors();
 	int check=0;
 	int edgePointIndex = -99999999;
-	//for(int i = 0; i < neighbors.size(); i++){
-		/*if(neighbors[i]!=0){
-			if((tiles[neighbors[i]-1].withinBounds(position+velocity) == 1) || (tiles[neighbors[i]-1].withinBounds(position) == 1)){
-				if(tiles[neighbors[i]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity) || tiles[currentTile-1].withinBounds(position+velocity)==0){
-					currentTile = neighbors[i];
-					//printf("%d\n", currentTile);
-					return currentTile;
-				}
-			}
-		}else{*///neighbors[i] == 0
-			//See if it has hit a wall.
 			vector<Point*> v = tiles[currentTile-1].getVertices();
+			//Check all the edges to see if the ball will pass over it.
 			for(int j = 0; j < v.size(); j++){
+				//Calculate for both where it will be and where it is, just to be safe.
 				float distToWall = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position);
 				float distToWallSoon = calcDistanceToWall(v[j], v[( j + 1 == v.size()?0:j + 1)], position+velocity);
 				if(distToWall <= distToDest || distToWallSoon <= distToDest){
 					edgePointIndex = j;
-					if(neighbors[edgePointIndex] != 0 && tiles[neighbors[edgePointIndex]-1].withinBounds(position+velocity)
-						/*&&tiles[neighbors[edgePointIndex]-1].getHeightAtPoint(position+velocity)>=tiles[currentTile-1].getHeightAtPoint(position+velocity)*/){
+					//Check to see what the tile is, or if it is a wall.
+					if(neighbors[edgePointIndex] != 0 && tiles[neighbors[edgePointIndex]-1].withinBounds(position+velocity)){
 						currentTile = neighbors[edgePointIndex];
-						//printf("%f, %f, %f\n", distToWall, distToWallSoon, distToDest);
 						return currentTile;
 					}
+					//If it's a wall, we'll do some collision stuff.
 					else if(neighbors[edgePointIndex] == 0)
 						check=1;
 					break;
 				}
-			//}
-		//}
 	}
-	if(/*tiles[currentTile-1].withinBounds(position+velocity)==0 && !bounce && edgePointIndex!=-99999999 && */check==1&&tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
+	if(check==1&&tiles[currentTile-1].getNeighbors()[edgePointIndex] == 0){
 		bounce = true;
 		/*Velocity Calculations go here!*/
 		velocity = calculateBounceVector(tiles[currentTile-1].getWallNormal(edgePointIndex));
