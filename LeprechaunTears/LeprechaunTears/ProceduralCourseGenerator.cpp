@@ -11,6 +11,7 @@
 using namespace std;
 using namespace glm;
 
+//information for the random name generator
 const string word1[] = {"Unending", "Eternal", "Incomparable", "Spiralling", "Rocking", "Static", "Dynamic", "Wilting", "Metal"};
 const string word2[] = {"Valley", "Mountain", "River", "Crucible", "Firepit", "Grassland", "Swamp", "Castle", "Metropolis"};
 const string word3[] = {"Destruction", "Annihilation", "Fire", "Storms", "Brutality", "Perfection", "Glory", "Magic", "Light", "Darkness"};
@@ -18,7 +19,7 @@ const int word1len = 9;
 const int word2len = 9;
 const int word3len = 10;
 
-
+//constrain function, as a template.  Better than the one in util.h
 template<typename T>
 inline void constrain(T& curr, T min, T max){
 	if(curr > max){
@@ -32,6 +33,7 @@ inline void constrain(T& curr, T min, T max){
 	return;
 }
 
+//assemble the random name for the level
 inline string getRandomName(){
 	int a = rand() % word1len;
 	int b = rand() % word2len;
@@ -39,6 +41,7 @@ inline string getRandomName(){
 	return " The " + word1[a] + " " + word2[b] + " of " + word3[c];
 }
 
+//find the last tile and put a cup on it
 inline Cup* getCup(vector<Tile*> tiles){
 	Tile* lastTile = tiles[tiles.size() - 1];
 	float* tileBounds = lastTile->getExtremes();
@@ -54,6 +57,7 @@ inline Cup* getCup(vector<Tile*> tiles){
 	return new Cup(lastTile->getID(), x, y, z);
 }
 
+//find the first tile and put a tee on it
 inline Tee* getTee(vector<Tile*> tiles){
 	Tile* firstTile = tiles[0];
 	float* tileBounds = firstTile->getExtremes();
@@ -71,6 +75,7 @@ inline Tee* getTee(vector<Tile*> tiles){
 
 //next 3 functions from:
 //http://www.dreamincode.net/forums/topic/66480-perlin-noise/
+//perlin noise generator
 inline double findnoise2(double x,double y){
 	int n=(int)x+(int)y*57;
 	n=(n<<13)^n;
@@ -97,16 +102,22 @@ double noise(double x,double y){
 	return interpolate(int1,int2,y-floory);//Here we use y-floory, to get the 2nd dimension.
 }
 
+//scale the noise to values that we want
 float scaleNoise(int i, int j){
 	double result = noise(i, j);
 	result *= SCALEFACTOR;//scale it
 	return static_cast<float>(result);
 }
 
+//convert 2 index i/j coordinates into a single unique index
 inline int convert(int i, int j, int a){
 	return a * i + j + 1;
 }
 
+//create all the tiles, assign the edges
+//initially envisioned as rolling hills with obstacles, and that worked, except it broke
+//physics because tiles were no longer flat planes
+//elevations of tiles are based on Perlin Noise
 inline vector<Tile*> getTiles(int a, int b){
 	vector<Tile*> course;//add tiles into this one by 1
 	Tile* t = nullptr;
@@ -155,6 +166,7 @@ inline vector<Tile*> getTiles(int a, int b){
 	return course;
 }
 
+//create a new level, populate it with what it needs, and return
 inline Level* newLevel(int num, int complexity){
 	//create the new level
 	Level* newLevel = new Level(num, "");
@@ -169,6 +181,7 @@ inline Level* newLevel(int num, int complexity){
 	return newLevel;
 }
 
+//create the entire set of procedural levels
 vector<LTObject*> proceduralCourse(int holes){
 	//seed the random numbers
 	srand(time(NULL));

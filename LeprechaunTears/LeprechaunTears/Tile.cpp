@@ -7,6 +7,7 @@
 #define wallHeight 0.1
 #define aLittleBit 0.005
 
+//constructor
 Tile::Tile(int ID){
 	id = ID;
 	normalCalculated = false;
@@ -15,50 +16,59 @@ Tile::Tile(int ID){
 	debugColor.z = (float) rand() / RAND_MAX;
 }
 
+//destructor
 Tile::~Tile(){
 	while(!vertices.empty()){
 		vertices.pop_back();
 	}
 }
 
+//add a new neighbor, matches the points at index i and i + 1
 void Tile::addNeighbor(int val){
 	neighbors.push_back(val);
 }
 
+//add a new point.  Automatically connects last point to first
 void Tile::addVertex(float x, float y, float z){
 	Point* newpoint = new Point(x, y, z);
 	vertices.push_back(newpoint);
 	calculateExtremes();
 }
 
+//render the tile.  first check to make sure enough information is there for it to render, then run it
 void Tile::render(bool debug){
 	if(vertices.empty() || vertices.size() <= 2){ 
 		printf("Not enough vertices have been added to tile %d\n", this->id); 
 		exit(1);
 	}
+	//if it reaches the render step it shouldn't have any more vertices added, so calculate and store the normal for lighting purposes
 	if(!normalCalculated){
 		calculateFaceNormal();
 		normalCalculated = true;
 	}
+	//decide on the color
 	if(debug){
 		glColor3f(debugColor.x, debugColor.y, debugColor.z);
 	}else{
 		glColor3f(0.0f, 0.8f, 0.0f);
 	}
+	//draw the base tile
 	glBegin(GL_TRIANGLE_FAN);
 	glNormal3f(normal.x, normal.y, normal.z);
 	for(int i = 0; i < vertices.size(); i++){
-		
 		Point* p = vertices[i];
 		glVertex3f(p->x, p->y, p->z);
 	}
 	glEnd();
+	//define edges to make borders easier to see?
 	if(debug){
 		defineEdges();
 	}
+	//render the walls
 	drawWalls(debug);
 }
 
+//traces over the points again, same used in the triangle fan above, and draw a line connecting them, just a hair above the points so they stand out
 inline void Tile::defineEdges(){
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_LINES);
@@ -71,6 +81,7 @@ inline void Tile::defineEdges(){
 	glEnd();
 }
 
+//trace over the same points used in drawing the tile edge, draw walls
 inline void Tile::drawWalls(bool debug){
 	for(int n = 0; n < vertices.size(); n++){
 		//check if we need to even draw a wall here
@@ -79,9 +90,13 @@ inline void Tile::drawWalls(bool debug){
 		}
 		//get the 2 indexes to be edges
 		Point* p1 = vertices[n];
+		//the ?: handles the wrap around from the last to the first
 		Point* p2 = vertices[(n + 1 >= vertices.size()?0:n+1)];
+		//pick a third point above one of the points for wall normal info, since you need 3 points
 		Point* p3 = new Point(p1->x, p1->y + wallHeight, p1->z);
+		//calculate lighting!
 		glm::vec3 wallNormal = calculateNormal(p1, p2, p3);
+		//draw normals if debug option is on
 		if(debug){
 			glColor3f(0, 0, 0);
 			glLineWidth(3);
@@ -91,6 +106,7 @@ inline void Tile::drawWalls(bool debug){
 			glEnd();
 			glLineWidth(1);
 		}
+		//set the normal, color, and draw
 		glNormal3f(wallNormal.x, wallNormal.y, wallNormal.z);
 		if(debug){
 			glColor3f(debugColor.x, debugColor.y, debugColor.z);
@@ -106,6 +122,7 @@ inline void Tile::drawWalls(bool debug){
 	}
 }
 
+//calculate the normal for lighting purposes
 inline void Tile::calculateFaceNormal(){
 	//this assumes that all points are in memory, and that there are at least 3
 	Point* p0 = vertices[0];
@@ -139,6 +156,7 @@ Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
 	
 }
 
+//generalized version of the above, easier to handle walls his way
 glm::vec3 Tile::calculateNormal(Point* p0, Point* p1, Point* p2){
 	glm::vec3 v0(p0->x, p0->y, p0->z);
 	glm::vec3 v1(p1->x, p1->y, p1->z);
@@ -154,6 +172,7 @@ glm::vec3 Tile::calculateNormal(Point* p0, Point* p1, Point* p2){
 	return glm::vec3(x, y, z);
 }
 
+//calculate the extremities of x, y, and z.  Helps with physics
 inline void Tile::calculateExtremes(){
 	minx = vertices[0]->x;
 	maxx = vertices[0]->x;
@@ -183,6 +202,7 @@ inline void Tile::calculateExtremes(){
 	}
 }
 
+//calculates the height of the tile at a point, useful in rendering the ball for 2D physics cheat
 float Tile::getHeightAtPoint(glm::vec3 position){
 	if(!normalCalculated) return 0;
 	if(withinBounds(position) == 0) return 0;
@@ -196,20 +216,17 @@ float Tile::getHeightAtPoint(glm::vec3 position){
 	//return 0;
 }
 
+//checks if the ball is in the tile bounds
 float Tile::withinBounds(glm::vec3 position){
 	
 	if(position.x > maxx || position.x < minx||
-	   //position.y > maxy || position.y < miny  ||
 	   position.z > maxz || position.z < minz){
-		   //throw "Position is outside the extremes of this tile";
-		   /*printf("Position is out of the extremes of this tile\n");
-		   printf("X: %f, MaxX: %f, MinX: %f\n", position.x, maxx, minx);
-		   printf("Z: %f, MaxZ: %f, MinZ: %f\n", position.z, maxz, minz);*/
 		   return 0;
 	}
 	else return 1;
 }
 
+//calculate the normal of the wall for bouncing.  takes in the index of the point that defines the start of this wall
 glm::vec3 Tile::getWallNormal(int n){
 	Point* p1 = vertices[n];
 	if(n+1 >= vertices.size())
@@ -220,11 +237,11 @@ glm::vec3 Tile::getWallNormal(int n){
 	Point* p2 = vertices[n];
 	Point* p3 = new Point(p1->x, p1->y + 1, p1->z);//create a point above one of the existing points.  Doesn't matter how tall
 	glm::vec3 N = calculateNormal(p1, p2, p3);
-	//printf("Bounced off wall %d\n", neighbors[n]);
-	//delete p3;
 	return N;
 }
 
+//retrieve the extremities of the tile in the form of an array
+// {minx, maxx, miny, maxy, minz, maxz}
 float* Tile::getExtremes(){
 	float* returnVal = new float[6];
 	returnVal[0] = minx;

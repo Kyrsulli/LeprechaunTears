@@ -11,17 +11,23 @@
 
 using namespace std;
 
+//define possible camera modes we have defined
 enum CAMERAMODES{freeCamera, thirdpersonCamera, topCamera};
 
+//score for current hole and course total
 int currentHoleScore = 0;
 int totalCourseScore = 0;
 
+//engine
 LeprechaunTears* engine;
+//rotation angle
 int ySpinDir;
 int xSpinDir;
 float xRotate, yRotate, zRotate;
+//window size
 int h = 700, w = 700;
 
+//choose between Arnav's pre-build course or our procedural one
 bool pickCourse(){
 	cout << "Would you like to play on the pre-built course?" << endl;
 	cout << "Enter (y) to play the pre-built, (n) for a procedural one: ";
@@ -46,13 +52,14 @@ bool pickCourse(){
 	}
 }
 
-
+//exit if there was an error reading the file, with information about the failure
 void errorExit(int i){
 	cout << "Error on line " << i << ". Press Enter to exit." << flush;
 	cin.ignore( numeric_limits <streamsize>::max(), '\n');
 	exit(1);
 }
 
+//file parser for reading levels
 std::vector<LTObject*> readLevels(char* courseData){
 	vector<LTObject*> levels;
 	int linecount = 0;
@@ -179,6 +186,7 @@ std::vector<LTObject*> readLevels(char* courseData){
 	return levels;
 }
 
+//render the hud using the engine's GLUT calls.
 void DrawHUD(){
 	int r = 0, g = 0, b = 0;
 	glColor3f( r, g, b );
@@ -195,6 +203,7 @@ void DrawHUD(){
 	engine->OnGUI(s, 5, h-60);
 }
 
+//print the menu of defined functionality
 void printMenu(){
 	cout << endl << "Menu:" << endl
 		 << "m: print this menu" << endl
@@ -217,6 +226,7 @@ void printMenu(){
 		 << "c: close this program" << endl;
 }
 
+//set information about the camera based on the current camera profile
 void setCameraLocation(){
 	float* cupLoc;
 	float* ballLoc;
@@ -259,6 +269,7 @@ void setCameraLocation(){
 
 }
 
+//update and render calls, as well as turning the level for rotations
 void cb_display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -282,10 +293,12 @@ void cb_display() {
 	glutSwapBuffers(); // for smoother animation
 }
 
+//idle function
 void cb_idle() {
 	glutPostRedisplay();
 }
 
+//reshape window function
 void cb_reshape(int w, int h) {
 	int aspect = w/h;
 	glViewport(0, 0, w, h);
@@ -295,6 +308,7 @@ void cb_reshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+//spin the screen based on mouse clicks
 void cb_mouseclick(int button, int state, int x, int y) {
 		if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
 		if(x > 400)
@@ -312,10 +326,12 @@ void cb_mouseclick(int button, int state, int x, int y) {
 	}
 }
 
+//don't need this one
 void cb_mousemove(int x, int y) {
 	return;
 }
 
+//call the right function and do the right calculations for all of the defined key functions
 void cb_keyboard(unsigned char key, int x, int y){
 	switch(key){
 	case 'd':
@@ -391,7 +407,8 @@ void cb_keyboard(unsigned char key, int x, int y){
 	}
 }
 
-
+//monster setup function.  open GLUT, create the engine, set rendering preferences, create lights, 
+//send funcions to glut, and print the menu
 void setupGlut(int& argc, char* argv[]){
 	glutInit(&argc, argv);
 	engine = new LeprechaunTears(pickCourse()?readLevels(argv[1]):proceduralCourse(18), w, h);
@@ -408,12 +425,11 @@ void setupGlut(int& argc, char* argv[]){
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
-	//glCullFace(GL_FRONT_AND_BACK);
+	glCullFace(GL_FRONT_AND_BACK);
 	//lighting
 	GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
 	GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	//GLfloat position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
